@@ -1,5 +1,5 @@
-function [y, p, f, df, dy] = twoDplanes(pair_x)
-    % simulate data from 2Dplanes described in
+function [y, p, f, df, dy] = Friedman(pair_x)
+    % simulate data from Friedman described in
     % https://www.dcc.fc.up.pt/~ltorgo/Regression/DataSets.html
     %
     % p(y=1) = Phi(f1-f2) indicating x1 is preferred to x2
@@ -18,35 +18,20 @@ function [y, p, f, df, dy] = twoDplanes(pair_x)
     x1 = pair_x(:,1:end/2); x2 = pair_x(:,1+end/2:end);
     x = [x1;x2]; % turn horizontal (x1,x2) pairs to vertical [x1;x2] 
     n = size(x1,1);
-    f = zeros(2*n,1);
-    % f(x(:,1)==1) =  3*x(x(:,1)==1,2) - 2*x(x(:,1)==1,3) + x(x(:,1)==1,4);
-    % f(x(:,1)==-1) =  - 3*x(x(:,1)==-1,5) + 2*x(x(:,1)==-1,6) - x(x(:,1)==-1,7);
-    f(x(:,1)==1) =  x(x(:,1)==1,2:3)*[3;3] + x(x(:,1)==1,4:5)*[-2;-2] + ...
-        x(x(:,1)==1,6:7)*[1;1];
-    f(x(:,1)==0) =  x(x(:,1)==0,8:9)*[-3;-3] + x(x(:,1)==0,10:11)*[2;2] + ...
-        x(x(:,1)==0,12:13)*[-1;-1];
+    f = 10*sin(pi*x(:,1).*x(:,2)) + 20*(x(:,3)-0.5).^2;
     f1 = f(1:n); f2 = f((n+1):end);
     f = [f1,f2];
     p = normcdf((f1-f2)/1);
     y = 2*arrayfun(@(x) binornd(1,x),p)-1; % y in {-1,1}
     
     df = zeros(2*n,size(x1,2)); % df/dx evaluated at x
-    df(x(:,1)==1,2:3) = 3;
-    df(x(:,1)==1,4:5) = -2;
-    df(x(:,1)==1,6:7) = 1;
-    df(x(:,1)==0,8:9) = -3;
-    df(x(:,1)==0,10:11) = 2;
-    df(x(:,1)==0,12:13) = -1;
+    df(:,1) = 10*cos(pi*x(:,1).*x(:,2)).*x(:,2)*pi;
+    df(:,2) = 10*cos(pi*x(:,1).*x(:,2)).*x(:,1)*pi;
+    df(:,3) = 40*(x(:,3)-0.5);
     df1 = df(1:n,:); df2 = df((n+1):end,:);
     df = [df1,df2];
     
     % gradient of prob
     dy = [df1.*normpdf((f1-f2)/1), df2.*normpdf((f1-f2)/1)];
     dy = round(dy,4);
-    % normalize y,f,df
-%     mu_f = mean(f, 'all');
-%     std_f = std(f);
-%     f = (f - mu_f) ./ std_f;
-%     y = (y - mu_f) ./ std_f;
-%     df = df ./ std_f;
 end
