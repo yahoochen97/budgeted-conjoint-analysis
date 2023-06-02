@@ -5,6 +5,8 @@ if ~exist('SEED','var')
     N = 1000;
 end
 
+maxNumCompThreads(1);
+
 % add gpml tool box; clear env;
 close all;
 % add gpml path
