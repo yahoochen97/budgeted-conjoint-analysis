@@ -10,4 +10,4 @@ SEED=$1
 data_name=$2
 N=$3
 
-matlab -nodisplay -nodesktop -r "addpath('~/gpml-matlab-v3.6-2015-07-07'); N=${N}; SEED=${SEED}; data_name=${data_name}; simulation2; exit;"
+matlab -nodisplay -nodesktop -r "addpath('~/gpml-matlab-v3.6-2015-07-07'); N=${N}; SEED=${SEED}; data_name='${data_name}'; simulation2; exit;"

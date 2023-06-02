@@ -1,7 +1,7 @@
 if ~exist('SEED','var')
     % simulation settings
     SEED = 1;
-    data_name = "2Dplane";
+    data_name = "Friedman";
     N = 1000;
 end
 
@@ -58,7 +58,7 @@ fig = figure(3);
 scatter(dgp_effects,gp_GMM_mu);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+D = numel(dim_mu);
 results = array2table(zeros(3*D,3),'VariableNames',...
     {'mean','std','effect'});
 results.model = cell(3*D,1);
@@ -83,6 +83,6 @@ results((2*D+1):(3*D),3) = num2cell(dgp_effects)';
 % lower = results.mean - 1.96*results.std;
 % results.coverage = (lower<=results.effect) & (results.effect<=upper);
 
-HYP = data_name + "_N" + int2str(N) + "_d" + int2str(d) + "_SEED" + int2str(SEED);
+HYP = data_name + "_N" + int2str(N) + "_SEED" + int2str(SEED);
 
 writetable(results,"./results/"+HYP+".csv");
