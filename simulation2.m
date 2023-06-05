@@ -1,8 +1,8 @@
 if ~exist('SEED','var')
     % simulation settings
-    SEED = 19;
-    data_name = "Friedman";
-    N = 25;
+    SEED = 1;
+    data_name = "2Dplane";
+    N = 50;
 end
 
 maxNumCompThreads(1);
@@ -24,7 +24,9 @@ simulate_data;
 train_x = transformed_x;
 train_y = pair_y;
 test_x = train_x;
-
+% for j=(size(test_x,2)/2+1):size(test_x,2)
+%     test_x(:,j) = min(test_x(:,j)); % anchoring point as base comparison
+% end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % difference-in-mean estimator with complete independent assumption

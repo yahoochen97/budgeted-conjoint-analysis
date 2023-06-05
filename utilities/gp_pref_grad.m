@@ -110,7 +110,7 @@ end
 mu_GMM_avg = zeros(size(test_x,1), D);
 sigma_GMM_avg = zeros(size(test_x,1), D);
 
-for i=1:size(train_x,1)
+for i=1:size(test_x,1)
     mu_GMM_avg(i,:) = squeeze(mu_GMM(i,:,:)) * ws;
     sigma_GMM_avg(i,:) = sqrt(squeeze(sigma_GMM(i,:,:).^2) * ws + ...
         squeeze(mu_GMM(i,:,:).^2) * ws - ...
