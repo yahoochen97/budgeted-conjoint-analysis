@@ -11,7 +11,7 @@ then
     for SEED in $(seq 1 1 $MAXSEED); do
         for data_name in ${data_names[@]}; do
             for N in ${NS[@]}; do
-                bsub -G SEAS-Lab-Garnett -J "${data_name}${N}_${SEED}" "./onerun $SEED $data_name $N"
+                bsub -G SEAS-Lab-Garnett -o /dev/null -J "${data_name}${N}_${SEED}" "./onerun $SEED $data_name $N"
             done
         done
     done
