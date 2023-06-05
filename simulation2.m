@@ -1,7 +1,7 @@
 if ~exist('SEED','var')
     % simulation settings
     SEED = 19;
-    data_name = "2Dplane";
+    data_name = "Friedman";
     N = 25;
 end
 
@@ -87,4 +87,4 @@ results((2*D+1):(3*D),3) = num2cell(dgp_effects)';
 
 HYP = data_name + "_N" + int2str(N) + "_SEED" + int2str(SEED);
 
-% writetable(results,"./results/"+HYP+".csv");
+writetable(results,"./results/"+HYP+".csv");
