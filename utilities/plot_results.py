@@ -28,11 +28,11 @@ def main(args):
                     est_mu = est_mu[~np.isnan(est_mu)]
                     est_std = est_std[~np.isnan(est_std)]
                     true_effect = true_effect[~np.isnan(true_effect)]
-                    ratio = np.std(true_effect) / np.std(est_mu)
-                    est_mu = est_mu * ratio
-                    est_std = est_std * ratio
+                    # ratio = np.std(true_effect) / np.std(est_mu)
+                    # est_mu = est_mu * ratio
+                    # est_std = est_std * ratio
                     RMSE = np.sqrt(np.mean((est_mu-true_effect)**2))
-                    RMSE = np.corrcoef(est_mu, true_effect)[0,1]
+                    # RMSE = np.corrcoef(est_mu, true_effect)[0,1]
                     COVERAGE = np.mean(np.logical_and((est_mu-1.96*est_std)<=true_effect,\
                                                        true_effect<=(est_mu+1.96*est_std)))
                     LL = -np.log(2*np.pi)/2+np.mean(-np.log(est_std+1e-6)-(est_mu-true_effect)**2)
