@@ -76,7 +76,7 @@ for j=1:D
 end
 
 dy_std = zeros(size(test_x,1),D);
-for j=1:d
+for j=1:D
     dy_std(:,j) = sqrt(df_K(:,j,j)).*normpdf(fmu);
 end
 
