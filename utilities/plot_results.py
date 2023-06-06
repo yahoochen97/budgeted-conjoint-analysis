@@ -6,11 +6,11 @@ import matplotlib.pyplot as plt
 sys.path.append("./utility")
 
 DATA_NAMES = ["2Dplane", "Friedman"]
-MODELS = ["diffinmean", "gppoint", "gpGMM"]
-NS = [50, 100, 200, 400, 800]
-MEASURES = ["RMSE","COVERAGE","LL"]
+NS = [50, 100, 200, 400, 800, 1600]
+MEASURES = ["RMSE","CORRELATION","COVERAGE","LL"]
 
 def main(args):
+    MODELS = ["diffinmean", "gppoint", "gpGMM"]
     MAXSEED = int(args["seed"])
     
     results = np.zeros((len(MEASURES), len(DATA_NAMES),len(NS),len(MODELS),MAXSEED))
@@ -32,16 +32,18 @@ def main(args):
                     # est_mu = est_mu * ratio
                     # est_std = est_std * ratio
                     RMSE = np.sqrt(np.mean((est_mu-true_effect)**2))
-                    # RMSE = np.corrcoef(est_mu, true_effect)[0,1]
+                    CORRELATION = np.corrcoef(est_mu, true_effect)[0,1]
                     COVERAGE = np.mean(np.logical_and((est_mu-1.96*est_std)<=true_effect,\
                                                        true_effect<=(est_mu+1.96*est_std)))
                     LL = -np.log(2*np.pi)/2+np.mean(-np.log(est_std+1e-6)-(est_mu-true_effect)**2)
                     results[0,i,j,k,SEED-1] = RMSE
-                    results[1,i,j,k,SEED-1] = COVERAGE
-                    results[2,i,j,k,SEED-1] = LL
+                    results[1,i,j,k,SEED-1] = CORRELATION
+                    results[2,i,j,k,SEED-1] = COVERAGE
+                    results[3,i,j,k,SEED-1] = LL
     
+    MODELS = ["diff-in-mean", "gp-GMM-1", "gp_GMM-10"]
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(10, 6), dpi=100)
-    colors = ["y","r","b"]
+    colors = ["green","red","blue"]
     for i in range(len(DATA_NAMES)):
         for m in range(len(MEASURES)):
             if i==0:
@@ -50,13 +52,14 @@ def main(args):
                 ax[i,m].set_ylabel(DATA_NAMES[i])
             for k in range(len(MODELS)):
                 tmp = results[m,i,:,k,:]
-                ax[i,m].plot(1+np.arange(len(NS)), np.mean(tmp,axis=1), color=colors[k])
+                # ax[i,m].plot(1+np.arange(len(NS)), np.mean(tmp,axis=1), color=colors[k])
+                ax[i,m].errorbar(1+np.arange(len(NS)), np.mean(tmp,axis=1),\
+                                yerr=np.std(tmp,axis=1), marker='o', # mfc=colors[k],mec=colors[k], 
+                                ms=1, mew=2, capsize=4, elinewidth=1) 
                 ax[i,m].set_xticks(1+np.arange(len(NS)))
                 ax[i,m].set_xticklabels(NS)
-                # ax[i,m].set_xlim([-2,1])
                 if i==0 and m==0:
                     ax[i,m].legend(MODELS)
-
 
     plt.show()
 
