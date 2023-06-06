@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 sys.path.append("./utility")
 
 DATA_NAMES = ["2Dplane", "Friedman"]
-NS = [50, 100, 200, 400, 800, 1600]
+NS = [25, 50, 100, 200, 400, 800, 1600]
 MEASURES = ["RMSE","CORRELATION","COVERAGE","LL"]
 
 def main(args):
@@ -42,26 +42,46 @@ def main(args):
                     results[3,i,j,k,SEED-1] = LL
     
     MODELS = ["diff-in-mean", "gp-GMM-1", "gp_GMM-10"]
-    fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(10, 6), dpi=100)
-    colors = ["green","red","blue"]
+    fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 8), dpi=100)
+    colors = ["blue", "red", "limegreen"]
     for i in range(len(DATA_NAMES)):
         for m in range(len(MEASURES)):
             if i==0:
                 ax[i,m].set_title(MEASURES[m], fontsize=14)
             if m==0:
                 ax[i,m].set_ylabel(DATA_NAMES[i])
+            bplots = []
             for k in range(len(MODELS)):
                 tmp = results[m,i,:,k,:]
                 # ax[i,m].plot(1+np.arange(len(NS)), np.mean(tmp,axis=1), color=colors[k])
-                ax[i,m].errorbar(1+np.arange(len(NS)), np.mean(tmp,axis=1),\
-                                yerr=np.std(tmp,axis=1), marker='o', # mfc=colors[k],mec=colors[k], 
-                                ms=1, mew=2, capsize=4, elinewidth=1) 
-                ax[i,m].set_xticks(1+np.arange(len(NS)))
-                ax[i,m].set_xticklabels(NS)
-                if i==0 and m==0:
-                    ax[i,m].legend(MODELS)
-
-    plt.show()
+                # ax[i,m].errorbar(1+np.arange(len(NS)), np.mean(tmp,axis=1),\
+                #                 yerr=np.std(tmp,axis=1), marker='o', # mfc=colors[k],mec=colors[k], 
+                #                 ms=1, mew=2, capsize=4, elinewidth=1) 
+                tmp = [tmp[j,:] for j in range(len(NS))]
+                bplot = ax[i,m].boxplot(tmp, positions=4+4*np.arange(len(NS))+(k-1)*0.75, showfliers=False,\
+                                    patch_artist=True, widths=0.45)
+                for patch in bplot['boxes']:
+                    patch.set_facecolor(colors[k])
+                bplots.append(bplot)
+            ax[i,m].set_xticks(4+4*np.arange(len(NS)))
+            ax[i,m].set_xticklabels(NS)
+            ax[i,m].spines[['right', 'top']].set_visible(False)
+            ax[i,m].tick_params(left=False, bottom=False)
+            ax[i,m].grid(axis='y', color='gray', linestyle='dashed', linewidth=1)
+            if i==0 and m==0:
+                ax[i,m].legend([bplots[j]["boxes"][0] for j in range(len(MODELS))],MODELS)
+    params = {
+        'axes.labelsize': 8,
+        'font.size': 8,
+        'legend.fontsize': 10,
+        'xtick.labelsize': 10,
+        'ytick.labelsize': 10,
+        'text.usetex': False,
+        'figure.figsize': [10, 6]
+    }
+    plt.rcParams.update(params)
+    fig.subplots_adjust(left=0.043, bottom=0.035, right=0.99, top=0.96, wspace=0.12)
+    plt.savefig("./results/simulation_plot.pdf", format="pdf", dpi=100)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='-s seed')
