@@ -25,6 +25,7 @@ def main(args):
                     est_mu = tmp["mean"].to_numpy()
                     est_std = tmp["std"].to_numpy()
                     true_effect = tmp["effect"].to_numpy()
+                    print(result_filename)
                     est_mu = est_mu[~np.isnan(est_mu)]
                     est_std = est_std[~np.isnan(est_std)]
                     true_effect = true_effect[~np.isnan(true_effect)]

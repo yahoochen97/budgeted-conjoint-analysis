@@ -39,7 +39,7 @@ end
 
 % compute marginal effects of infinitesimal 
 % change at leftside comparison                                              
-dK = dcovPref(covfunc{2},hyp,test_x,test_x);
+dK = dcovPref(covfunc{2},hyp,test_x,train_x);
 df_mu = zeros(size(test_x,1),D);
 for j=1:D
     df_mu(:,j) =  dK(:,:,j)*post.alpha;
@@ -48,9 +48,9 @@ end
 d2K = d2covPref(covfunc{2},hyp,test_x,test_x);
 df_K = zeros(size(d2K));
 for i=1:size(test_x,1)
-    tmp = repmat(post.sW,[1 D]).*squeeze(dK(i,:,:));
+    tmp = repmat(post.sW,1,D).*squeeze(dK(i,:,:));
     tmp = post.L'\tmp;
-    df_K(i,:,:) = squeeze(d2K(i,:,:)) - tmp'*tmp;
+    df_K(i,:,:) = squeeze(d2K(i,:,:)) - diag(sum(tmp.*tmp,1));
 end
 
 % true df(x1)/dx1

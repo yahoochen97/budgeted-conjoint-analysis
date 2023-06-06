@@ -2,7 +2,7 @@ if ~exist('SEED','var')
     % simulation settings
     SEED = 1;
     data_name = "2Dplane";
-    N = 50;
+    N = 200;
 end
 
 maxNumCompThreads(1);
@@ -19,14 +19,6 @@ rng(SEED);
 
 % simulate profile data
 simulate_data;
-
-% split train/test data
-train_x = transformed_x;
-train_y = pair_y;
-test_x = train_x;
-for j=(size(test_x,2)/2+1):size(test_x,2)
-    test_x(:,j) = min(test_x(:,j)); % anchoring point as base comparison
-end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % difference-in-mean estimator with complete independent assumption
@@ -48,7 +40,7 @@ gp_pref_grad;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % gp preference learning point estimation effect
 BIN=10;
-[gp_point_mu,gp_point_std]=gp_point_est(BIN,raw_x,dy_mu,dy_std);
+[gp_point_mu,gp_point_std]=gp_point_est(BIN,test_x,dy_mu,dy_std);
 
 fig = figure(2);
 scatter(dgp_effects,gp_point_mu);
@@ -56,7 +48,7 @@ scatter(dgp_effects,gp_point_mu);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % gp preference learning GMM effect
 BIN=10;
-[gp_GMM_mu,gp_GMM_std]=gp_point_est(BIN,raw_x,mu_GMM_avg,sigma_GMM_avg);
+[gp_GMM_mu,gp_GMM_std]=gp_point_est(BIN,test_x,mu_GMM_avg,sigma_GMM_avg);
 
 fig = figure(3);
 scatter(dgp_effects,gp_GMM_mu);

@@ -14,6 +14,15 @@ elseif strcmp(data_name,"Friedman")
    [pair_y, dgp_p, dgp_f, dgp_df, dgp_dy] = Friedman(transformed_x);
 end
 
+% train/test data
+train_x = transformed_x;
+train_y = pair_y;
+test_x = train_x;
+for j=(size(test_x,2)/2+1):size(test_x,2)
+    test_x(:,j) = min(test_x(:,j)); % anchoring point as base comparison
+end
+[test_y, dgp_p, dgp_f, dgp_df, dgp_dy] = twoDplanes(test_x);
+
 function [data, dummy_flag]=transformdummy(raw_x)
 % iterate over every attribute in x
 % and transform categorical attributes to binary indicators
