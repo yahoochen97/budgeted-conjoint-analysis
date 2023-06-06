@@ -2,7 +2,7 @@ if ~exist('SEED','var')
     % simulation settings
     SEED = 1;
     data_name = "Friedman";
-    N = 200;
+    N = 800;
 end
 
 maxNumCompThreads(1);
@@ -27,19 +27,17 @@ diff_in_mean;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % dgp effect
-BIN=10;
 [dgp_effects,~]=gp_point_est(BIN,raw_x,dgp_dy,dgp_dy.*0);
 
 fig = figure(1);
 scatter(dgp_effects,dim_mu);
 
 % build a gp preference learning model for grad
-learn_HYP = 1;
+learn_HYP = 0;
 gp_pref_grad;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % gp preference learning point estimation effect
-BIN=10;
 [gp_point_mu,gp_point_std]=gp_point_est(BIN,test_x,dy_mu,dy_std);
 
 fig = figure(2);
@@ -47,7 +45,6 @@ scatter(dgp_effects,gp_point_mu);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % gp preference learning GMM effect
-BIN=10;
 [gp_GMM_mu,gp_GMM_std]=gp_point_est(BIN,test_x,mu_GMM_avg,sigma_GMM_avg);
 
 fig = figure(3);

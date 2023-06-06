@@ -12,7 +12,7 @@ function [gp_point_mu,gp_point_std]=gp_point_est(BIN,raw_x,dy_mu,dy_std)
                tmp1 = dy_mu(raw_x(:,j)==vs(k),1+size(gp_point_mu,2));
                tmp2 = dy_std(raw_x(:,j)==vs(k),1+size(gp_point_mu,2));
                gp_point_mu = [gp_point_mu, mean(tmp1)];
-               gp_point_std = [gp_point_std, sqrt(sum(tmp2.^2))/numel(tmp2)];
+               gp_point_std = [gp_point_std, sqrt(mean(tmp2.^2))];
            end
         else
             % transform continuous to categorical
@@ -23,7 +23,7 @@ function [gp_point_mu,gp_point_std]=gp_point_est(BIN,raw_x,dy_mu,dy_std)
                 gp_point_mu = [gp_point_mu, (mean(tmp2)+mean(tmp1))/2];
                 tmp1 = dy_std(raw_x(:,j)>=lb & raw_x(:,j)<mb, j);
                 tmp2 = dy_std(raw_x(:,j)>=mb & raw_x(:,j)<ub, j);
-                gp_point_std = [gp_point_std, sqrt(tmp1'*tmp1/numel(tmp1).^2+tmp2'*tmp2/numel(tmp2).^2)/2];
+                gp_point_std = [gp_point_std, sqrt(mean(tmp1.^2)+mean(tmp2.^2))/2];
             end
         end
     end
