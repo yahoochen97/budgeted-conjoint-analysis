@@ -21,7 +21,11 @@ test_x = train_x;
 for j=(size(test_x,2)/2+1):size(test_x,2)
     test_x(:,j) = min(test_x(:,j)); % anchoring point as base comparison
 end
-[test_y, dgp_p, dgp_f, dgp_df, dgp_dy] = twoDplanes(test_x);
+if strcmp(data_name,"2Dplane")
+    [test_y, dgp_p, dgp_f, dgp_df, dgp_dy] = twoDplanes(test_x);
+elseif strcmp(data_name,"Friedman")
+    [test_y, dgp_p, dgp_f, dgp_df, dgp_dy] = Friedman(test_x);
+end
 
 function [data, dummy_flag]=transformdummy(raw_x)
 % iterate over every attribute in x
