@@ -24,9 +24,9 @@ simulate_data;
 train_x = transformed_x;
 train_y = pair_y;
 test_x = train_x;
-% for j=(size(test_x,2)/2+1):size(test_x,2)
-%     test_x(:,j) = min(test_x(:,j)); % anchoring point as base comparison
-% end
+for j=(size(test_x,2)/2+1):size(test_x,2)
+    test_x(:,j) = min(test_x(:,j)); % anchoring point as base comparison
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % difference-in-mean estimator with complete independent assumption
