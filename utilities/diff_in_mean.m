@@ -15,7 +15,7 @@ for j=1:d
     else
         % transform continuous to categorical
         for k=1:(BIN-1)
-            lb = (k-1)/BIN; mb = k/BIN; ub = (k+1)/BIN;
+            lb = (k-1)/BIN; mb = (k+0)/BIN; ub = (k+1)/BIN;
             tmp1 = train_y(raw_x(:,j)>=lb & raw_x(:,j)<mb);
             tmp2 = train_y(raw_x(:,j)>=mb & raw_x(:,j)<ub);
             dim_mu = [dim_mu, (mean(tmp2)-mean(tmp1))];

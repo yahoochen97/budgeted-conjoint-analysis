@@ -5,7 +5,7 @@ meanfunc = {@meanZero};
 covfunc = {@covPref, {@covSEard}};             
 likfunc = {@likErf};
 hyp.mean = [];
-hyp.cov = [zeros(D,1);log(2)];
+hyp.cov = [zeros(D,1);log(1)];
 
 % assign prior for length scales
 for i=1:D
