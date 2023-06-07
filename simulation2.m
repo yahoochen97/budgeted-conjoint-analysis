@@ -2,7 +2,7 @@ if ~exist('SEED','var')
     % simulation settings
     SEED = 1;
     data_name = "Friedman";
-    N = 800;
+    N = 100;
 end
 
 maxNumCompThreads(1);
