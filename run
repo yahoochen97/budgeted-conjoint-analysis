@@ -17,7 +17,5 @@ then
     done
 elif [ $1 = "summary" ]
 then
-    for effect in ${EFFECTS[@]}; do
-        Rscript --vanilla data/summary.R $MAXSEED $effect "${ULS[@]}" "${RHOS[@]}"
-    done
+    python utilities/plot_results.py -s $MAXSEED
 fi

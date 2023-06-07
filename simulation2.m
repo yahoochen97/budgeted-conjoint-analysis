@@ -1,8 +1,8 @@
 if ~exist('SEED','var')
     % simulation settings
     SEED = 1;
-    data_name = "Friedman";
-    N = 100;
+    data_name = "2Dplane";
+    N = 19;
 end
 
 maxNumCompThreads(1);
