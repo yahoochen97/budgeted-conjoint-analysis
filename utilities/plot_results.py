@@ -12,13 +12,14 @@ MEASURES = ["RMSE","CORRELATION","COVERAGE","LL"]
 def main(args):
     MODELS = ["diffinmean", "gppoint", "gpGMM"]
     MAXSEED = int(args["seed"])
+    TA = int(args["TA"])
     
     results = np.zeros((len(MEASURES), len(DATA_NAMES),len(NS),len(MODELS),MAXSEED))
     for i in range(len(DATA_NAMES)):
         for SEED in range(1,MAXSEED+1):
             for j in range(len(NS)):
                 result_filename = "./results/"+ DATA_NAMES[i] + "_N" + str(NS[j]) \
-                    + "_SEED" + str(SEED) + ".csv"
+                    + "_TA" + str(TA) + "_SEED" + str(SEED) + ".csv"
                 data = pd.read_csv(result_filename)
                 for k in range(len(MODELS)):
                     tmp = data[data.model==MODELS[k]]
@@ -87,5 +88,6 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='-s seed')
     parser.add_argument('-s','--seed', help='random seed', required=True)
+    parser.add_argument('-t','--TA', help='test anchor', required=True)
     args = vars(parser.parse_args())
     main(args)
