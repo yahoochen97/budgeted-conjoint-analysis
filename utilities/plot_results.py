@@ -83,7 +83,7 @@ def main(args):
     }
     plt.rcParams.update(params)
     fig.subplots_adjust(left=0.043, bottom=0.035, right=0.99, top=0.96, wspace=0.12)
-    plt.savefig("./results/simulation_plot.pdf", format="pdf", dpi=100)
+    plt.savefig("./results/simulation_plot" + "_TA" + str(TA) + ".pdf", format="pdf", dpi=100)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='-s seed')
