@@ -1,5 +1,5 @@
 ./results/*
 *.csv
-.DS_Store
+*.DS_Store
 *.pdf
 *.m~
