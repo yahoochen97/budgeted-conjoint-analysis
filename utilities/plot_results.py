@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 sys.path.append("./utility")
 
 DATA_NAMES = ["2Dplane", "Friedman"]
-NS = [25, 50, 100, 200, 400, 800]
+NS = [50, 100, 150, 200, 250, 300]
 MEASURES = ["RMSE","CORRELATION","COVERAGE","LL"]
 
 def main(args):
@@ -32,10 +32,6 @@ def main(args):
                     est_mu = est_mu[est_std!=0]
                     true_effect = true_effect[est_std!=0]
                     est_std = est_std[est_std!=0]
-                    # ratio = np.std(true_effect) / np.std(est_mu)
-                    # bias = np.mean(true_effect) - np.mean(est_mu)
-                    # est_mu = est_mu * ratio + bias
-                    # est_std = est_std * ratio + bias
                     RMSE = np.sqrt(np.mean((est_mu-true_effect)**2))
                     CORRELATION = np.corrcoef(est_mu, true_effect)[0,1]
                     COVERAGE = np.mean(np.logical_and((est_mu-1.96*est_std)<=true_effect,\
@@ -55,8 +51,6 @@ def main(args):
                 ax[i,m].set_title(MEASURES[m], fontsize=14)
             if m==0:
                 ax[i,m].set_ylabel(DATA_NAMES[i])
-            if MEASURES[m] == "COVERAGE":
-                ax[i,m].set_ylim([0,1.1])
             bplots = []
             for k in range(len(MODELS)):
                 tmp = results[m,i,:,k,:]
