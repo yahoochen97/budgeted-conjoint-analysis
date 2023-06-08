@@ -20,6 +20,8 @@ function [gp_point_mu,gp_point_std]=gp_point_est(BIN,raw_x,dy_mu,dy_std)
                gp_point_mu = [gp_point_mu, (mean(tmp1)+mean(tmp2))/2];
                v1 = mean(tmp3.^2) + mean(tmp1.^2) - mean(tmp1)^2;% + 
                v2 = mean(tmp4.^2) + mean(tmp2.^2) - mean(tmp2)^2;% + 
+               v1 = mean(tmp3.^2);
+               v2 = mean(tmp4.^2);
                gp_point_std = [gp_point_std, sqrt(v1+v2)/2];
            end
         else
@@ -37,6 +39,8 @@ function [gp_point_mu,gp_point_std]=gp_point_est(BIN,raw_x,dy_mu,dy_std)
                 if numel(tmp4)==0, tmp4 = tmp3; end
                 v1 = mean(tmp3.^2) + mean(tmp1.^2) - mean(tmp1)^2;% + 
                 v2 = mean(tmp4.^2) + mean(tmp2.^2) - mean(tmp2)^2;
+                v1 = mean(tmp3.^2);% + 
+                v2 = mean(tmp4.^2);
                 gp_point_std = [gp_point_std, sqrt(v1+v2)/2];
             end
         end

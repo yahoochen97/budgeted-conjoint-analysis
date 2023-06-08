@@ -2,7 +2,8 @@ if ~exist('SEED','var')
     % simulation settings
     SEED = 1;
     data_name = "2Dplane";
-    N = 19;
+    N = 25;
+    test_anchor = 0;
 end
 
 maxNumCompThreads(1);
@@ -76,6 +77,6 @@ results((2*D+1):(3*D),3) = num2cell(dgp_effects)';
 % lower = results.mean - 1.96*results.std;
 % results.coverage = (lower<=results.effect) & (results.effect<=upper);
 
-HYP = data_name + "_N" + int2str(N) + "_SEED" + int2str(SEED);
+HYP = data_name + "_N" + int2str(N) + "_TA" + int2str(test_anchor) + "_SEED" + int2str(SEED);
 
 writetable(results,"./results/"+HYP+".csv");

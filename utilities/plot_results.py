@@ -25,8 +25,8 @@ def main(args):
                     est_mu = tmp["mean"].to_numpy()
                     est_std = tmp["std"].to_numpy()
                     true_effect = tmp["effect"].to_numpy()
-                    est_mu = est_mu[~np.isnan(est_mu)]
-                    est_std = est_std[~np.isnan(est_std)]
+                    est_mu = est_mu[~np.isnan(true_effect)]
+                    est_std = est_std[~np.isnan(true_effect)]
                     true_effect = true_effect[~np.isnan(true_effect)]
                     # ratio = np.std(true_effect) / np.std(est_mu)
                     # bias = np.mean(true_effect) - np.mean(est_mu)
