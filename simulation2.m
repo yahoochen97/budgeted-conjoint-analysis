@@ -16,7 +16,7 @@ startup;
 addpath("utilities");
 FONTSIZE=16;
 
-rng(SEED);
+rng(12345+SEED);
 
 % simulate profile data
 simulate_data;

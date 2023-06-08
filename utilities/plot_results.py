@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 sys.path.append("./utility")
 
 DATA_NAMES = ["2Dplane", "Friedman"]
-NS = [25, 50, 100, 200, 400, 800, 1600]
+NS = [25, 50, 100, 200, 400, 800]
 MEASURES = ["RMSE","CORRELATION","COVERAGE","LL"]
 
 def main(args):
@@ -29,6 +29,9 @@ def main(args):
                     est_mu = est_mu[~np.isnan(true_effect)]
                     est_std = est_std[~np.isnan(true_effect)]
                     true_effect = true_effect[~np.isnan(true_effect)]
+                    est_mu = est_mu[est_std!=0]
+                    true_effect = true_effect[est_std!=0]
+                    est_std = est_std[est_std!=0]
                     # ratio = np.std(true_effect) / np.std(est_mu)
                     # bias = np.mean(true_effect) - np.mean(est_mu)
                     # est_mu = est_mu * ratio + bias
@@ -37,7 +40,7 @@ def main(args):
                     CORRELATION = np.corrcoef(est_mu, true_effect)[0,1]
                     COVERAGE = np.mean(np.logical_and((est_mu-1.96*est_std)<=true_effect,\
                                                        true_effect<=(est_mu+1.96*est_std)))
-                    LL = -np.log(2*np.pi)/2+np.mean(-np.log(est_std+1e-8)-(est_mu-true_effect)**2)
+                    LL = -np.log(2*np.pi)/2-np.mean(np.log(est_std))-np.mean(np.divide((est_mu-true_effect)**2,2*est_std**2))
                     results[0,i,j,k,SEED-1] = RMSE
                     results[1,i,j,k,SEED-1] = CORRELATION
                     results[2,i,j,k,SEED-1] = COVERAGE
@@ -52,6 +55,8 @@ def main(args):
                 ax[i,m].set_title(MEASURES[m], fontsize=14)
             if m==0:
                 ax[i,m].set_ylabel(DATA_NAMES[i])
+            if MEASURES[m] == "COVERAGE":
+                ax[i,m].set_ylim([0,1.1])
             bplots = []
             for k in range(len(MODELS)):
                 tmp = results[m,i,:,k,:]
