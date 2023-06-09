@@ -10,11 +10,11 @@ for j=1:d
        for k=2:numel(vs)
            tmp1 = (1+train_y(raw_x(:,j)==vs(k-1)))./2;
            tmp2 = (1+train_y(raw_x(:,j)==vs(k)))./2;
-           if numel(tmp1)==0, tmp1 = [0]; end
-           if numel(tmp2)==0, tmp2 = [0]; end
+%            if numel(tmp1)==0, tmp1 = [0]; end
+%            if numel(tmp2)==0, tmp2 = [0]; end
            dim_mu = [dim_mu, (mean(tmp2)-mean(tmp1))./(vs(k)-vs(k-1))];
-%            dim_std = [dim_std, sqrt(var(tmp1)/numel(tmp1)+var(tmp2)/numel(tmp2))./(vs(k)-vs(k-1))];
-           dim_std = [dim_std, block_bootstrap(n_bootstrap, tmp1, tmp2)];
+           dim_std = [dim_std, sqrt(var(tmp1)/numel(tmp1)+var(tmp2)/numel(tmp2))./(vs(k)-vs(k-1))];
+%            dim_std = [dim_std, block_bootstrap(n_bootstrap, tmp1, tmp2)];
        end
     else
         % transform continuous to categorical
@@ -22,11 +22,11 @@ for j=1:d
             lb = (k-1)/BIN; mb = (k+0)/BIN; ub = (k+1)/BIN;
             tmp1 = train_y(raw_x(:,j)>=lb & raw_x(:,j)<mb);
             tmp2 = train_y(raw_x(:,j)>=mb & raw_x(:,j)<ub);
-            if numel(tmp1)==0, tmp1 = [0]; end
-            if numel(tmp2)==0, tmp2 = [0]; end
+%             if numel(tmp1)==0, tmp1 = [0]; end
+%             if numel(tmp2)==0, tmp2 = [0]; end
             dim_mu = [dim_mu, (mean(tmp2)-mean(tmp1))];
-%             dim_std = [dim_std, sqrt(var(tmp1)/numel(tmp1)+var(tmp2)/numel(tmp2))];
-            dim_std = [dim_std, block_bootstrap(n_bootstrap, tmp1, tmp2)];
+            dim_std = [dim_std, sqrt(var(tmp1)/numel(tmp1)+var(tmp2)/numel(tmp2))];
+%             dim_std = [dim_std, block_bootstrap(n_bootstrap, tmp1, tmp2)];
         end
     end
 end
