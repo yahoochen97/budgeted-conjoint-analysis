@@ -34,7 +34,7 @@ fig = figure(1);
 scatter(dgp_effects,dim_mu);
 
 % build a gp preference learning model for grad
-learn_HYP = 1;
+learn_HYP = 0;
 gp_pref_grad;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
