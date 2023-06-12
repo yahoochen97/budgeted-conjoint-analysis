@@ -1,6 +1,8 @@
 % difference-in-mean estimator with complete independent assumption
 dim_mu = [];
 dim_std = [];
+dim_grad_mu = zeros(size(test_x,1), size(test_x,2)/2);
+dim_grad_std = zeros(size(test_x,1), size(test_x,2)/2);
 n_bootstrap = 1000;
 for j=1:d
     tmp = unique(raw_x(:,j));
@@ -13,6 +15,8 @@ for j=1:d
            dim_mu = [dim_mu, (mean(tmp2)-mean(tmp1))./(vs(k)-vs(k-1))];
            dim_std = [dim_std, sqrt(var(tmp1)/numel(tmp1)+var(tmp2)/numel(tmp2))./(vs(k)-vs(k-1))];
 %            dim_std = [dim_std, block_bootstrap(n_bootstrap, tmp1, tmp2)];
+           dim_grad_mu(:,numel(dim_mu)) = dim_mu(end);
+           dim_grad_std(:,numel(dim_std)) = dim_std(end);
        end
     else
         % transform continuous to categorical
@@ -23,7 +27,11 @@ for j=1:d
             dim_mu = [dim_mu, (mean(tmp2)-mean(tmp1))];
             dim_std = [dim_std, sqrt(var(tmp1)/numel(tmp1)+var(tmp2)/numel(tmp2))];
 %             dim_std = [dim_std, block_bootstrap(n_bootstrap, tmp1, tmp2)];
+            dim_grad_mu(raw_x(:,j)>=lb & raw_x(:,j)<mb,j) = dim_mu(end);
+            dim_grad_std(raw_x(:,j)>=lb & raw_x(:,j)<mb,j) = dim_std(end);
         end
+        dim_grad_mu(raw_x(:,j)>=mb & raw_x(:,j)<ub,j) = dim_mu(end);
+        dim_grad_std(raw_x(:,j)>=mb & raw_x(:,j)<ub,j) = dim_std(end);
     end
 end
 
