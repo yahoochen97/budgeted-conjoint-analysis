@@ -14,8 +14,8 @@ function [gp_point_mu,gp_point_std]=gp_point_est(BIN,raw_x,dy_mu,dy_std)
                tmp3 = dy_std(raw_x(:,j)==vs(k),1+size(gp_point_mu,2));
                tmp4 = dy_std(raw_x(:,j)==vs(k-1),1+size(gp_point_mu,2));
                gp_point_mu = [gp_point_mu, (mean(tmp1)+mean(tmp2))/2];
-               v1 = mean(tmp3.^2)/numel(tmp1) + mean(tmp1.^2) - mean(tmp1)^2;% + 
-               v2 = mean(tmp4.^2)/numel(tmp2) + mean(tmp2.^2) - mean(tmp2)^2;% + 
+               v1 = mean(tmp3.^2) + var(tmp1)/numel(tmp1);
+               v2 = mean(tmp4.^2) + var(tmp2)/numel(tmp2);
                gp_point_std = [gp_point_std, sqrt(v1+v2)/2];
            end
         else
@@ -27,8 +27,8 @@ function [gp_point_mu,gp_point_std]=gp_point_est(BIN,raw_x,dy_mu,dy_std)
                 gp_point_mu = [gp_point_mu, (mean(tmp1)+mean(tmp2))/2];
                 tmp3 = dy_std(raw_x(:,j)>=lb & raw_x(:,j)<mb, j);
                 tmp4 = dy_std(raw_x(:,j)>=mb & raw_x(:,j)<ub, j);
-                v1 = mean(tmp3.^2)/numel(tmp1) + mean(tmp1.^2) - mean(tmp1)^2;% + 
-                v2 = mean(tmp4.^2)/numel(tmp2) + mean(tmp2.^2) - mean(tmp2)^2;
+                v1 = mean(tmp3.^2) + var(tmp1)/numel(tmp1);
+                v2 = mean(tmp4.^2) + var(tmp2)/numel(tmp2);
                 gp_point_std = [gp_point_std, sqrt(v1+v2)/2];
             end
         end

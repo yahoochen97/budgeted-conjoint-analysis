@@ -15,7 +15,7 @@ def main(args):
     TA = int(args["TA"])
     
     results = np.zeros((len(MEASURES), len(DATA_NAMES),len(NS),len(MODELS),MAXSEED))
-    for i in range(len(DATA_NAMES)):
+    for i in range(len(DATA_NAMES)):                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
         for SEED in range(1,MAXSEED+1):
             for j in range(len(NS)):
                 result_filename = "./results/"+ DATA_NAMES[i] + "_N" + str(NS[j]) \
