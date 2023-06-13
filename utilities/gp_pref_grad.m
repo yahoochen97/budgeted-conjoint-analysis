@@ -5,20 +5,20 @@ meanfunc = {@meanZero};
 covfunc = {@covPref, {@covSEard}};             
 likfunc = {@likErf};
 hyp.mean = [];
-hyp.cov = [zeros(D,1);log(1)];
+hyp.cov = [zeros(D,1);log(3)];
 
 % assign prior for length scales
 for i=1:D
-%    if dummy_flag==0
     prior.cov{i} = {@priorTransform,@exp,@exp,@log,{@priorInvGauss,1,10}};
-%    else
-%        hyp.cov(i) = log(0.1);
-%        prior.cov{i} = {@priorDelta};
-%    end
 end
 
 % output scale
-prior.cov{D+1} = {@priorTransform,@exp,@exp,@log,{@priorInvGauss,2,4}};
+if strcmp(data_name,"2Dplane")
+    prior.cov{D+1} = {@priorDelta};
+    hyp.cov(end) = log(5);
+else
+    prior.cov{D+1} = {@priorTransform,@exp,@exp,@log,{@priorInvGauss,2,4}};
+end
 
 inffunc = {@infPrior, @infEP, prior};
 p.method = 'LBFGS';

@@ -7,7 +7,7 @@ sys.path.append("./utility")
 
 DATA_NAMES = ["2Dplane", "Friedman"]
 NS = [100, 200, 300, 400, 500, 600, 700, 800]
-MEASURES = ["RMSE","CORRELATION","COVERAGE","LL"]
+MEASURES = ["RMSE","COVERAGE","LL"]
 
 def main(args):
     MODELS = ["diffinmean", "gppoint", "gpGMM"]
@@ -36,9 +36,9 @@ def main(args):
                                                         true_effect<=(est_mu+1.96*est_std)))
                     LL = -np.log(2*np.pi) -np.mean(np.log(est_std**2)/2)-np.mean((est_mu-true_effect)**2/2/est_std**2)
                     results[0,i,j,k,SEED-1] = RMSE
-                    results[1,i,j,k,SEED-1] = CORRELATION
-                    results[2,i,j,k,SEED-1] = COVERAGE
-                    results[3,i,j,k,SEED-1] = LL
+                    # results[1,i,j,k,SEED-1] = CORRELATION
+                    results[1,i,j,k,SEED-1] = COVERAGE
+                    results[2,i,j,k,SEED-1] = LL
     
     MODELS = ["diff-in-mean", "gp-GMM-1", "gp_GMM-10"]
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 8), dpi=100)

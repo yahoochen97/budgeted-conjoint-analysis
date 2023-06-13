@@ -1,8 +1,8 @@
 if ~exist('SEED','var')
     % simulation settings
-    SEED = 1;
-    data_name = "Friedman";
-    N = 400;
+    SEED = 17;
+    data_name = "2Dplane";
+    N = 600;
     test_anchor = 0;
 end
 
@@ -16,7 +16,7 @@ startup;
 addpath("utilities");
 FONTSIZE=16;
 
-rng(SEED);
+rng(12345+SEED);
 
 % simulate profile data
 simulate_data;
