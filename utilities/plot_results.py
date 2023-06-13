@@ -30,6 +30,13 @@ def main(args):
                     est_mu = est_mu[flag]
                     est_std = est_std[flag]
                     true_effect = true_effect[flag]
+                    if est_mu.shape[0]==0:
+                        results[0,i,j,k,SEED-1] = RMSE
+                        # results[1,i,j,k,SEED-1] = CORRELATION
+                        results[1,i,j,k,SEED-1] = COVERAGE
+                        results[2,i,j,k,SEED-1] = LL
+                        continue
+                    
                     RMSE = np.sqrt(np.mean((est_mu-true_effect)**2))
                     CORRELATION = np.corrcoef(est_mu, true_effect)[0,1]
                     COVERAGE = np.mean(np.logical_and((est_mu-1.96*est_std)<=true_effect,\
@@ -79,7 +86,7 @@ def main(args):
         'figure.figsize': [10, 6]
     }
     plt.rcParams.update(params)
-    fig.subplots_adjust(left=0.043, bottom=0.035, right=0.99, top=0.96, wspace=0.12)
+    fig.subplots_adjust(left=0.05, bottom=0.035, right=0.99, top=0.96, wspace=0.12)
     plt.savefig("./results/simulation_plot" + "_TA" + str(TA) + ".pdf", format="pdf", dpi=100)
 
 if __name__ == "__main__":

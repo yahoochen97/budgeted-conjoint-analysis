@@ -11,4 +11,4 @@ data_name=$2
 N=$3
 TA=$4
 
-matlab -nodisplay -nodesktop --use-single-comp-thread -r "addpath('~/gpml-matlab-v3.6-2015-07-07'); N=${N}; SEED=${SEED}; data_name='${data_name}'; test_anchor=${TA}; simulation2;"
+matlab -nodisplay -nodesktop --use-single-comp-thread -r "addpath('~/gpml-matlab-v3.6-2015-07-07'); N=${N}; SEED=${SEED}; data_name='${data_name}'; test_anchor=${TA}; simulation;"
