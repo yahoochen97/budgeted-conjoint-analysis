@@ -2,7 +2,7 @@
 
 if strcmp(data_name,"2Dplane")
    % simulate profile data from 2D plane (categorical attributes)
-   d = 7;
+   d = 5;
    raw_x = [2*randi([0 1],N,1)-1,randi([-1 1],N,d-1),2*randi([0 1],N,1)-1,randi([-1 1],N,d-1)];
    [transformed_x,dummy_flag] = transformdummy(raw_x);
    [pair_y, dgp_p, dgp_f, dgp_df, dgp_dy] = twoDplanes(transformed_x);
