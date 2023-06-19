@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mkdir -p results
+mkdir -p results2
 
 MAXSEED=25
 declare -a data_names=("2Dplane" "Friedman")

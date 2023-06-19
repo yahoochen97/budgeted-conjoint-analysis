@@ -137,4 +137,4 @@ results(:,3) = num2cell(dgp_effects)';
 
 HYP = data_name + "_N" + int2str(N) + "_TS" + int2str(TOTAL_SIZE) + "_" + policy_name + "_SEED" + int2str(SEED);
 
-writetable(results,"./results/"+HYP+".csv");
+writetable(results,"./results2/"+HYP+".csv");
