@@ -1,5 +1,5 @@
-function [y, p, f, df, dy] = twoDplanes(pair_x)
-    % simulate data from 2Dplanes described in
+function [y, p, f, df, dy] = twoDplane(pair_x)
+    % simulate data from 2Dplane described in
     % https://www.dcc.fc.up.pt/~ltorgo/Regression/DataSets.html
     %
     % p(y=1) = Phi(f1-f2) indicating x1 is preferred to x2

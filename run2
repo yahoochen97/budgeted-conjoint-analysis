@@ -1,0 +1,25 @@
+#!/bin/bash
+
+mkdir -p results
+
+MAXSEED=25
+declare -a data_names=("2Dplane" "Friedman")
+N=1000
+declare -a TOTAL_SIZES=(50 100 150 200 250 300 350 400)
+declare -a policy_names=("RAND" "GRAD" "GRADBALD")
+
+if [ $1 = "run" ]
+then
+    for SEED in $(seq 1 1 $MAXSEED); do
+        for data_name in ${data_names[@]}; do
+            for TOTAL_SIZE in ${TOTAL_SIZES[@]}; do
+                for policy_names in ${policy_names[@]}; do
+                    bsub -G SEAS-Lab-Garnett -o /dev/null -J "${data_name}${TOTAL_SIZE}_${policy_name}_${SEED}" "./onerun $SEED $data_name $N $TOTAL_SIZE $policy_name"
+                done
+            done
+        done
+    done
+elif [ $1 = "summary" ]
+then
+    python utilities/plot_results.py -s $MAXSEED
+fi

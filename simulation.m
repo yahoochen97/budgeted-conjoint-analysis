@@ -1,8 +1,8 @@
 if ~exist('SEED','var')
     % simulation settings
-    SEED = 16;
-    data_name = "2Dplane";
-    N = 500;
+    SEED = 1;
+    data_name = "twoDplane";
+    N = 100;
     test_anchor = 0;
 end
 
@@ -32,6 +32,7 @@ diff_in_mean;
 
 % build a gp preference learning model for grad
 learn_HYP = 1;
+n_gauss_hermite = 10;
 gp_pref_grad;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
