@@ -2,7 +2,7 @@ if ~exist('SEED','var')
     % simulation settings
     SEED = 1;
     data_name = "Friedman";
-    policy_name = "RAND";
+    policy_name = "UNIFORM";
     N = 1000;
     TOTAL_SIZE=50;
     test_anchor = 0;
