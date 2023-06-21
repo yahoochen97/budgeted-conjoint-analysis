@@ -5,11 +5,8 @@ mkdir -p results2
 MAXSEED=25
 declare -a data_names=("twoDplane" "Friedman")
 N=1000
-declare -a TOTAL_SIZES=(50)
+declare -a TOTAL_SIZES=(400)
 declare -a policy_names=("RAND" "GRAD" "GRADBALD" "US" "GRADUS")
-
-declare -a policy_names=("RAND")
-MAXSEED=1
 
 if [ $1 = "run" ]
 then
