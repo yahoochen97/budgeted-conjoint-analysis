@@ -8,6 +8,9 @@ if ~exist('SEED','var')
     test_anchor = 0;
 end
 
+data_name = string(data_name);
+policy_name = string(policy_name);
+
 maxNumCompThreads(1);
 
 % add gpml tool box; clear env;
