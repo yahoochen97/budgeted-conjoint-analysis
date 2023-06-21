@@ -12,4 +12,4 @@ N=$3
 TOTAL_SIZE=$4
 policy_name=$5
 
-matlab -nodisplay -nodesktop --use-single-comp-thread -r "addpath('~/gpml-matlab-v3.6-2015-07-07'); N=${N}; SEED=${SEED}; data_name='${data_name}'; TOTAL_SIZE=${TOTAL_SIZE}; policy_name='${policy_name}';  simulation2;"
+matlab -nodisplay -nodesktop --use-single-comp-thread -r "addpath('~/gpml-matlab-v3.6-2015-07-07'); N=${N}; SEED=${SEED}; data_name='${data_name}'; TOTAL_SIZE=${TOTAL_SIZE}; policy_name='${policy_name}'; test_anchor = 0; simulation2;"

@@ -2,9 +2,9 @@ if ~exist('SEED','var')
     % simulation settings
     SEED = 1;
     data_name = "Friedman";
-    policy_name = "BALD";
-    N = 100;
-    TOTAL_SIZE=20;
+    policy_name = "RAND";
+    N = 1000;
+    TOTAL_SIZE=50;
     test_anchor = 0;
 end
 
@@ -26,6 +26,10 @@ simulate_data;
 x_pop = train_x;
 y_pop = train_y;
 
+% true dgp effect with whole population
+BIN=10;
+[dgp_effects,~]=gp_point_est(BIN,raw_x,dgp_dy,dgp_dy.*0);
+
 % initial batch is complete randomization
 INIT_SIZE = 10;
 idx_selected = [];
@@ -43,26 +47,33 @@ n_gauss_hermite = 10;
 for iter=1:ITERATIONS
    % policy for data acquisition
    disp("search iter " + iter);
+   
+   % current gp model
+   learn_HYP = 0;
+   gp_pref_grad;
    if strcmp(policy_name, "UNIFORM")
        % randomization policy
        idx_cur = policy_uniform(idx_other, INIT_SIZE);
    elseif strcmp(policy_name, "BALD")
        % Bayesian active learning by disagreement
-       % current gp model
-       learn_HYP = 0;
-       gp_pref_grad;
-
        ps = normcdf(fmu./sqrt(1+fs2));
        C = sqrt(pi*log(2)/2);
        IG_p = -ps.*log2(ps) - (1-ps).*log2(1-ps) - ...
             C./sqrt(C^2+fs2).*exp(-fmu.^2./(C^2+fs2)/2);
        [~,idx_cur]=maxk(IG_p,BATCH_SIZE);
        idx_cur = idx_other(idx_cur);
+   elseif strcmp(policy_name, "US")
+       % maximize uncertainty for latent utility
+       U_f = arrayfun(@(i)det(squeeze(df_K(i,:,:))),1:size(test_x,1));
+       [~,idx_cur]=maxk(U_f,BATCH_SIZE);
+       idx_cur = idx_other(idx_cur);
+   elseif strcmp(policy_name, "GRADUS")
+       % maximize uncertainty for marginal effect
+       U_g = sum(sigma_GMM_avg,2);
+       [~,idx_cur]=maxk(U_g,BATCH_SIZE);
+       idx_cur = idx_other(idx_cur);
    elseif strcmp(policy_name, "GRADBALD")
-       % Bayesian active learning by disagreement
-       % current gp model
-       learn_HYP = 0;
-       gp_pref_grad;
+       % information gain of marginal effects
        ps = normcdf(fmu./sqrt(1+fs2));
        IG_g = -ps.*log2(ps) - (1-ps).*log2(1-ps);
        
@@ -105,36 +116,41 @@ for iter=1:ITERATIONS
    train_y = y_pop(idx_selected,:);
    idx_other = setdiff(1:N, idx_selected);
    test_x = x_pop(idx_other,:);
+   
+   % save results every 50 samples
+   
+   if mod(numel(idx_selected),50)==0
+       HYP = data_name + "_N" + int2str(N) + "_S" + int2str(numel(idx_selected)) + "_" + policy_name + "_SEED" + int2str(SEED);
+       results = save_results(HYP, n_gauss_hermite,...
+           train_x, train_y, x_pop, BIN, dgp_effects,...
+           data_name, policy_name);
+   end
 end
 
-
-% true dgp effect with whole population
-BIN=10;
-[dgp_effects,~]=gp_point_est(BIN,raw_x,dgp_dy,dgp_dy.*0);
-
+function results = save_results(HYP, n_gauss_hermite,...
+    train_x, train_y, test_x, BIN, dgp_effects,...
+    data_name, policy_name)
 % estimate marginal effects with selected data
 % build a gp preference learning model for grad
-learn_HYP = 1;
-test_x = x_pop;
-gp_pref_grad;
+    learn_HYP = 1;
+    gp_pref_grad;
 
-% gp preference learning GMM effect
-[gp_GMM_mu,gp_GMM_std]=gp_point_est(BIN,test_x,mu_GMM_avg,sigma_GMM_avg);
+    % gp preference learning GMM effect
+    [gp_GMM_mu,gp_GMM_std]=gp_point_est(BIN,test_x,mu_GMM_avg,sigma_GMM_avg);
 
-% scatter(reshape(dgp_effects,[D,1]),reshape(gp_GMM_mu,[D,1]));
-ratio = std(dgp_effects)/std(gp_GMM_mu);
-shift = mean(dgp_effects) - mean(gp_GMM_mu);
-% scatter(dgp_effects,gp_GMM_mu*ratio + shift);
+    % scatter(reshape(dgp_effects,[D,1]),reshape(gp_GMM_mu,[D,1]));
+    ratio = std(dgp_effects)/std(gp_GMM_mu);
+    % shift = mean(dgp_effects) - mean(gp_GMM_mu);
+    % scatter(dgp_effects,gp_GMM_mu*ratio + shift);
 
-D = numel(dgp_effects);
-results = array2table(zeros(D,3),'VariableNames',...
-    {'mean','std','effect'});
-results.policy = repmat(policy_name,[D,1]);
+    D = numel(dgp_effects);
+    results = array2table(zeros(D,3),'VariableNames',...
+        {'mean','std','effect'});
+    results.policy = repmat(policy_name,[D,1]);
 
-results(:,1) = num2cell(gp_GMM_mu*ratio + shift)';
-results(:,2) = num2cell(gp_GMM_std*ratio + shift)';
-results(:,3) = num2cell(dgp_effects)';
+    results(:,1) = num2cell(gp_GMM_mu*ratio)';
+    results(:,2) = num2cell(gp_GMM_std*ratio)';
+    results(:,3) = num2cell(dgp_effects)';
 
-HYP = data_name + "_N" + int2str(N) + "_TS" + int2str(TOTAL_SIZE) + "_" + policy_name + "_SEED" + int2str(SEED);
-
-writetable(results,"./results2/"+HYP+".csv");
+    writetable(results,"./results2/"+HYP+".csv");
+end

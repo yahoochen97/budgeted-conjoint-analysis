@@ -106,7 +106,7 @@ end
 %     end
 % end
 
-[mu_GMM,sigma_GMM, dy_mu, dy_std,ks, ws] = g_GMM(n_gauss_hermite,hyp,inffunc,meanfunc,covfunc, likfunc, train_x, train_y, test_x);
+[mu_GMM,sigma_GMM, dy_mu, dy_std, df_mu, df_K, ks, ws] = g_GMM(n_gauss_hermite,hyp,inffunc,meanfunc,covfunc, likfunc, train_x, train_y, test_x);
 
 % average over GMM
 mu_GMM_avg = zeros(size(test_x,1), D);
