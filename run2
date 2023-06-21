@@ -16,7 +16,7 @@ then
     for SEED in $(seq 1 1 $MAXSEED); do
         for data_name in ${data_names[@]}; do
             for TOTAL_SIZE in ${TOTAL_SIZES[@]}; do
-                for policy_names in ${policy_names[@]}; do
+                for policy_name in ${policy_names[@]}; do
                     bsub -G SEAS-Lab-Garnett -J "${data_name}${TOTAL_SIZE}_${policy_name}_${SEED}" "./onerun2 $SEED $data_name $N $TOTAL_SIZE $policy_name"
                 done
             done
