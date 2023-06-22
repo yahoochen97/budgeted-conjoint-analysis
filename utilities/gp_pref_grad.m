@@ -13,14 +13,16 @@ for i=1:D
 end
 
 % output scale
-if strcmp(data_name,"2Dplane")
+if strcmp(data_name,"twoDplane")
     prior.cov{D+1} = {@priorDelta};
     hyp.cov(end) = log(5);
-else
+    inffunc = {@infPrior, @infLaplace, prior};
+elseif strcmp(data_name,"Friedman")
     prior.cov{D+1} = {@priorTransform,@exp,@exp,@log,{@priorInvGauss,2,4}};
+    inffunc = {@infPrior, @infEP, prior};
 end
 
-inffunc = {@infPrior, @infEP, prior};
+
 p.method = 'LBFGS';
 p.length = 100;
 
