@@ -1,8 +1,8 @@
 if ~exist('SEED','var')
     % simulation settings
     SEED = 1;
-    data_name = "Friedman";
-    policy_name = "GRADUS";
+    data_name = "twoDplane";
+    policy_name = "GRADBALD";
     N = 1000;
     TOTAL_SIZE=400;
     test_anchor = 0;
@@ -135,7 +135,7 @@ function results = save_results(HYP, n_gauss_hermite,...
     data_name, policy_name)
 % estimate marginal effects with selected data
 % build a gp preference learning model for grad
-    learn_HYP = 1;
+    learn_HYP = 0;
     gp_pref_grad;
 
     % gp preference learning GMM effect
