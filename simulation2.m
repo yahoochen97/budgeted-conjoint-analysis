@@ -151,8 +151,8 @@ function results = save_results(HYP, n_gauss_hermite,...
         {'mean','std','effect'});
     results.policy = repmat(string(policy_name),[D 1]);
 
-    results(:,1) = num2cell(gp_GMM_mu*ratio)';
-    results(:,2) = num2cell(gp_GMM_std*ratio)';
+    results(:,1) = num2cell(gp_GMM_mu)';
+    results(:,2) = num2cell(gp_GMM_std)';
     results(:,3) = num2cell(dgp_effects)';
 
     writetable(results,"./results2/"+HYP+".csv");
