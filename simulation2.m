@@ -1,15 +1,13 @@
 if ~exist('SEED','var')
     % simulation settings
-    SEED = 25;
+    SEED = 1;
     data_name = "twoDplane";
-    policy_name = "GRADUS";
+    policy_name = "GRADBALD";
     N = 1000;
-    TOTAL_SIZE=400;
+    TOTAL_SIZE=20;
     test_anchor = 0;
 end
 
-data_name = string(data_name);
-policy_name = string(policy_name);
 
 maxNumCompThreads(1);
 
@@ -115,12 +113,13 @@ for iter=1:ITERATIONS
    
    % append new acquisition to dataset
    idx_selected = [idx_selected, idx_cur];
+   disp(idx_cur);
    train_x = x_pop(idx_selected,:);
    train_y = y_pop(idx_selected,:);
    idx_other = setdiff(1:N, idx_selected);
    test_x = x_pop(idx_other,:);
    
-   % save results every 50 samples
+   % save results every 20 samples
    
    if mod(numel(idx_selected),50)==0
        HYP = data_name + "_N" + int2str(N) + "_S" + int2str(numel(idx_selected)) + "_" + policy_name + "_SEED" + int2str(SEED);
