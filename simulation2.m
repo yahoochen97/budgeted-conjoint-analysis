@@ -4,7 +4,7 @@ if ~exist('SEED','var')
     data_name = "twoDplane";
     policy_name = "GRADBALD";
     N = 1000;
-    TOTAL_SIZE=20;
+    TOTAL_SIZE=100;
     test_anchor = 0;
 end
 
@@ -18,7 +18,7 @@ addpath("~/Documents/Washu/CSE515T/Code/Gaussian Process/gpml-matlab-v3.6-2015-0
 startup;
 addpath("utilities");
 FONTSIZE=16;
-BATCH_SIZE = 10; % acquire 10 new data per iteration
+BATCH_SIZE = 5; % acquire 10 new data per iteration
 
 rng(SEED);
 
@@ -50,7 +50,7 @@ for iter=1:ITERATIONS
    disp("search iter " + iter);
    
    % current gp model
-   learn_HYP = 0;
+   learn_HYP = 1;
    gp_pref_grad;
    if strcmp(policy_name, "UNIFORM")
        % randomization policy
@@ -121,7 +121,7 @@ for iter=1:ITERATIONS
    
    % save results every 20 samples
    
-   if mod(numel(idx_selected),20)==0
+   if mod(numel(idx_selected),10)==0
        HYP = data_name + "_N" + int2str(N) + "_S" + int2str(numel(idx_selected)) + "_" + policy_name + "_SEED" + int2str(SEED);
        results = save_results(HYP, n_gauss_hermite,...
            train_x, train_y, x_pop, BIN, dgp_effects,...

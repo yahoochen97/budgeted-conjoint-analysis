@@ -7,7 +7,7 @@ sys.path.append("./utility")
 
 DATA_NAMES = ["twoDplane", "Friedman"]
 N = 1000
-TOTAL_SIZES = [50, 100, 150, 200, 250, 300, 350, 400]
+TOTAL_SIZES = [20*i+20 for i in range(10)]
 MEASURES = ["RMSE","COVERAGE","LL"]
 
 def main(args):
@@ -48,7 +48,7 @@ def main(args):
                     results[2,i,j,k,SEED-1] = LL
     
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 8), dpi=100)
-    colors = ["black", "red", "limegreen", "yellow", "blue"]
+    colors = ["forestgreen", "limegreen", "darkseagreen", "steelblue", "blue"]
     for i in range(len(DATA_NAMES)):
         for m in range(len(MEASURES)):
             if i==0:
