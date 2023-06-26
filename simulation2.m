@@ -2,9 +2,9 @@ if ~exist('SEED','var')
     % simulation settings
     SEED = 1;
     data_name = "twoDplane";
-    policy_name = "GRADBALD";
+    policy_name = "UNIFORM";
     N = 1000;
-    TOTAL_SIZE=100;
+    TOTAL_SIZE=200;
     test_anchor = 0;
 end
 
@@ -54,7 +54,7 @@ for iter=1:ITERATIONS
    gp_pref_grad;
    if strcmp(policy_name, "UNIFORM")
        % randomization policy
-       idx_cur = policy_uniform(idx_other, INIT_SIZE);
+       idx_cur = policy_uniform(idx_other, BATCH_SIZE);
    elseif strcmp(policy_name, "BALD")
        % Bayesian active learning by disagreement
        ps = normcdf(fmu./sqrt(1+fs2));
