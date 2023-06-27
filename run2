@@ -8,7 +8,7 @@ declare -a data_names=("twoDplane" "Friedman")
 N=1000
 declare -a TOTAL_SIZES=(200)
 declare -a policy_names=("UNIFORM" "BALD" "GRADBALD" "US" "GRADUS")
-declare -a policy_names=("GRADBALD")
+# declare -a policy_names=("GRADBALD")
 
 if [ $1 = "run" ]
 then
@@ -16,7 +16,8 @@ then
         for data_name in ${data_names[@]}; do
             for TOTAL_SIZE in ${TOTAL_SIZES[@]}; do
                 for policy_name in ${policy_names[@]}; do
-                    bsub -G SEAS-Lab-Garnett -o "./log2/${data_name}_${policy_name}_${SEED}.log" -J "${data_name}${TOTAL_SIZE}_${policy_name}_${SEED}" "./onerun2 $SEED $data_name $N $TOTAL_SIZE $policy_name"
+                    # "./log2/${data_name}_${policy_name}_${SEED}.log"
+                    bsub -G SEAS-Lab-Garnett -o /dev/null -J "${data_name}${TOTAL_SIZE}_${policy_name}_${SEED}" "./onerun2 $SEED $data_name $N $TOTAL_SIZE $policy_name"
                 done
             done
         done

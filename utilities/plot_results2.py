@@ -7,7 +7,7 @@ sys.path.append("./utility")
 
 DATA_NAMES = ["twoDplane", "Friedman"]
 N = 1000
-TOTAL_SIZES = [20*i+20 for i in range(3,10)]
+TOTAL_SIZES = [20*i+20 for i in range(10)]
 MEASURES = ["RMSE","COVERAGE","LL"]
 
 def main(args):
@@ -30,6 +30,10 @@ def main(args):
                     est_mu = est_mu[flag]
                     est_std = est_std[flag]
                     true_effect = true_effect[flag]
+                    ratio = np.std(true_effect)/np.std(est_mu)
+                    est_mu = est_mu*ratio
+                    est_std = est_std*ratio
+
                     if est_mu.shape[0]==0:
                         results[0,i,j,k,SEED-1] = RMSE
                         # results[1,i,j,k,SEED-1] = CORRELATION
