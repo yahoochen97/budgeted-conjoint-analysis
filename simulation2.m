@@ -1,6 +1,6 @@
 if ~exist('SEED','var')
     % simulation settings
-    SEED = 1;
+    SEED = 20;
     data_name = "Friedman";
     policy_name = "GRADBALD";
     N = 1000;
@@ -161,7 +161,8 @@ function results = save_results(HYP, n_gauss_hermite,...
     results(:,1) = num2cell(gp_GMM_mu);
     results(:,2) = num2cell(gp_GMM_std);
     results(:,3) = num2cell(dgp_effects);
-
+    
+    disp(HYP);
     writetable(results,"./results2/"+HYP+".csv");
 end
 
