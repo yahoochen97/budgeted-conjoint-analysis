@@ -2,7 +2,7 @@ if ~exist('SEED','var')
     % simulation settings
     SEED = 1;
     data_name = "Friedman";
-    policy_name = "UNIFORM";
+    policy_name = "GRADBALD";
     N = 1000;
     TOTAL_SIZE=200;
     test_anchor = 0;
@@ -112,7 +112,7 @@ for iter=1:ITERATIONS
        end
        
        % [~,idx_cur]=maxk(IG_g,BATCH_SIZE);
-       idx_cur = softmax(exp(IG_g), BATCH_SIZE);
+       idx_cur = softmax(IG_g, BATCH_SIZE);
        idx_cur = idx_other(idx_cur);
    end
    
@@ -166,10 +166,10 @@ function results = save_results(HYP, n_gauss_hermite,...
 end
 
 function idx_cur = softmax(IG, BATCH_SIZE)
-    p_cdf = cumsum(IG);
-    n = numel(IG);
-    idx_cur = zeros(n,1);
-    for i=1:n
+    p = exp(IG)./sum(exp(IG));
+    p_cdf = cumsum(p);
+    idx_cur = zeros(BATCH_SIZE,1);
+    for i=1:BATCH_SIZE
         idx_cur(i) = sum(p_cdf<=rand());
     end
     idx_cur = sort(idx_cur);
