@@ -63,16 +63,19 @@ for iter=1:ITERATIONS
        IG_p = -ps.*log2(ps) - (1-ps).*log2(1-ps) - ...
             C./sqrt(C^2+fs2).*exp(-fmu.^2./(C^2+fs2)/2);
        [~,idx_cur]=maxk(IG_p,BATCH_SIZE);
+       % idx_cur = softmax(IG_p, BATCH_SIZE);
        idx_cur = idx_other(idx_cur);
    elseif strcmp(policy_name, "US")
        % maximize uncertainty for latent utility
        U_f = arrayfun(@(i)det(squeeze(df_K(i,:,:))),1:size(test_x,1));
+       % idx_cur = softmax(exp(U_f), BATCH_SIZE);
        [~,idx_cur]=maxk(U_f,BATCH_SIZE);
        idx_cur = idx_other(idx_cur);
    elseif strcmp(policy_name, "GRADUS")
        % maximize uncertainty for marginal effect
        U_g = sum(sigma_GMM_avg,2);
        [~,idx_cur]=maxk(U_g,BATCH_SIZE);
+       % idx_cur = softmax(exp(U_g), BATCH_SIZE);
        idx_cur = idx_other(idx_cur);
    elseif strcmp(policy_name, "GRADBALD")
        % information gain of marginal effects
@@ -108,7 +111,8 @@ for iter=1:ITERATIONS
             end   
        end
        
-       [~,idx_cur]=maxk(IG_g,BATCH_SIZE);
+       % [~,idx_cur]=maxk(IG_g,BATCH_SIZE);
+       idx_cur = softmax(exp(IG_g), BATCH_SIZE);
        idx_cur = idx_other(idx_cur);
    end
    
@@ -159,4 +163,14 @@ function results = save_results(HYP, n_gauss_hermite,...
     results(:,3) = num2cell(dgp_effects);
 
     writetable(results,"./results2/"+HYP+".csv");
+end
+
+function idx_cur = softmax(IG, BATCH_SIZE)
+    p_cdf = cumsum(IG);
+    n = numel(IG);
+    idx_cur = zeros(n,1);
+    for i=1:n
+        idx_cur(i) = sum(p_cdf<=rand());
+    end
+    idx_cur = sort(idx_cur);
 end
