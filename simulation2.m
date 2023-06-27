@@ -1,7 +1,7 @@
 if ~exist('SEED','var')
     % simulation settings
     SEED = 1;
-    data_name = "twoDplane";
+    data_name = "Friedman";
     policy_name = "UNIFORM";
     N = 1000;
     TOTAL_SIZE=200;
@@ -18,7 +18,7 @@ addpath("~/Documents/Washu/CSE515T/Code/Gaussian Process/gpml-matlab-v3.6-2015-0
 startup;
 addpath("utilities");
 FONTSIZE=16;
-BATCH_SIZE = 5; % acquire 10 new data per iteration
+BATCH_SIZE = 10; % acquire 10 new data per iteration
 
 rng(SEED);
 
@@ -28,8 +28,9 @@ x_pop = train_x;
 y_pop = train_y;
 
 % true dgp effect with whole population
-BIN=10;
-[dgp_effects,~]=gp_point_est(BIN,raw_x,dgp_dy,dgp_dy.*0);
+BIN=10; D = size(train_x,2)/2;
+% [dgp_effects,~]=gp_point_est(BIN,raw_x,dgp_dy,dgp_dy.*0);
+dgp_effects = reshape(dgp_dy(:,1:D), [N*D 1]);
 
 % initial batch is complete randomization
 INIT_SIZE = 10;
@@ -50,7 +51,7 @@ for iter=1:ITERATIONS
    disp("search iter " + iter);
    
    % current gp model
-   learn_HYP = 1;
+   learn_HYP = 0;
    gp_pref_grad;
    if strcmp(policy_name, "UNIFORM")
        % randomization policy
@@ -121,7 +122,7 @@ for iter=1:ITERATIONS
    
    % save results every 20 samples
    
-   if mod(numel(idx_selected),10)==0
+   if mod(numel(idx_selected),20)==0
        HYP = data_name + "_N" + int2str(N) + "_S" + int2str(numel(idx_selected)) + "_" + policy_name + "_SEED" + int2str(SEED);
        results = save_results(HYP, n_gauss_hermite,...
            train_x, train_y, x_pop, BIN, dgp_effects,...
@@ -138,10 +139,13 @@ function results = save_results(HYP, n_gauss_hermite,...
     gp_pref_grad;
 
     % gp preference learning GMM effect
-    [gp_GMM_mu,gp_GMM_std]=gp_point_est(BIN,test_x,mu_GMM_avg,sigma_GMM_avg);
+    % [gp_GMM_mu,gp_GMM_std]=gp_point_est(BIN,test_x,mu_GMM_avg,sigma_GMM_avg);
+    D = size(train_x,2)/2; N = size(test_x,1);
+    gp_GMM_mu = reshape(mu_GMM_avg, [N*D 1]);
+    gp_GMM_std = reshape(sigma_GMM_avg, [N*D 1]);
 
     % scatter(reshape(dgp_effects,[D,1]),reshape(gp_GMM_mu,[D,1]));
-    ratio = std(dgp_effects)/std(gp_GMM_mu);
+    % ratio = std(dgp_effects)/std(gp_GMM_mu);
     % shift = mean(dgp_effects) - mean(gp_GMM_mu);
     % scatter(dgp_effects,gp_GMM_mu*ratio + shift);
 
@@ -150,9 +154,9 @@ function results = save_results(HYP, n_gauss_hermite,...
         {'mean','std','effect'});
     results.policy = repmat(string(policy_name),[D 1]);
 
-    results(:,1) = num2cell(gp_GMM_mu)';
-    results(:,2) = num2cell(gp_GMM_std)';
-    results(:,3) = num2cell(dgp_effects)';
+    results(:,1) = num2cell(gp_GMM_mu);
+    results(:,2) = num2cell(gp_GMM_std);
+    results(:,3) = num2cell(dgp_effects);
 
     writetable(results,"./results2/"+HYP+".csv");
 end
