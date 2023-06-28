@@ -129,12 +129,12 @@ for iter=1:ITERATIONS
    
    % save results every 20 samples
    
-%    if mod(numel(idx_selected),20)==0
-%        HYP = data_name + "_N" + int2str(N) + "_S" + int2str(numel(idx_selected)) + "_" + policy_name + "_SEED" + int2str(SEED);
-%        results = save_results(HYP, n_gauss_hermite,...
-%            train_x, train_y, x_pop, BIN, dgp_effects,...
-%            data_name, policy_name);
-%    end
+   if mod(numel(idx_selected),20)==0
+       HYP = data_name + "_N" + int2str(N) + "_S" + int2str(numel(idx_selected)) + "_" + policy_name + "_SEED" + int2str(SEED);
+       results = save_results(HYP, n_gauss_hermite,...
+           train_x, train_y, x_pop, BIN, dgp_effects,...
+           data_name, policy_name);
+   end
 end
 
 function results = save_results(HYP, n_gauss_hermite,...
