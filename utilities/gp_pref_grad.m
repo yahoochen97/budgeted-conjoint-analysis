@@ -108,16 +108,16 @@ end
 %     end
 % end
 
-[mu_GMM,sigma_GMM, dy_mu, dy_std, df_mu, df_K, ks, ws] = g_GMM(n_gauss_hermite,hyp,inffunc,meanfunc,covfunc, likfunc, train_x, train_y, test_x);
+[mu_GMM_avg,sigma_GMM_avg, mu_GMM,sigma_GMM, dy_mu, dy_std, df_mu, df_K, ks, ws] = g_GMM(n_gauss_hermite,hyp,inffunc,meanfunc,covfunc, likfunc, train_x, train_y, test_x);
 
 % average over GMM
-mu_GMM_avg = zeros(size(test_x,1), D);
-sigma_GMM_avg = zeros(size(test_x,1), D);
-
-for i=1:size(test_x,1)
-    mu_GMM_avg(i,:) = squeeze(mu_GMM(i,:,:)) * ws;
-    sigma_GMM_avg(i,:) = sqrt(squeeze(sigma_GMM(i,:,:).^2) * ws + ...
-        squeeze(mu_GMM(i,:,:).^2) * ws - ...
-        mu_GMM_avg(i,:)'.^2);
-end
+% mu_GMM_avg = zeros(size(test_x,1), D);
+% sigma_GMM_avg = zeros(size(test_x,1), D);
+% 
+% for i=1:size(test_x,1)
+%     mu_GMM_avg(i,:) = squeeze(mu_GMM(i,:,:)) * ws;
+%     sigma_GMM_avg(i,:) = sqrt(squeeze(sigma_GMM(i,:,:).^2) * ws + ...
+%         squeeze(mu_GMM(i,:,:).^2) * ws - ...
+%         mu_GMM_avg(i,:)'.^2);
+% end
 
