@@ -101,8 +101,8 @@ for iter=1:ITERATIONS
 %                             p_1 = p_1 + ws(it)*normpdf(g_bar(l),mu_GMM1(l,it),diag(sigma_GMM1(l,it)));
 %                             p_0 = p_0 + ws(it)*normpdf(g_bar(l),mu_GMM0(l,it),diag(sigma_GMM0(l,it)));
 %                         end 
-                        p_1 = p_1 + ws(it)*mvnpdf(g_bar',mu_GMM1(:,it),diag(sigma_GMM1(:,it)));
-                        p_0 = p_0 + ws(it)*mvnpdf(g_bar',mu_GMM0(:,it),diag(sigma_GMM0(:,it)));
+                        p_1 = p_1 + ws(it)*mvnpdf(g_bar,mu_GMM1(:,it)',diag(sigma_GMM1(:,it)));
+                        p_0 = p_0 + ws(it)*mvnpdf(g_bar,mu_GMM0(:,it)',diag(sigma_GMM0(:,it)));
                         
                     end
                     % compute E[H[y|x,g]]  
