@@ -29,8 +29,8 @@ y_pop = train_y;
 
 % true dgp effect with whole population
 BIN=10; D = size(train_x,2)/2;
-% [dgp_effects,~]=gp_point_est(BIN,raw_x,dgp_dy,dgp_dy.*0);
-dgp_effects = reshape(dgp_dy(:,1:D), [N*D 1]);
+[dgp_effects,~]=gp_point_est(BIN,raw_x,dgp_dy,dgp_dy.*0);
+% dgp_effects = reshape(dgp_dy(:,1:D), [N*D 1]);
 
 % initial batch is complete randomization
 INIT_SIZE = 100;
@@ -143,10 +143,10 @@ function results = save_results(HYP, n_gauss_hermite,...
     gp_pref_grad;
 
     % gp preference learning GMM effect
-    % [gp_GMM_mu,gp_GMM_std]=gp_point_est(BIN,test_x,mu_GMM_avg,sigma_GMM_avg);
-    D = size(train_x,2)/2; N = size(test_x,1);
-    gp_GMM_mu = reshape(mu_GMM_avg, [N*D 1]);
-    gp_GMM_std = reshape(sigma_GMM_avg, [N*D 1]);
+    [gp_GMM_mu,gp_GMM_std]=gp_point_est(BIN,test_x,mu_GMM_avg,sigma_GMM_avg);
+    % D = size(train_x,2)/2; N = size(test_x,1);
+    % gp_GMM_mu = reshape(mu_GMM_avg, [N*D 1]);
+    % gp_GMM_std = reshape(sigma_GMM_avg, [N*D 1]);
 
     % scatter(reshape(dgp_effects,[D,1]),reshape(gp_GMM_mu,[D,1]));
     % ratio = std(dgp_effects)/std(gp_GMM_mu);
@@ -158,9 +158,9 @@ function results = save_results(HYP, n_gauss_hermite,...
         {'mean','std','effect'});
     results.policy = repmat(string(policy_name),[D 1]);
 
-    results(:,1) = num2cell(gp_GMM_mu);
-    results(:,2) = num2cell(gp_GMM_std);
-    results(:,3) = num2cell(dgp_effects);
+    results(:,1) = num2cell(gp_GMM_mu)';
+    results(:,2) = num2cell(gp_GMM_std)';
+    results(:,3) = num2cell(dgp_effects)';
     
     disp(HYP);
     writetable(results,"./results2/"+HYP+".csv");
