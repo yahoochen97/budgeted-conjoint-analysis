@@ -91,28 +91,28 @@ for iter=1:ITERATIONS
                     inffunc,meanfunc,covfunc, likfunc, [train_x; xs], [train_y;-1], xs);
 %             mu_GMM1 = squeeze(mu_GMM1); mu_GMM0 = squeeze(mu_GMM0);
 %             sigma_GMM1 = squeeze(sigma_GMM1); sigma_GMM0 = squeeze(sigma_GMM0);
-%             for i=1:n_gauss_hermite
+            for i=1:n_gauss_hermite
                 for j=1:n_gauss_hermite
-                    g_bar = sqrt(2)*sigma_GMM_avg(k,:)*ks(j) + mu_GMM_avg(k,:);
-                    p_1 = 0; p_0 = 0;
+                    g_bar = sqrt(2)*sigma_GMM(k,:,i)*ks(j) + mu_GMM_avg(k,:,i);
+%                     p_1 = 0; p_0 = 0;
                     % compute p(g|y,x,D)
-                    for it=1:n_gauss_hermite
+%                     for it=1:n_gauss_hermite
 %                         for l=1:D
 %                             p_1 = p_1 + ws(it)*normpdf(g_bar(l),mu_GMM1(l,it),diag(sigma_GMM1(l,it)));
 %                             p_0 = p_0 + ws(it)*normpdf(g_bar(l),mu_GMM0(l,it),diag(sigma_GMM0(l,it)));
 %                         end 
-                        p_1 = p_1 + ws(it)*mvnpdf(g_bar,mu_GMM1,diag(sigma_GMM1));
-                        p_0 = p_0 + ws(it)*mvnpdf(g_bar,mu_GMM0,diag(sigma_GMM0));
+%                     end
+                    p_1 = mvnpdf(g_bar,mu_GMM1,diag(sigma_GMM1));
+                    p_0 = mvnpdf(g_bar,mu_GMM0,diag(sigma_GMM0));
                         
-                    end
                     % compute E[H[y|x,g]]  
                     p_k = 1/(1+p_0/p_1*(1-ps(k))/ps(k));
                     p_k = max(min(p_k,1-1e-12),1e-12);
                     h = -p_k*log2(p_k) - (1-p_k)*log2(1-p_k);
-                    if ~isnan(h), IG_g(k) = IG_g(k) - ws(j)*h; end
+                    if ~isnan(h), IG_g(k) = IG_g(k) - ws(i)*ws(j)*h; end
                 end
             end   
-%        end
+       end
        
        [~,idx_cur]=maxk(IG_g,BATCH_SIZE);
        % idx_cur = softmax(IG_g, BATCH_SIZE);
