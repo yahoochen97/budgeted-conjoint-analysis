@@ -1,10 +1,10 @@
 if ~exist('SEED','var')
     % simulation settings
     SEED = 20;
-    data_name = "Friedman";
+    data_name = "twoDplane";
     policy_name = "GRADBALD";
     N = 1000;
-    TOTAL_SIZE=300;
+    TOTAL_SIZE=200;
     test_anchor = 0;
 end
 
@@ -33,7 +33,7 @@ BIN=10; D = size(train_x,2)/2;
 % dgp_effects = reshape(dgp_dy(:,1:D), [N*D 1]);
 
 % initial batch is complete randomization
-INIT_SIZE = 100;
+INIT_SIZE = 10;
 idx_selected = [];
 idx_cur = policy_uniform(1:N, INIT_SIZE);
 idx_selected = [idx_selected, idx_cur];
@@ -97,13 +97,16 @@ for iter=1:ITERATIONS
                     p_1 = 0; p_0 = 0;
                     % compute p(g|y,x,D)
                     for it=1:n_gauss_hermite
-                        for l=1:D
-                            p_1 = p_1 + ws(it)*normpdf(g_bar(l),mu_GMM1(l,it),diag(sigma_GMM1(l,it)));
-                            p_0 = p_0 + ws(it)*normpdf(g_bar(l),mu_GMM0(l,it),diag(sigma_GMM0(l,it)));
-                        end 
+%                         for l=1:D
+%                             p_1 = p_1 + ws(it)*normpdf(g_bar(l),mu_GMM1(l,it),diag(sigma_GMM1(l,it)));
+%                             p_0 = p_0 + ws(it)*normpdf(g_bar(l),mu_GMM0(l,it),diag(sigma_GMM0(l,it)));
+%                         end 
+                        p_1 = p_1 + ws(it)*mvnpdf(g_bar',mu_GMM1(:,it),diag(sigma_GMM1(:,it)));
+                        p_0 = p_0 + ws(it)*mvnpdf(g_bar',mu_GMM0(:,it),diag(sigma_GMM0(:,it)));
+                        
                     end
                     % compute E[H[y|x,g]]  
-                    p_k = p_1*ps(k)/(p_1*ps(k)+p_0*(1-ps(k)));
+                    p_k = 1/(1+p_0/p_1*(1-ps(k))/ps(k));
                     p_k = max(min(p_k,1-1e-12),1e-12);
                     h = -p_k*log2(p_k) - (1-p_k)*log2(1-p_k);
                     if ~isnan(h), IG_g(k) = IG_g(k) - ws(i)*ws(j)*h; end

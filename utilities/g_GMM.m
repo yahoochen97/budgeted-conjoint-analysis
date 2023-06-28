@@ -39,7 +39,8 @@ function [mu_GMM,sigma_GMM, dy_mu, dy_std, df_mu, df_K, ks, ws] = g_GMM(n_gauss_
 
     mu_GMM = zeros(size(test_x,1), D, n_gauss_hermite);
     sigma_GMM = zeros(size(test_x,1), D, n_gauss_hermite);
-
+    
+    jitter = 1e-3;
     for i=1:size(test_x,1)
         dmus = df_mu(i,:);
         dsigmas = squeeze(df_K(i,:,:));
@@ -48,7 +49,7 @@ function [mu_GMM,sigma_GMM, dy_mu, dy_std, df_mu, df_K, ks, ws] = g_GMM(n_gauss_
             f_bar = sqrt(2)*ks(k)*sqrt(fs2(i)) + fmu(i);
             mu_GMM(i,:,k) = normpdf(f_bar).*dmus;
             K_bar = (normpdf(f_bar)*normpdf(f_bar)').*dsigmas;
-            sigma_GMM(i,:,k) = sqrt(diag(K_bar));
+            sigma_GMM(i,:,k) = sqrt(diag(K_bar))+jitter;
         end
     end
 end
