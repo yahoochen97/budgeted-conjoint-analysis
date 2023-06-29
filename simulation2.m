@@ -18,7 +18,7 @@ addpath("~/Documents/Washu/CSE515T/Code/Gaussian Process/gpml-matlab-v3.6-2015-0
 startup;
 addpath("utilities");
 FONTSIZE=16;
-BATCH_SIZE = 5; % acquire 5 new data per iteration
+BATCH_SIZE = 10; % acquire 5 new data per iteration
 
 rng(SEED);
 
@@ -33,7 +33,7 @@ BIN=10; D = size(train_x,2)/2;
 % dgp_effects = reshape(dgp_dy(:,1:D), [N*D 1]);
 
 % initial batch is complete randomization
-INIT_SIZE = 10;
+INIT_SIZE = 100;
 idx_selected = [];
 idx_cur = policy_uniform(1:N, INIT_SIZE);
 idx_selected = [idx_selected, idx_cur];
