@@ -93,7 +93,7 @@ for iter=1:ITERATIONS
 %             sigma_GMM1 = squeeze(sigma_GMM1); sigma_GMM0 = squeeze(sigma_GMM0);
             for i=1:n_gauss_hermite
                 for j=1:n_gauss_hermite
-                    g_bar = sqrt(2)*sigma_GMM(k,:,i)*ks(j) + mu_GMM_avg(k,:,i);
+                    g_bar = sqrt(2)*sigma_GMM(k,:,i)*ks(j) + mu_GMM(k,:,i);
 %                     p_1 = 0; p_0 = 0;
                     % compute p(g|y,x,D)
 %                     for it=1:n_gauss_hermite
