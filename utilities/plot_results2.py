@@ -3,11 +3,12 @@ import pandas as pd
 import argparse
 import sys
 import matplotlib.pyplot as plt
+import os.path
 sys.path.append("./utility")
 
 DATA_NAMES = ["twoDplane", "Friedman"]
 N = 1000
-TOTAL_SIZES = [20*i+20 for i in range(5)]
+TOTAL_SIZES = [20*i+20 for i in range(10)]
 MEASURES = ["RMSE","COVERAGE","LL"]
 
 def main(args):
@@ -21,7 +22,8 @@ def main(args):
                 for k in range(len(MODELS)):
                     result_filename = "./results2/"+ DATA_NAMES[i] + "_N" + str(N) \
                         + "_S" + str(TOTAL_SIZES[j]) + "_" + MODELS[k] + "_SEED" + str(SEED) + ".csv"
-                    data = pd.read_csv(result_filename)
+                    if os.path.isfile(result_filename):
+                        data = pd.read_csv(result_filename)
                     tmp = data[data.policy==MODELS[k]]
                     est_mu = tmp["mean"].to_numpy()
                     est_std = tmp["std"].to_numpy()

@@ -7,7 +7,11 @@ function [gp_point_mu,gp_point_std]=gp_point_est(BIN,raw_x,dy_mu,dy_std)
         tmp = unique(raw_x(:,j));
         if floor(tmp(1))==tmp(1)
            % is categorical
-           vs = sort(tmp);
+           if j==1
+               vs = [-1,1];
+           else
+               vs = [-1,0,1];
+           end
            for k=2:numel(vs)
                tmp1 = dy_mu(raw_x(:,j)==vs(k),1+size(gp_point_mu,2));
                tmp2 = dy_mu(raw_x(:,j)==vs(k-1),1+size(gp_point_mu,2));

@@ -1,10 +1,10 @@
 if ~exist('SEED','var')
     % simulation settings
-    SEED = 1;
+    SEED = 16;
     data_name = "twoDplane";
     policy_name = "GRADBALD";
     N = 1000;
-    TOTAL_SIZE=100;
+    TOTAL_SIZE=200;
     test_anchor = 0;
 end
 
@@ -18,7 +18,7 @@ addpath("~/Documents/Washu/CSE515T/Code/Gaussian Process/gpml-matlab-v3.6-2015-0
 startup;
 addpath("utilities");
 FONTSIZE=16;
-BATCH_SIZE = 10; % acquire 5 new data per iteration
+BATCH_SIZE = 5; % acquire 5 new data per iteration
 
 rng(SEED);
 
@@ -47,6 +47,7 @@ ITERATIONS = (TOTAL_SIZE-INIT_SIZE)/BATCH_SIZE;
 n_gauss_hermite = 10;
 
 for iter=1:ITERATIONS
+   
    % policy for data acquisition
    disp("search iter " + iter);
    
@@ -127,26 +128,26 @@ for iter=1:ITERATIONS
    idx_other = setdiff(1:N, idx_selected);
    test_x = x_pop(idx_other,:);
    
-   % save results every 10 samples
-   
+   % save results every 25 samples   
    if mod(numel(idx_selected),20)==0
        HYP = data_name + "_N" + int2str(N) + "_S" + int2str(numel(idx_selected)) + "_" + policy_name + "_SEED" + int2str(SEED);
        results = save_results(HYP, n_gauss_hermite,...
-           train_x, train_y, train_x, BIN, dgp_effects,...
+           train_x, train_y, raw_x(idx_selected,:), BIN, dgp_effects,...
            data_name, policy_name);
    end
 end
 
 function results = save_results(HYP, n_gauss_hermite,...
-    train_x, train_y, test_x, BIN, dgp_effects,...
+    train_x, train_y, raw_x, BIN, dgp_effects,...
     data_name, policy_name)
 % estimate marginal effects with selected data
 % build a gp preference learning model for grad
     learn_HYP = 1;
+    test_x = train_x; 
     gp_pref_grad;
 
     % gp preference learning GMM effect
-    [gp_GMM_mu,gp_GMM_std]=gp_point_est(BIN,test_x,mu_GMM_avg,sigma_GMM_avg);
+    [gp_GMM_mu,gp_GMM_std]=gp_point_est(BIN,raw_x,mu_GMM_avg,sigma_GMM_avg);
     % D = size(train_x,2)/2; N = size(test_x,1);
     % gp_GMM_mu = reshape(mu_GMM_avg, [N*D 1]);
     % gp_GMM_std = reshape(sigma_GMM_avg, [N*D 1]);
