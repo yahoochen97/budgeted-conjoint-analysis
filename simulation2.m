@@ -128,7 +128,7 @@ for iter=1:ITERATIONS
    idx_other = setdiff(1:N, idx_selected);
    test_x = x_pop(idx_other,:);
    
-   % save results every 25 samples   
+   % save results every 20 samples   
    if mod(numel(idx_selected),20)==0
        HYP = data_name + "_N" + int2str(N) + "_S" + int2str(numel(idx_selected)) + "_" + policy_name + "_SEED" + int2str(SEED);
        results = save_results(HYP, n_gauss_hermite,...
