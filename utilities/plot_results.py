@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 sys.path.append("./utility")
 
 DATA_NAMES = ["2Dplane", "Friedman"]
-NS = [100, 200, 300, 400, 500, 600, 700, 800]
+NS = [100, 200, 300, 400, 500, 600]
 MEASURES = ["RMSE","COVERAGE","LL"]
 
 def main(args):
@@ -49,7 +49,7 @@ def main(args):
     
     MODELS = ["diff-in-mean", "gp-GMM-1", "gp_GMM-10"]
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 8), dpi=100)
-    colors = ["blue", "red", "limegreen"]
+    colors = ["limegreen", "red", "blue"]
     for i in range(len(DATA_NAMES)):
         for m in range(len(MEASURES)):
             if i==0:
