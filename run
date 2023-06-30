@@ -3,7 +3,7 @@
 mkdir -p results
 
 MAXSEED=25
-declare -a data_names=("2Dplane" "Friedman")
+declare -a data_names=("twoDplane" "Friedman")
 declare -a NS=(100 200 300 400 500 600 700 800)
 declare -a TAs=(0)
 
