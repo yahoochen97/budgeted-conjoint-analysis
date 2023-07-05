@@ -33,7 +33,7 @@ BIN=10; D = size(train_x,2)/2;
 % dgp_effects = reshape(dgp_dy(:,1:D), [N*D 1]);
 
 % initial batch is complete randomization
-INIT_SIZE = 10;
+INIT_SIZE = 20;
 idx_selected = [];
 idx_cur = policy_uniform(1:N, INIT_SIZE);
 idx_selected = [idx_selected, idx_cur];
@@ -132,8 +132,9 @@ for iter=1:ITERATIONS
    if mod(numel(idx_selected),25)==0
        HYP = data_name + "_N" + int2str(N) + "_S" + int2str(numel(idx_selected)) + "_" + policy_name + "_SEED" + int2str(SEED);
        results = save_results(HYP, n_gauss_hermite,...
-           train_x, train_y, x_pop, raw_x(idx_selected,:), BIN, dgp_effects,...
+           train_x, train_y, x_pop, raw_x, BIN, dgp_effects,...
            data_name, policy_name);
+      %(idx_selected,:)
    end
 end
 
