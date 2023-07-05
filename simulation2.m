@@ -1,6 +1,6 @@
 if ~exist('SEED','var')
     % simulation settings
-    SEED = 16;
+    SEED = 25;
     data_name = "twoDplane";
     policy_name = "GRADBALD";
     N = 1000;
@@ -20,7 +20,7 @@ addpath("utilities");
 FONTSIZE=16;
 BATCH_SIZE = 5; % acquire 5 new data per iteration
 
-rng(SEED);
+rng(SEED+12345);
 
 % generate data pool with complete randomization
 simulate_data;
@@ -33,7 +33,7 @@ BIN=10; D = size(train_x,2)/2;
 % dgp_effects = reshape(dgp_dy(:,1:D), [N*D 1]);
 
 % initial batch is complete randomization
-INIT_SIZE = 20;
+INIT_SIZE = 10;
 idx_selected = [];
 idx_cur = policy_uniform(1:N, INIT_SIZE);
 idx_selected = [idx_selected, idx_cur];
