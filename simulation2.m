@@ -132,18 +132,18 @@ for iter=1:ITERATIONS
    if mod(numel(idx_selected),25)==0
        HYP = data_name + "_N" + int2str(N) + "_S" + int2str(numel(idx_selected)) + "_" + policy_name + "_SEED" + int2str(SEED);
        results = save_results(HYP, n_gauss_hermite,...
-           train_x, train_y, raw_x(idx_selected,:), BIN, dgp_effects,...
+           train_x, train_y, x_pop, raw_x(idx_selected,:), BIN, dgp_effects,...
            data_name, policy_name);
    end
 end
 
 function results = save_results(HYP, n_gauss_hermite,...
-    train_x, train_y, raw_x, BIN, dgp_effects,...
+    train_x, train_y, x_pop, raw_x, BIN, dgp_effects,...
     data_name, policy_name)
 % estimate marginal effects with selected data
 % build a gp preference learning model for grad
     learn_HYP = 1;
-    test_x = train_x; 
+    test_x = x_pop; 
     gp_pref_grad;
 
     % gp preference learning GMM effect

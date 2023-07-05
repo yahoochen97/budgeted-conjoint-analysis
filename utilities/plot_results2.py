@@ -13,7 +13,7 @@ MEASURES = ["RMSE","COVERAGE","LL"]
 
 def main(args):
     MAXSEED = int(args["seed"])
-    MODELS = ["UNIFORM", "US", "GRADUS", "BALD", "GRADBALD"]
+    MODELS = ["UNIFORM", "US", "GRADUS", "BALD"]#, "GRADBALD"]
     
     results = np.zeros((len(MEASURES), len(DATA_NAMES),len(TOTAL_SIZES),len(MODELS),MAXSEED))
     for i in range(len(DATA_NAMES)):                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
