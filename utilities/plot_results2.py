@@ -8,12 +8,12 @@ sys.path.append("./utility")
 
 DATA_NAMES = ["twoDplane", "Friedman"]
 N = 1000
-TOTAL_SIZES = [25*i+25 for i in range(8)]
+TOTAL_SIZES = [25*i+50 for i in range(7)]
 MEASURES = ["RMSE","COVERAGE","LL"]
 
 def main(args):
     MAXSEED = int(args["seed"])
-    MODELS = ["UNIFORM", "US", "GRADUS", "BALD"]#, "GRADBALD"]
+    MODELS = ["UNIFORM", "US", "GRADUS", "BALD", "GRADBALD"]
     
     results = np.zeros((len(MEASURES), len(DATA_NAMES),len(TOTAL_SIZES),len(MODELS),MAXSEED))
     for i in range(len(DATA_NAMES)):                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
@@ -53,7 +53,7 @@ def main(args):
                     results[2,i,j,k,SEED-1] = LL
     
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 8), dpi=100)
-    colors = ["forestgreen", "limegreen", "darkseagreen", "steelblue", "blue"]
+    colors = ["forestgreen", "limegreen", "darkseagreen",  "blue","steelblue"]
     for i in range(len(DATA_NAMES)):
         for m in range(len(MEASURES)):
             if i==0:
