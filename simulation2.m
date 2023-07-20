@@ -1,8 +1,8 @@
 if ~exist('SEED','var')
     % simulation settings
-    SEED = 25;
-    data_name = "twoDplane";
-    policy_name = "GRADBALD";
+    SEED = 21;
+    data_name = "Friedman";
+    policy_name = "BALD";
     N = 1000;
     TOTAL_SIZE=200;
     test_anchor = 0;
@@ -63,20 +63,20 @@ for iter=1:ITERATIONS
        C = sqrt(pi*log(2)/2);
        IG_p = -ps.*log2(ps) - (1-ps).*log2(1-ps) - ...
             C./sqrt(C^2+fs2).*exp(-fmu.^2./(C^2+fs2)/2);
-       [~,idx_cur]=maxk(IG_p,BATCH_SIZE);
-       % idx_cur = softmax(IG_p, BATCH_SIZE);
+       % [~,idx_cur]=maxk(IG_p,BATCH_SIZE);
+       idx_cur = softmax(IG_p, BATCH_SIZE);
        idx_cur = idx_other(idx_cur);
    elseif strcmp(policy_name, "US")
        % maximize uncertainty for latent utility
        U_f = arrayfun(@(i)det(squeeze(df_K(i,:,:))),1:size(test_x,1));
-       % idx_cur = softmax(exp(U_f), BATCH_SIZE);
-       [~,idx_cur]=maxk(U_f,BATCH_SIZE);
+       idx_cur = softmax(U_f, BATCH_SIZE);
+       % [~,idx_cur]=maxk(U_f,BATCH_SIZE);
        idx_cur = idx_other(idx_cur);
    elseif strcmp(policy_name, "GRADUS")
        % maximize uncertainty for marginal effect
        U_g = sum(sigma_GMM_avg,2);
-       [~,idx_cur]=maxk(U_g,BATCH_SIZE);
-       % idx_cur = softmax(exp(U_g), BATCH_SIZE);
+       % [~,idx_cur]=maxk(U_g,BATCH_SIZE);
+       idx_cur = softmax(U_g, BATCH_SIZE);
        idx_cur = idx_other(idx_cur);
    elseif strcmp(policy_name, "GRADBALD")
        % information gain of marginal effects
@@ -115,14 +115,13 @@ for iter=1:ITERATIONS
             end   
        end
        
-       [~,idx_cur]=maxk(IG_g,BATCH_SIZE);
-       % idx_cur = softmax(IG_g, BATCH_SIZE);
+       % [~,idx_cur]=maxk(IG_g,BATCH_SIZE);
+       idx_cur = softmax(IG_g, BATCH_SIZE);
        idx_cur = idx_other(idx_cur);
    end
    
    % append new acquisition to dataset
    idx_selected = [idx_selected, idx_cur];
-   disp(idx_cur);
    train_x = x_pop(idx_selected,:);
    train_y = y_pop(idx_selected,:);
    idx_other = setdiff(1:N, idx_selected);
@@ -134,7 +133,6 @@ for iter=1:ITERATIONS
        results = save_results(HYP, n_gauss_hermite,...
            train_x, train_y, x_pop, raw_x, BIN, dgp_effects,...
            data_name, policy_name);
-      %(idx_selected,:)
    end
 end
 
@@ -173,10 +171,11 @@ end
 
 function idx_cur = softmax(IG, BATCH_SIZE)
     p = exp(IG)./sum(exp(IG));
-    p_cdf = cumsum(p);
+    p_cdf = [0; cumsum(p)];
     idx_cur = zeros(BATCH_SIZE,1);
     for i=1:BATCH_SIZE
-        idx_cur(i) = sum(p_cdf<=rand());
+        r = rand;
+        idx_cur(i) = find(r>p_cdf, 1, 'last');
     end
     idx_cur = sort(idx_cur);
 end
