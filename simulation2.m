@@ -146,7 +146,7 @@ function results = save_results(HYP, n_gauss_hermite,...
     data_name, policy_name)
 % estimate marginal effects with selected data
 % build a gp preference learning model for grad
-    learn_HYP = 1;
+    learn_HYP = 0;
     test_x = x_pop; 
     gp_pref_grad;
 
