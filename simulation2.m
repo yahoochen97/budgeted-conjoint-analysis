@@ -45,6 +45,7 @@ test_x = x_pop(idx_other,:);
 % adaptively acquire new data as batches
 ITERATIONS = (TOTAL_SIZE-INIT_SIZE)/BATCH_SIZE;
 n_gauss_hermite = 10;
+epsilon = 0.1;
 
 for iter=1:ITERATIONS
    
@@ -52,7 +53,7 @@ for iter=1:ITERATIONS
    disp("search iter " + iter);
    
    % current gp model
-   learn_HYP = 1;
+   learn_HYP = 0;
    gp_pref_grad;
    if strcmp(policy_name, "UNIFORM")
        % randomization policy
@@ -63,20 +64,23 @@ for iter=1:ITERATIONS
        C = sqrt(pi*log(2)/2);
        IG_p = -ps.*log2(ps) - (1-ps).*log2(1-ps) - ...
             C./sqrt(C^2+fs2).*exp(-fmu.^2./(C^2+fs2)/2);
-       [~,idx_cur]=maxk(IG_p,BATCH_SIZE);
+       % [~,idx_cur]=maxk(IG_p,BATCH_SIZE);
        % idx_cur = softmax(IG_p, BATCH_SIZE);
+       idx_cur = epsilon_greedy(IG_p, BATCH_SIZE, epsilon);
        idx_cur = idx_other(idx_cur);
    elseif strcmp(policy_name, "US")
        % maximize uncertainty for latent utility
        U_f = arrayfun(@(i)det(squeeze(df_K(i,:,:))),1:size(test_x,1));
        % idx_cur = softmax(U_f, BATCH_SIZE);
-       [~,idx_cur]=maxk(U_f,BATCH_SIZE);
+       % [~,idx_cur]=maxk(U_f,BATCH_SIZE);
+       idx_cur = epsilon_greedy(U_f, BATCH_SIZE, epsilon);
        idx_cur = idx_other(idx_cur);
    elseif strcmp(policy_name, "GRADUS")
        % maximize uncertainty for marginal effect
        U_g = sum(sigma_GMM_avg,2);
-       [~,idx_cur]=maxk(U_g,BATCH_SIZE);
+       % [~,idx_cur]=maxk(U_g,BATCH_SIZE);
        % idx_cur = softmax(U_g, BATCH_SIZE);
+       idx_cur = epsilon_greedy(U_g, BATCH_SIZE, epsilon);
        idx_cur = idx_other(idx_cur);
    elseif strcmp(policy_name, "GRADBALD")
        % information gain of marginal effects
@@ -115,8 +119,9 @@ for iter=1:ITERATIONS
             end   
        end
        
-       [~,idx_cur]=maxk(IG_g,BATCH_SIZE);
+       % [~,idx_cur]=maxk(IG_g,BATCH_SIZE);
        % idx_cur = softmax(IG_g, BATCH_SIZE);
+       idx_cur = epsilon_greedy(IG_g, BATCH_SIZE, epsilon);
        idx_cur = idx_other(idx_cur);
    end
    
@@ -178,4 +183,13 @@ function idx_cur = softmax(IG, BATCH_SIZE)
         idx_cur(i) = find(r>p_cdf, 1, 'last');
     end
     idx_cur = sort(idx_cur);
+end
+
+function idx_cur = epsilon_greedy(IG, BATCH_SIZE, epsilon)
+    r = rand;
+    if r>=epsilon
+        [~,idx_cur]=maxk(IG,BATCH_SIZE);
+    else
+       idx_cur = policy_uniform(1:size(IG), BATCH_SIZE); 
+    end
 end
