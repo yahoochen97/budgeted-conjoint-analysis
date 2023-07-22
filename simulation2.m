@@ -2,7 +2,7 @@ if ~exist('SEED','var')
     % simulation settings
     SEED = 21;
     data_name = "Friedman";
-    policy_name = "BALD";
+    policy_name = "GRADBALD";
     N = 1000;
     TOTAL_SIZE=200;
     test_anchor = 0;
@@ -52,7 +52,7 @@ for iter=1:ITERATIONS
    disp("search iter " + iter);
    
    % current gp model
-   learn_HYP = 0;
+   learn_HYP = 1;
    gp_pref_grad;
    if strcmp(policy_name, "UNIFORM")
        % randomization policy
@@ -63,20 +63,20 @@ for iter=1:ITERATIONS
        C = sqrt(pi*log(2)/2);
        IG_p = -ps.*log2(ps) - (1-ps).*log2(1-ps) - ...
             C./sqrt(C^2+fs2).*exp(-fmu.^2./(C^2+fs2)/2);
-       % [~,idx_cur]=maxk(IG_p,BATCH_SIZE);
-       idx_cur = softmax(IG_p, BATCH_SIZE);
+       [~,idx_cur]=maxk(IG_p,BATCH_SIZE);
+       % idx_cur = softmax(IG_p, BATCH_SIZE);
        idx_cur = idx_other(idx_cur);
    elseif strcmp(policy_name, "US")
        % maximize uncertainty for latent utility
        U_f = arrayfun(@(i)det(squeeze(df_K(i,:,:))),1:size(test_x,1));
-       idx_cur = softmax(U_f, BATCH_SIZE);
-       % [~,idx_cur]=maxk(U_f,BATCH_SIZE);
+       % idx_cur = softmax(U_f, BATCH_SIZE);
+       [~,idx_cur]=maxk(U_f,BATCH_SIZE);
        idx_cur = idx_other(idx_cur);
    elseif strcmp(policy_name, "GRADUS")
        % maximize uncertainty for marginal effect
        U_g = sum(sigma_GMM_avg,2);
-       % [~,idx_cur]=maxk(U_g,BATCH_SIZE);
-       idx_cur = softmax(U_g, BATCH_SIZE);
+       [~,idx_cur]=maxk(U_g,BATCH_SIZE);
+       % idx_cur = softmax(U_g, BATCH_SIZE);
        idx_cur = idx_other(idx_cur);
    elseif strcmp(policy_name, "GRADBALD")
        % information gain of marginal effects
@@ -115,8 +115,8 @@ for iter=1:ITERATIONS
             end   
        end
        
-       % [~,idx_cur]=maxk(IG_g,BATCH_SIZE);
-       idx_cur = softmax(IG_g, BATCH_SIZE);
+       [~,idx_cur]=maxk(IG_g,BATCH_SIZE);
+       % idx_cur = softmax(IG_g, BATCH_SIZE);
        idx_cur = idx_other(idx_cur);
    end
    
