@@ -8,7 +8,7 @@ sys.path.append("./utility")
 
 DATA_NAMES = ["twoDplane", "Friedman"]
 N = 1000
-TOTAL_SIZES = [25*i+25 for i in range(6)]
+TOTAL_SIZES = [25*i+25 for i in range(8)]
 MEASURES = ["RMSE","COVERAGE","LL"]
 
 def main(args):

@@ -21,7 +21,7 @@ function [y, p, f, df, dy] = Friedman(pair_x)
     f = 10*sin(pi*x(:,1).*x(:,2)) + 20*(x(:,3)-0.5).^2;
     f1 = f(1:n); f2 = f((n+1):end);
     f = [f1,f2];
-    p = normcdf((f1-f2)/1);
+    p = normcdf((f1-f2)/0.2);
     y = 2*arrayfun(@(x) binornd(1,x),p)-1; % y in {-1,1}
     
     df = zeros(2*n,size(x1,2)); % df/dx evaluated at x
