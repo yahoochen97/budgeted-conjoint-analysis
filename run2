@@ -6,7 +6,7 @@ mkdir -p log2
 MAXSEED=25
 declare -a data_names=("twoDplane" "Friedman")
 N=1000
-declare -a TOTAL_SIZES=(300)
+declare -a TOTAL_SIZES=(150)
 declare -a policy_names=("UNIFORM" "BALD" "GRADBALD" "US" "GRADUS")
 
 if [ $1 = "run" ]
