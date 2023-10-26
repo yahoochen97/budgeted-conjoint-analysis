@@ -4,7 +4,7 @@ if ~exist('SEED','var')
     data_name = "Friedman";
     policy_name = "GRADBALD";
     N = 1000;
-    TOTAL_SIZE=150;
+    TOTAL_SIZE=250;
     test_anchor = 0;
 end
 
@@ -33,7 +33,7 @@ BIN=10; D = size(train_x,2)/2;
 % dgp_effects = reshape(dgp_dy(:,1:D), [N*D 1]);
 
 % initial batch is complete randomization
-INIT_SIZE = 5;
+INIT_SIZE = 100;
 idx_selected = [];
 idx_cur = policy_uniform(1:N, INIT_SIZE);
 idx_selected = [idx_selected, idx_cur];
