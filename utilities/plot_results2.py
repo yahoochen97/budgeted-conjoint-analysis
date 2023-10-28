@@ -71,7 +71,8 @@ def main(args):
                 bplots.append(bplot)
             ax[i,m].set_xticks(4+4*np.arange(len(TOTAL_SIZES)))
             ax[i,m].set_xticklabels(TOTAL_SIZES)
-            ax[i,m].spines[['right', 'top']].set_visible(False)
+            ax[i,m].spines['top'].set_visible(False)
+            ax[i,m].spines['right'].set_visible(False)
             ax[i,m].tick_params(left=False, bottom=False)
             ax[i,m].grid(axis='y', color='gray', linestyle='dashed', linewidth=1)
             if i==0 and m==0:
