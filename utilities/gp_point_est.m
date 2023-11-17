@@ -33,8 +33,8 @@ function [gp_point_mu,gp_point_std]=gp_point_est(BIN,raw_x,dy_mu,dy_std)
                 gp_point_mu = [gp_point_mu, (mean(tmp1))/1];
                 tmp3 = dy_std(raw_x(:,j)>=lb & raw_x(:,j)<mb, j);
                 tmp4 = dy_std(raw_x(:,j)>=mb & raw_x(:,j)<ub, j);
-                v1 =  var(tmp1)/numel(tmp1) + mean(tmp3.^2)/numel(tmp3); 
-                v2 =  var(tmp2)/numel(tmp2) + mean(tmp4.^2)/numel(tmp4);
+                v1 = var(tmp1)/numel(tmp1) + mean(tmp3.^2)/numel(tmp3); 
+                v2 = var(tmp2)/numel(tmp2) + mean(tmp4.^2)/numel(tmp4);
                 gp_point_std = [gp_point_std, sqrt(v1)];
             end
         end

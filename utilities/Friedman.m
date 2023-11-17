@@ -18,20 +18,20 @@ function [y, p, f, df, dy] = Friedman(pair_x)
     x1 = pair_x(:,1:end/2); x2 = pair_x(:,1+end/2:end);
     x = [x1;x2]; % turn horizontal (x1,x2) pairs to vertical [x1;x2] 
     n = size(x1,1);
-    f = 10*sin(pi*x(:,1).*x(:,2)) + 20*(x(:,3)-0.5).^2;
+    f = sin(pi*x(:,1).*x(:,2)) + 2*(x(:,3)-0.5).^2;
     f1 = f(1:n); f2 = f((n+1):end);
     f = [f1,f2];
-    p = normcdf((f1-f2)/0.2);
+    p = normcdf((f1-f2));
     y = 2*arrayfun(@(x) binornd(1,x),p)-1; % y in {-1,1}
     
     df = zeros(2*n,size(x1,2)); % df/dx evaluated at x
-    df(:,1) = 10*cos(pi*x(:,1).*x(:,2)).*x(:,2)*pi;
-    df(:,2) = 10*cos(pi*x(:,1).*x(:,2)).*x(:,1)*pi;
-    df(:,3) = 40*(x(:,3)-0.5);
+    df(:,1) = cos(pi*x(:,1).*x(:,2)).*x(:,2)*pi;
+    df(:,2) = cos(pi*x(:,1).*x(:,2)).*x(:,1)*pi;
+    df(:,3) = 4*(x(:,3)-0.5);
     df1 = df(1:n,:); df2 = df((n+1):end,:);
     df = [df1,df2];
     
     % gradient of prob
-    dy = [df1.*normpdf((f1-f2)/1), df2.*normpdf((f1-f2)/1)];
+    dy = [df1.*normpdf((f1-f2)/1), -df2.*normpdf((f1-f2)/1)];
     dy = round(dy,4);
 end

@@ -26,19 +26,19 @@ function [y, p, f, df, dy] = twoDplane(pair_x)
     f = f + 2*x(:,1);
     f1 = f(1:n); f2 = f((n+1):end);
     f = [f1,f2];
-    p = normcdf((f1-f2)/0.2);
+    p = normcdf((f1-f2));
     y = 2*arrayfun(@(x) binornd(1,x),p)-1; % y in {-1,1}
     
     df = zeros(2*n,size(x1,2)); % df/dx evaluated at x
     df(:,1) = 2;
     df(x(:,1)==1,2:3) = 2;
     df(x(:,1)==1,4:5) = -1;
-    df(x(:,1)==1,6:7) = 1;
+    df(x(:,1)==0,6:7) = 1;
     df(x(:,1)==0,8:9) = -2;
     df1 = df(1:n,:); df2 = df((n+1):end,:);
     df = [df1,df2];
     
     % gradient of prob
-    dy = [df1.*normpdf((f1-f2)/1), df2.*normpdf((f1-f2)/1)];
+    dy = [df1.*normpdf((f1-f2)/1), -df2.*normpdf((f1-f2)/1)];
     dy = round(dy,4);
 end

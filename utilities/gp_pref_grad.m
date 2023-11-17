@@ -16,8 +16,12 @@ end
 if strcmp(data_name,"twoDplane")
     prior.cov{D+1} = {@priorDelta};
     hyp.cov(end) = log(5);
-    inffunc = {@infPrior, @infLaplace, prior};
+    inffunc = {@infPrior, @infEP, prior};
 elseif strcmp(data_name,"Friedman")
+    prior.cov{D+1} = {@priorTransform,@exp,@exp,@log,{@priorInvGauss,2,4}};
+    inffunc = {@infPrior, @infEP, prior};
+else
+    % application
     prior.cov{D+1} = {@priorTransform,@exp,@exp,@log,{@priorInvGauss,2,4}};
     inffunc = {@infPrior, @infEP, prior};
 end

@@ -2,10 +2,6 @@
 #BSUB -n 1
 #BSUB -R "span[hosts=1]"
 
-mkdir -p /export/cluster-tmp/chenyehu
-export TMPDIR=/export/cluster-tmp/chenyehu
-
-
 SEED=$1
 data_name=$2
 N=$3

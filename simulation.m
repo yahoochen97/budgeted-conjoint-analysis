@@ -1,7 +1,7 @@
 if ~exist('SEED','var')
     % simulation settings
     SEED = 1;
-    data_name = "twoDplane";
+    data_name = "Friedman";
     N = 100;
     test_anchor = 0;
 end
@@ -25,10 +25,13 @@ simulate_data;
 % difference-in-mean estimator with complete independent assumption
 BIN=10;
 diff_in_mean;
+D = (size(train_x,2))/2;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % dgp effect
-[dgp_effects,~]=gp_point_est(BIN,raw_x,dgp_dy,dgp_dy.*0);
+% [dgp_effects,~]=gp_point_est(BIN,raw_x,dgp_dy,dgp_dy.*0);
+[dgp_effects,~]=gp_AMCE(dgp_dy,dgp_dy*0,data_name, train_x);
+% dgp_effects = mean(dgp_dy(:,1:D));
 
 % build a gp preference learning model for grad
 learn_HYP = 1;
@@ -37,16 +40,19 @@ gp_pref_grad;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % gp preference learning point estimation effect
-[gp_point_mu,gp_point_std]=gp_point_est(BIN,raw_x,dy_mu,dy_std);
-
+% [gp_point_mu,gp_point_std]=gp_point_est(BIN,raw_x,dy_mu,dy_std);
+% gp_point_mu = mean(dy_mu(:,1:D));
+% gp_point_std = sqrt(sum(dy_std(:,1:D).^2))./N;
+[gp_point_mu,gp_point_std] = gp_AMCE(dy_mu,dy_std,data_name,train_x);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % gp preference learning GMM effect
-[gp_GMM_mu,gp_GMM_std]=gp_point_est(BIN,raw_x,mu_GMM_avg,sigma_GMM_avg);
-
+% [gp_GMM_mu,gp_GMM_std]=gp_point_est(BIN,raw_x,mu_GMM_avg,sigma_GMM_avg);
+% gp_GMM_mu = mean(mu_GMM_avg(:,1:D));
+% gp_GMM_mu= sqrt(sum(sigma_GMM_avg(:,1:D).^2))./N;
+[gp_GMM_mu,gp_GMM_std] = gp_AMCE(mu_GMM_avg,sigma_GMM_avg,data_name,train_x);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-D = numel(dim_mu);
 results = array2table(zeros(3*D,3),'VariableNames',...
     {'mean','std','effect'});
 results.model = cell(3*D,1);
