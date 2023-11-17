@@ -5,7 +5,7 @@ meanfunc = {@meanZero};
 covfunc = {@covPref, {@covSEard}};             
 likfunc = {@likErf};
 hyp.mean = [];
-hyp.cov = [zeros(D,1);log(3)];
+hyp.cov = [zeros(D,1);log(5)];
 
 % assign prior for length scales
 for i=1:D
@@ -13,18 +13,17 @@ for i=1:D
 end
 
 % output scale
-if strcmp(data_name,"twoDplane")
-    prior.cov{D+1} = {@priorDelta};
-    hyp.cov(end) = log(5);
-    inffunc = {@infPrior, @infEP, prior};
-elseif strcmp(data_name,"Friedman")
-    prior.cov{D+1} = {@priorTransform,@exp,@exp,@log,{@priorInvGauss,2,4}};
-    inffunc = {@infPrior, @infEP, prior};
-else
-    % application
-    prior.cov{D+1} = {@priorTransform,@exp,@exp,@log,{@priorInvGauss,2,4}};
-    inffunc = {@infPrior, @infEP, prior};
-end
+prior.cov{D+1} = {@priorDelta};
+hyp.cov(end) = log(5);
+inffunc = {@infPrior, @infEP, prior};
+% elseif strcmp(data_name,"Friedman")
+%     prior.cov{D+1} = {@priorTransform,@exp,@exp,@log,{@priorInvGauss,2,4}};
+%     inffunc = {@infPrior, @infEP, prior};
+% else
+%     % application
+%     prior.cov{D+1} = {@priorTransform,@exp,@exp,@log,{@priorInvGauss,2,4}};
+%     inffunc = {@infPrior, @infEP, prior};
+% end
 
 
 p.method = 'LBFGS';
