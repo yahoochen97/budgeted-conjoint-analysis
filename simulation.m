@@ -53,6 +53,7 @@ gp_pref_grad;
 [gp_GMM_mu,gp_GMM_std] = gp_AMCE(mu_GMM_avg,sigma_GMM_avg,data_name,train_x);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+D = numel(dim_mu);
 results = array2table(zeros(3*D,3),'VariableNames',...
     {'mean','std','effect'});
 results.model = cell(3*D,1);
