@@ -6,7 +6,6 @@ MAXSEED=25
 declare -a data_names=("twoDplane" "Friedman")
 declare -a NS=(100 200 300 400 500 600)
 declare -a TAs=(0)
-declare -a data_names=("Friedman")
 
 if [ $1 = "run" ]
 then
@@ -21,5 +20,5 @@ then
     done
 elif [ $1 = "summary" ]
 then
-    python utilities/plot_results.py -s $MAXSEED
+    python utilities/plot_results.py -s $MAXSEED -t 0
 fi

@@ -4,7 +4,7 @@ if ~exist('SEED','var')
     data_name = "Friedman";
     policy_name = "GRADBALD";
     N = 1000;
-    TOTAL_SIZE=250;
+    TOTAL_SIZE=200;
     test_anchor = 1;
 end
 
@@ -28,11 +28,11 @@ y_pop = train_y;
 
 % true dgp effect with whole population
 BIN=10; D = size(train_x,2)/2;
-[dgp_effects,~]=gp_point_est(BIN,raw_x,dgp_dy,dgp_dy.*0);
-% dgp_effects = reshape(dgp_dy(:,1:D), [N*D 1]);
+% [dgp_effects,~]=gp_point_est(BIN,raw_x,dgp_dy,dgp_dy.*0);
+[dgp_effects,~]=gp_AMCE(dgp_dy,dgp_dy*0,data_name, train_x);
 
 % initial batch is complete randomization
-INIT_SIZE = 100;
+INIT_SIZE = 50;
 idx_selected = [];
 idx_cur = policy_uniform(1:N, INIT_SIZE);
 idx_selected = [idx_selected, idx_cur];
@@ -87,7 +87,7 @@ for iter=1:ITERATIONS
        C = sqrt(pi*log(2)/2);
        IG_p = -ps.*log2(ps) - (1-ps).*log2(1-ps) - ...
             C./sqrt(C^2+fs2).*exp(-fmu.^2./(C^2+fs2)/2);
-       if 0:% iter<=(ITERATION/2)
+       if 0 % iter<=(ITERATION/2)
            idx_cur = epsilon_greedy(IG_p, BATCH_SIZE, epsilon);
            idx_cur = idx_other(idx_cur);
        else
@@ -158,7 +158,9 @@ function results = save_results(HYP, n_gauss_hermite,...
     gp_pref_grad;
 
     % gp preference learning GMM effect
-    [gp_GMM_mu,gp_GMM_std]=gp_point_est(BIN,raw_x,mu_GMM_avg,sigma_GMM_avg);
+%     [gp_GMM_mu,gp_GMM_std]=gp_point_est(BIN,raw_x,mu_GMM_avg,sigma_GMM_avg);
+    
+    [gp_GMM_mu,gp_GMM_std]=gp_AMCE(mu_GMM_avg,sigma_GMM_avg,data_name, train_x);
     % D = size(train_x,2)/2; N = size(test_x,1);
     % gp_GMM_mu = reshape(mu_GMM_avg, [N*D 1]);
     % gp_GMM_std = reshape(sigma_GMM_avg, [N*D 1]);
