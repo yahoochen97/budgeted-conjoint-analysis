@@ -5,7 +5,7 @@ import sys
 import matplotlib.pyplot as plt
 sys.path.append("./utility")
 
-DATA_NAMES = ["2Dplane", "Friedman"]
+DATA_NAMES = ["twoDplane", "Friedman"]
 NS = [100, 200, 300, 400, 500, 600]
 MEASURES = ["RMSE","COVERAGE","LL"]
 
