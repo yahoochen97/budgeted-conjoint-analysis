@@ -10,7 +10,7 @@ function [gp_mu,gp_std]=gp_AMCE(dy_mu,dy_std, data_name, train_x)
     for j=1:d
         if strcmp(data_name,"twoDplane")
             gp_mu = [gp_mu, mean(dy_mu(:,j))];
-            gp_std = [gp_std, sqrt(sum(dy_std(:,j).^2))./N];
+            gp_std = [gp_std, sqrt(mean(dy_std(:,j).^2))];
         else
             for k=1:(BIN-1)
                 lb = (k-1)/BIN; mb = (k-0)/BIN; ub = (k+1)/BIN;
