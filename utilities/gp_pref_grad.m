@@ -9,12 +9,12 @@ hyp.cov = [zeros(D,1);log(max(var(dgp_f)))];
 
 % assign prior for length scales
 for i=1:D
-    prior.cov{i} = {@priorTransform,@exp,@exp,@log,{@priorInvGauss,1,10}};
+    prior.cov{i} = {@priorTransform,@exp,@exp,@log,{@priorInvGauss,1,2}};
 end
 
 % output scale
-prior.cov{D+1} = {@priorDelta};
-% prior.cov{D+1} = {@priorTransform,@exp,@exp,@log,{@priorInvGauss,2,4}};
+% prior.cov{D+1} = {@priorDelta};
+prior.cov{D+1} = {@priorTransform,@exp,@exp,@log,{@priorInvGauss,3,1}};
 % if strcmp(data_name,"twoDplane")
 %     prior.cov{D+1} = {@priorDelta};
 %     hyp.cov(end) = log(3);
