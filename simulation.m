@@ -62,6 +62,8 @@ gp_pref_grad;
 % gp_GMM_mu= sqrt(sum(sigma_GMM_avg(:,1:D).^2))./N;
 [gp_GMM_mu,gp_GMM_std] = gp_AMCE(mu_GMM_avg,sigma_GMM_avg,data_name,train_x);
 
+disp(mean((dgp_effects>=gp_GMM_mu-2*gp_GMM_std) & (dgp_effects<=gp_GMM_mu+2*gp_GMM_std)));
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 D = numel(dim_mu);
 results = array2table(zeros(3*D,3),'VariableNames',...

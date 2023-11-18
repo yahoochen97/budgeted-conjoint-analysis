@@ -5,7 +5,7 @@ meanfunc = {@meanZero};
 covfunc = {@covPref, {@covSEard}};             
 likfunc = {@likErf};
 hyp.mean = [];
-hyp.cov = [zeros(D,1);log(3)];
+hyp.cov = [zeros(D,1);log(max(var(dgp_f)))];
 
 % assign prior for length scales
 for i=1:D
@@ -13,11 +13,12 @@ for i=1:D
 end
 
 % output scale
-prior.cov{D+1} = {@priorTransform,@exp,@exp,@log,{@priorInvGauss,2,4}};
-if strcmp(data_name,"twoDplane")
-    prior.cov{D+1} = {@priorDelta};
-    hyp.cov(end) = log(4);
-end
+prior.cov{D+1} = {@priorDelta};
+% prior.cov{D+1} = {@priorTransform,@exp,@exp,@log,{@priorInvGauss,2,4}};
+% if strcmp(data_name,"twoDplane")
+%     prior.cov{D+1} = {@priorDelta};
+%     hyp.cov(end) = log(3);
+% end
 inffunc = {@infPrior, @infEP, prior};
 % elseif strcmp(data_name,"Friedman")
 %     prior.cov{D+1} = {@priorTransform,@exp,@exp,@log,{@priorInvGauss,2,4}};
