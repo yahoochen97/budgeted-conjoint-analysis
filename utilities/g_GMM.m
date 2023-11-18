@@ -13,7 +13,10 @@ function [mu_GMM_avg,sigma_GMM_avg, mu_GMM,sigma_GMM, dy_mu, dy_std, df_mu, df_K
     dK = dcovPref(covfunc{2},hyp,test_x,train_x);
     df_mu = zeros(size(test_x,1),D);
     for j=1:D
-        df_mu(:,j) =  dK(:,:,j)*post.alpha;
+        df_mu(:,j) = dK(:,:,j)*post.alpha;
+%         if strcmp(functions(meanfunc{1}).function,'meanLinear')
+%             df_mu(:,j) = df_mu(:,j) + hyp.mean(j);
+%         end
     end
 
     d2K = d2covPref(covfunc{2},hyp,test_x,test_x);

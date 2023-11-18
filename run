@@ -6,7 +6,6 @@ MAXSEED=25
 declare -a data_names=("twoDplane" "Friedman")
 declare -a NS=(100 200 300 400 500 600)
 declare -a TAs=(0)
-declare -a data_names=("twoDplane")
 
 if [ $1 = "run" ]
 then
