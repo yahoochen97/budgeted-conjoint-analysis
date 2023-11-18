@@ -2,7 +2,7 @@ if ~exist('SEED','var')
     % simulation settings
     SEED = 10;
     data_name = "twoDplane";
-    N = 100;
+    N = 600;
     test_anchor = 0;
 end
 
@@ -66,7 +66,7 @@ gp_point_std = reshape(dy_std,1,[]);
 % gp_GMM_mu = mean(mu_GMM_avg(:,1:D));
 % gp_GMM_mu= sqrt(sum(sigma_GMM_avg(:,1:D).^2))./N;
 [gp_GMM_mu,gp_GMM_std] = gp_AMCE(mu_GMM_avg,sigma_GMM_avg,data_name,train_x);
-disp(mean((dgp_effects>=gp_GMM_mu-2*gp_GMM_std) & (dgp_effects<=gp_GMM_mu+2*gp_GMM_std)));
+% disp(mean((dgp_effects>=gp_GMM_mu-2*gp_GMM_std) & (dgp_effects<=gp_GMM_mu+2*gp_GMM_std)));
 gp_GMM_mu = reshape(mu_GMM_avg,1,[]);
 gp_GMM_std = reshape(sigma_GMM_avg, 1,[]);
 
