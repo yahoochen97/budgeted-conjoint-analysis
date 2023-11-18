@@ -37,11 +37,11 @@ def main(args):
                         results[3,i,j,k,SEED-1] = LL
                         continue
 
-                    if k > 0:
-                        bias = np.mean(true_effect) - np.mean(est_mu)
-                        ratio = np.std(true_effect) / np.std(est_mu)
-                        est_mu = (est_mu + bias) * ratio
-                        est_std = (est_std + bias) * ratio
+                    # if k > 0:
+                    #     bias = np.mean(true_effect) - np.mean(est_mu)
+                    #     ratio = np.std(true_effect) / np.std(est_mu)
+                    #     est_mu = (est_mu + bias) * ratio
+                    #     est_std = (est_std + bias) * ratio
                     
                     RMSE = np.sqrt(np.mean((est_mu-true_effect)**2))
                     CORRELATION = np.corrcoef(est_mu, true_effect)[0,1]
