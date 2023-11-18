@@ -18,6 +18,16 @@ FONTSIZE=16;
 
 rng(12345+SEED);
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% dgp effect
+% use very large N
+% N_exp = N;
+% N = 10000;
+% simulate_data;
+% diff_in_mean;
+% dgp_effects = dim_mu;
+% N = N_exp;
+
 % simulate profile data
 simulate_data;
 
@@ -28,9 +38,9 @@ diff_in_mean;
 D = (size(train_x,2))/2;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% dgp effect
+% dgp effects
+[dgp_effects,~]=gp_AMCE(dgp_dy, dgp_dy*0, data_name, train_x);
 % [dgp_effects,~]=gp_point_est(BIN,raw_x,dgp_dy,dgp_dy.*0);
-[dgp_effects,~]=gp_AMCE(dgp_dy,dgp_dy*0,data_name, train_x);
 % dgp_effects = mean(dgp_dy(:,1:D));
 
 % build a gp preference learning model for grad
