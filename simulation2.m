@@ -1,11 +1,11 @@
 if ~exist('SEED','var')
     % simulation settings
-    SEED = 21;
+    SEED = 10;
     data_name = "Friedman";
     policy_name = "GRADBALD";
     N = 1000;
     TOTAL_SIZE=200;
-    test_anchor = 1;
+    test_anchor = 0;
 end
 
 maxNumCompThreads(1);
@@ -52,7 +52,7 @@ for iter=1:ITERATIONS
    disp("search iter " + iter);
    
    % current gp model
-   learn_HYP = 1;
+   learn_HYP = 0;
    gp_pref_grad;
    if strcmp(policy_name, "UNIFORM")
        % randomization policy
@@ -153,7 +153,7 @@ function results = save_results(HYP, n_gauss_hermite,...
     data_name, policy_name)
 % estimate marginal effects with selected data
 % build a gp preference learning model for grad
-    learn_HYP = 1;
+    learn_HYP = 0;
     test_x = x_pop; 
     gp_pref_grad;
 

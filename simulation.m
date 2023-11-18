@@ -1,8 +1,8 @@
 if ~exist('SEED','var')
     % simulation settings
-    SEED = 1;
+    SEED = 10;
     data_name = "Friedman";
-    N = 100;
+    N = 600;
     test_anchor = 0;
 end
 
