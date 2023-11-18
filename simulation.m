@@ -62,6 +62,12 @@ gp_pref_grad;
 % gp_GMM_mu= sqrt(sum(sigma_GMM_avg(:,1:D).^2))./N;
 [gp_GMM_mu,gp_GMM_std] = gp_AMCE(mu_GMM_avg,sigma_GMM_avg,data_name,train_x);
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ratio = std(dgp_effects)/std(gp_GMM_mu);
+gp_GMM_mu = gp_GMM_mu * ratio;
+gp_GMM_std = gp_GMM_std * ratio;
+gp_point_mu = gp_point_mu * ratio;
+gp_point_std = gp_point_std * ratio;
 disp(mean((dgp_effects>=gp_GMM_mu-2*gp_GMM_std) & (dgp_effects<=gp_GMM_mu+2*gp_GMM_std)));
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
