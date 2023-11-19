@@ -49,7 +49,7 @@ def main(args):
     
     MODELS = ["lm", "diff-in-mean", "gp-GMM-1", "gp_GMM-10"]
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 8), dpi=100)
-    colors = ["khaki","limegreen", "red", "blue"]
+    colors = ["darkkhaki","limegreen", "red", "blue"]
     for i in range(len(DATA_NAMES)):
         for m in range(len(MEASURES)):
             if i==0:
