@@ -2,7 +2,7 @@ if ~exist('SEED','var')
     % simulation settings
     SEED = 10;
     data_name = "Friedman";
-    N = 100;
+    N = 600;
     test_anchor = 0;
 end
 
@@ -33,7 +33,7 @@ simulate_data;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % difference-in-mean estimator with complete independent assumption
-BIN=2;
+BIN=11;
 diff_in_mean;
 D = (size(train_x,2))/2;
 % dim_mu = repmat(dim_mu',N,1)';
@@ -42,7 +42,7 @@ D = (size(train_x,2))/2;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % dgp effects
 [dgp_effects,~]=gp_AMCE(dgp_dy, dgp_dy*0, data_name, train_x);
-dgp_effects = mean(dgp_dy(:,1:D));
+% dgp_effects = mean(dgp_dy(:,1:D));
 % [dgp_effects,~]=gp_point_est(BIN,raw_x,dgp_dy,dgp_dy.*0);
 % dgp_effects = mean(dgp_dy(:,1:D));
 
@@ -57,8 +57,8 @@ gp_pref_grad;
 % gp_point_mu = mean(dy_mu(:,1:D));
 % gp_point_std = sqrt(sum(dy_std(:,1:D).^2))./N;
 [gp_point_mu,gp_point_std] = gp_AMCE(dy_mu,dy_std,data_name,train_x);
-gp_point_mu = mean(dy_mu);
-gp_point_std = sqrt(mean(dy_std.^2));
+% gp_point_mu = mean(dy_mu);
+% gp_point_std = sqrt(mean(dy_std.^2));
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % gp preference learning GMM effect
@@ -66,9 +66,9 @@ gp_point_std = sqrt(mean(dy_std.^2));
 % gp_GMM_mu = mean(mu_GMM_avg(:,1:D));
 % gp_GMM_mu= sqrt(sum(sigma_GMM_avg(:,1:D).^2))./N;
 [gp_GMM_mu,gp_GMM_std] = gp_AMCE(mu_GMM_avg,sigma_GMM_avg,data_name,train_x);
-% disp(mean((dgp_effects>=gp_GMM_mu-2*gp_GMM_std) & (dgp_effects<=gp_GMM_mu+2*gp_GMM_std)));
-gp_GMM_mu = mean(mu_GMM_avg);
-gp_GMM_std = sqrt(mean(sigma_GMM_avg.^2));
+% gp_GMM_mu = mean(mu_GMM_avg);
+% gp_GMM_std = sqrt(mean(sigma_GMM_avg.^2));
+disp(mean((dgp_effects>=gp_GMM_mu-2*gp_GMM_std) & (dgp_effects<=gp_GMM_mu+2*gp_GMM_std)));
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 D = numel(dgp_effects);
