@@ -1,7 +1,7 @@
 if ~exist('SEED','var')
     % simulation settings
     SEED = 10;
-    data_name = "Friedman";
+    data_name = "twoDplane";
     N = 100;
     test_anchor = 0;
 end
@@ -52,6 +52,10 @@ linear_utilities;
 learn_HYP = 1;
 n_gauss_hermite = 10;
 gp_pref_grad;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% dgp effects
+[dgp_effects,~]=gp_AMCE(dgp_dy, dgp_dy*0, data_name, train_x);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % gp preference learning point estimation effect

@@ -19,8 +19,8 @@ for j=1:d
         % transform continuous to categorical
         for k=1:(BIN-1)
             lb = (k-1)/BIN; mb = (k-0)/BIN; ub = (k+1)/BIN;
-            tmp1 = train_y(raw_x(:,j)>=lb & raw_x(:,j)<mb);
-            tmp2 = train_y(raw_x(:,j)>=mb & raw_x(:,j)<ub);
+            tmp1 = (1+train_y(raw_x(:,j)>=lb & raw_x(:,j)<mb))/2;
+            tmp2 = (1+train_y(raw_x(:,j)>=mb & raw_x(:,j)<ub))/2;
             dim_mu = [dim_mu, (mean(tmp2)-mean(tmp1))];
 %             dim_std = [dim_std, sqrt(var(tmp1)/numel(tmp1)+var(tmp2)/numel(tmp2))];
             dim_std = [dim_std, block_bootstrap(n_bootstrap, tmp1, tmp2)];
