@@ -1,14 +1,14 @@
 D = (size(train_x,2))/2;
 w = zeros(D,1);
 % check grad 
-for i=1:D
-    jitter = zeros(D,1);
-    jitter(i) = 1e-6;
-    [ll1,g] = linear_utilites_ll(w, train_x, train_y);
-    [ll2,~] = linear_utilites_ll(w+jitter, train_x, train_y);
-    disp(g(i));
-    disp((ll2-ll1)/jitter(i));
-end
+% for i=1:D
+%     jitter = zeros(D,1);
+%     jitter(i) = 1e-6;
+%     [ll1,g] = linear_utilites_ll(w, train_x, train_y);
+%     [ll2,~] = linear_utilites_ll(w+jitter, train_x, train_y);
+%     disp(g(i));
+%     disp((ll2-ll1)/jitter(i));
+% end
 
 p.method = 'LBFGS';
 p.length = 100;
