@@ -21,12 +21,12 @@ rng(12345+SEED);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % dgp effect
 % use very large N
-% N_exp = N;
-% N = 10000;
-% simulate_data;
-% diff_in_mean;
-% dgp_effects = dim_mu;
-% N = N_exp;
+N_exp = N;
+N = 10000;
+simulate_data;
+% dgp effects
+[dgp_effects,~]=gp_AMCE(dgp_dy, dgp_dy*0, data_name, train_x);
+N = N_exp;
 
 % simulate profile data
 simulate_data;
@@ -40,8 +40,6 @@ D = (size(train_x,2))/2;
 % dim_std = repmat(dim_std',N,1)';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% dgp effects
-[dgp_effects,~]=gp_AMCE(dgp_dy, dgp_dy*0, data_name, train_x);
 % dgp_effects = mean(dgp_dy(:,1:D));
 % [dgp_effects,~]=gp_point_est(BIN,raw_x,dgp_dy,dgp_dy.*0);
 % dgp_effects = mean(dgp_dy(:,1:D));
