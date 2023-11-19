@@ -47,9 +47,9 @@ def main(args):
                     results[2,i,j,k,SEED-1] = COVERAGE
                     results[3,i,j,k,SEED-1] = LL
     
-    MODELS = ["diff-in-mean","lm", "gp-GMM-1", "gp_GMM-10"]
+    MODELS = ["lm", "diff-in-mean", "gp-GMM-1", "gp_GMM-10"]
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 8), dpi=100)
-    colors = ["limegreen","green", "red", "blue"]
+    colors = ["khaki","limegreen", "red", "blue"]
     for i in range(len(DATA_NAMES)):
         for m in range(len(MEASURES)):
             if i==0:
