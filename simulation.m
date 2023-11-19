@@ -2,7 +2,7 @@ if ~exist('SEED','var')
     % simulation settings
     SEED = 10;
     data_name = "Friedman";
-    N = 600;
+    N = 100;
     test_anchor = 0;
 end
 
@@ -21,12 +21,11 @@ rng(12345+SEED);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % dgp effect
 % use very large N
-N_exp = N;
-N = 10000;
-simulate_data;
-% dgp effects
-[dgp_effects,~]=gp_AMCE(dgp_dy, dgp_dy*0, data_name, train_x);
-N = N_exp;
+% N_exp = N;
+% N = 10000;
+% simulate_data;
+% [dgp_effects,~]=gp_AMCE(dgp_dy, dgp_dy*0, data_name, train_x);
+% N = N_exp;
 
 % simulate profile data
 simulate_data;
@@ -46,6 +45,7 @@ D = (size(train_x,2))/2;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % linear utility model / logistic regression
+linear_utilities;
 [lm_mu,lm_std] = gp_AMCE(lm_dy_mu,lm_dy_std,data_name,train_x);
 
 % build a gp preference learning model for grad
