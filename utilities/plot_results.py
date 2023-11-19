@@ -10,7 +10,7 @@ NS = [100, 200, 300, 400, 500, 600]
 MEASURES = ["RMSE","CORRELATION", "COVERAGE","LL"]
 
 def main(args):
-    MODELS = ["diffinmean", "gppoint", "gpGMM"]
+    MODELS = ["diffinmean","lm", "gppoint", "gpGMM"]
     MAXSEED = int(args["seed"])
     TA = int(args["TA"])
     
@@ -47,9 +47,9 @@ def main(args):
                     results[2,i,j,k,SEED-1] = COVERAGE
                     results[3,i,j,k,SEED-1] = LL
     
-    MODELS = ["diff-in-mean", "gp-GMM-1", "gp_GMM-10"]
+    MODELS = ["diff-in-mean","lm", "gp-GMM-1", "gp_GMM-10"]
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 8), dpi=100)
-    colors = ["limegreen", "red", "blue"]
+    colors = ["limegreen","green", "red", "blue"]
     for i in range(len(DATA_NAMES)):
         for m in range(len(MEASURES)):
             if i==0:
