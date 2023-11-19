@@ -3,6 +3,7 @@ function dK = dcovPref(cov, hyp, x, z, varargin)
 % dcovPref - covariance function 1st gradient for preference learning. 
 % The covariance function corresponds to a prior on f(x1) - f(x2).
 %
+% x = [x1;x2], z = [z1,z2]
 % k(x,z) = k_0(x1,z1) + k_0(x2,z2) - k_0(x1,z2) - k_0(x2,z1).
 %
 % dk(x,z)/dx1 = dk_0(x1,z1)/dx1 - dk_0(x1,z2)/dx1.

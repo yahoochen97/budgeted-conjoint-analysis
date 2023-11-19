@@ -2,7 +2,7 @@ if ~exist('SEED','var')
     % simulation settings
     SEED = 10;
     data_name = "twoDplane";
-    N = 100;
+    N = 300;
     test_anchor = 0;
 end
 
