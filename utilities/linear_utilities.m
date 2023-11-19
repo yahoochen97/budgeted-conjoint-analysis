@@ -1,6 +1,5 @@
 D = (size(train_x,2))/2;
 w = zeros(D,1);
-
 % check grad 
 for i=1:D
     jitter = zeros(D,1);
@@ -16,5 +15,6 @@ p.length = 100;
 w = minimize_v2(w, @linear_utilites_ll, p, train_x, train_y);
 
 lm_f = (train_x(:,1:D)-train_x(:,(D+1):end))*w;
-lm_dy_mu = w*normpdf(lm_f);
-lm_dy_std
+lm_dy_mu = (train_x(:,1:D)-train_x(:,(D+1):end)).*normpdf(lm_f);
+inv_V = inv((train_x(:,1:D)-train_x(:,(D+1):end))'*(train_x(:,1:D)-train_x(:,(D+1):end)));
+lm_dy_std = normpdf(lm_f)*diag(inv_V)';

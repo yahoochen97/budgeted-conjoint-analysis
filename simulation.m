@@ -44,6 +44,10 @@ D = (size(train_x,2))/2;
 % [dgp_effects,~]=gp_point_est(BIN,raw_x,dgp_dy,dgp_dy.*0);
 % dgp_effects = mean(dgp_dy(:,1:D));
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% linear utility model / logistic regression
+[lm_mu,lm_std] = gp_AMCE(lm_dy_mu,lm_dy_std,data_name,train_x);
+
 % build a gp preference learning model for grad
 learn_HYP = 1;
 n_gauss_hermite = 10;
@@ -70,9 +74,9 @@ disp(mean((dgp_effects>=gp_GMM_mu-2*gp_GMM_std) & (dgp_effects<=gp_GMM_mu+2*gp_G
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 D = numel(dgp_effects);
-results = array2table(zeros(3*D,3),'VariableNames',...
+results = array2table(zeros(4*D,3),'VariableNames',...
     {'mean','std','effect'});
-results.model = cell(3*D,1);
+results.model = cell(4*D,1);
 
 results(1:D,1) = num2cell(dim_mu)';
 results(1:D,2) = num2cell(dim_std)';
@@ -88,6 +92,12 @@ results((2*D+1):(3*D),1) = num2cell(gp_GMM_mu)';
 results((2*D+1):(3*D),2) = num2cell(gp_GMM_std)';
 results((2*D+1):(3*D),4) = {'gpGMM'};
 results((2*D+1):(3*D),3) = num2cell(dgp_effects)';
+
+
+results((3*D+1):(4*D),1) = num2cell(lm_mu)';
+results((3*D+1):(4*D),2) = num2cell(lm_std)';
+results((3*D+1):(4*D),4) = {'lm'};
+results((3*D+1):(4*D),3) = num2cell(dgp_effects)';
 
 % results.RMSE = abs(results.mean-results.effect);
 % upper = results.mean + 1.96*results.std;
