@@ -10,7 +10,7 @@ NS = [100, 200, 300, 400, 500, 600]
 MEASURES = ["RMSE","CORRELATION", "COVERAGE","LL"]
 
 def main(args):
-    MODELS = ["diffinmean","lm", "gppoint", "gpGMM"]
+    MODELS = ["lm", "diffinmean", "gppoint", "gpGMM"]
     MAXSEED = int(args["seed"])
     TA = int(args["TA"])
     
