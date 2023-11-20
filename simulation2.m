@@ -2,7 +2,7 @@ if ~exist('SEED','var')
     % simulation settings
     SEED = 10;
     data_name = "Friedman";
-    policy_name = "GRADBALD";
+    policy_name = "UNIFORM";
     N = 1000;
     TOTAL_SIZE=200;
     test_anchor = 0;
@@ -32,7 +32,7 @@ BIN=10; D = size(train_x,2)/2;
 [dgp_effects,~]=gp_AMCE(dgp_dy,dgp_dy*0,data_name, train_x);
 
 % initial batch is complete randomization
-INIT_SIZE = 50;
+INIT_SIZE = 25;
 idx_selected = [];
 idx_cur = policy_uniform(1:N, INIT_SIZE);
 idx_selected = [idx_selected, idx_cur];
@@ -52,7 +52,7 @@ for iter=1:ITERATIONS
    disp("search iter " + iter);
    
    % current gp model
-   learn_HYP = 0;
+   learn_HYP = 1;
    gp_pref_grad;
    if strcmp(policy_name, "UNIFORM")
        % randomization policy
@@ -144,16 +144,16 @@ for iter=1:ITERATIONS
        HYP = data_name + "_N" + int2str(N) + "_S" + int2str(numel(idx_selected)) + "_" + policy_name + "_SEED" + int2str(SEED);
        results = save_results(HYP, n_gauss_hermite,...
            train_x, train_y, x_pop, raw_x, BIN, dgp_effects,...
-           data_name, policy_name);
+           data_name, policy_name, dgp_f);
    end
 end
 
 function results = save_results(HYP, n_gauss_hermite,...
     train_x, train_y, x_pop, raw_x, BIN, dgp_effects,...
-    data_name, policy_name)
+    data_name, policy_name, dgp_f)
 % estimate marginal effects with selected data
 % build a gp preference learning model for grad
-    learn_HYP = 0;
+    learn_HYP = 1;
     test_x = x_pop; 
     gp_pref_grad;
 
