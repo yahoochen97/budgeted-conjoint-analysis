@@ -8,8 +8,8 @@ sys.path.append("./utility")
 
 DATA_NAMES = ["twoDplane", "Friedman"]
 N = 1000
-TOTAL_SIZES = [25*i+50 for i in range(7)]
-MEASURES = ["RMSE","COVERAGE","LL"]
+TOTAL_SIZES = [25*i+125 for i in range(6)]
+MEASURES = ["RMSE","CORRELATION", "COVERAGE","LL"]
 
 def main(args):
     MAXSEED = int(args["seed"])
@@ -31,10 +31,6 @@ def main(args):
                     est_mu = est_mu[flag]
                     est_std = est_std[flag]
                     true_effect = true_effect[flag]
-                    # ratio = np.std(true_effect)/np.std(est_mu)
-                    # est_mu = est_mu*ratio
-                    # est_std = est_std*ratio
-
                     if est_mu.shape[0]==0:
                         results[0,i,j,k,SEED-1] = RMSE
                         # results[1,i,j,k,SEED-1] = CORRELATION
@@ -48,9 +44,9 @@ def main(args):
                                                         true_effect<=(est_mu+1.96*est_std)))
                     LL = -np.log(2*np.pi) -np.mean(np.log(est_std**2)/2)-np.mean((est_mu-true_effect)**2/2/est_std**2)
                     results[0,i,j,k,SEED-1] = RMSE
-                    # results[1,i,j,k,SEED-1] = CORRELATION
-                    results[1,i,j,k,SEED-1] = COVERAGE
-                    results[2,i,j,k,SEED-1] = LL
+                    results[1,i,j,k,SEED-1] = CORRELATION
+                    results[2,i,j,k,SEED-1] = COVERAGE
+                    results[3,i,j,k,SEED-1] = LL
     
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 8), dpi=100)
     colors = ["forestgreen", "limegreen", "darkseagreen",  "blue","steelblue"]
