@@ -84,13 +84,6 @@ for iter=1:ITERATIONS
    elseif strcmp(policy_name, "GRADBALD")
        % information gain of marginal effects
        ps = normcdf(fmu./sqrt(1+fs2));
-       C = sqrt(pi*log(2)/2);
-       IG_p = -ps.*log2(ps) - (1-ps).*log2(1-ps) - ...
-            C./sqrt(C^2+fs2).*exp(-fmu.^2./(C^2+fs2)/2);
-       if 0 % iter<=(ITERATION/2)
-           idx_cur = epsilon_greedy(IG_p, BATCH_SIZE, epsilon);
-           idx_cur = idx_other(idx_cur);
-       else
        IG_g = -ps.*log2(ps) - (1-ps).*log2(1-ps);
        
        for k=1:size(test_x,1)
@@ -129,7 +122,6 @@ for iter=1:ITERATIONS
        % idx_cur = softmax(IG_g, BATCH_SIZE);
        idx_cur = epsilon_greedy(IG_g, BATCH_SIZE, epsilon);
        idx_cur = idx_other(idx_cur);
-       end
    end
    
    % append new acquisition to dataset
@@ -155,6 +147,7 @@ function results = save_results(HYP, n_gauss_hermite,...
 % build a gp preference learning model for grad
     learn_HYP = 0;
     test_x = x_pop; 
+    test_x = train_x;
     gp_pref_grad;
 
     % gp preference learning GMM effect
