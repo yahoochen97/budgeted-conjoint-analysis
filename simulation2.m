@@ -32,7 +32,7 @@ BIN=10; D = size(train_x,2)/2;
 [dgp_effects,~]=gp_AMCE(dgp_dy,dgp_dy*0,data_name, train_x);
 
 % initial batch is complete randomization
-INIT_SIZE = 100;
+INIT_SIZE = 50;
 idx_selected = [];
 idx_cur = policy_uniform(1:N, INIT_SIZE);
 idx_selected = [idx_selected, idx_cur];
@@ -52,7 +52,7 @@ for iter=1:ITERATIONS
    disp("search iter " + iter);
    
    % current gp model
-   learn_HYP = 0;
+   learn_HYP = 1;
    gp_pref_grad;
    if strcmp(policy_name, "UNIFORM")
        % randomization policy
@@ -131,8 +131,8 @@ for iter=1:ITERATIONS
    idx_other = setdiff(1:N, idx_selected);
    test_x = x_pop(idx_other,:);
    
-   % save results every 25 samples   
-   if mod(numel(idx_selected),25)==0
+   % save results every 50 samples   
+   if mod(numel(idx_selected),50)==0
        HYP = data_name + "_N" + int2str(N) + "_S" + int2str(numel(idx_selected)) + "_" + policy_name + "_SEED" + int2str(SEED);
        results = save_results(HYP, n_gauss_hermite,...
            train_x, train_y, x_pop, raw_x, BIN, dgp_effects,...
@@ -145,9 +145,8 @@ function results = save_results(HYP, n_gauss_hermite,...
     data_name, policy_name, dgp_f)
 % estimate marginal effects with selected data
 % build a gp preference learning model for grad
-    learn_HYP = 0;
-    test_x = x_pop; 
-    test_x = train_x;
+    learn_HYP = 1;
+    test_x = x_pop;
     gp_pref_grad;
 
     % gp preference learning GMM effect
