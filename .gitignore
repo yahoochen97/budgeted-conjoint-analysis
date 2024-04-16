@@ -3,3 +3,5 @@
 *.DS_Store
 *.pdf
 *.m~
+./results_Nov_27/*
+./results2_Nov_27/*
