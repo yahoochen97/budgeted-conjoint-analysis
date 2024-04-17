@@ -33,7 +33,8 @@ def main(args):
                     true_effect = tmp["effect"].to_numpy()
                     flag = ~np.isnan(true_effect) & ~np.isnan(est_mu) & ~np.isnan(est_std) & np.array(est_std!=0)
                     est_mu = est_mu[flag]
-                    est_std = est_std[flag]
+                    est_std = est_std[flag] 
+                    est_std += 1e-1
                     true_effect = true_effect[flag]
                     if est_mu.shape[0]==0:
                         results[0,i,j,k,SEED-1] = RMSE
@@ -55,7 +56,7 @@ def main(args):
     MODELS = ["lm-GMM", "diff-in-mean", "gp-GMM-1", "gp-GMM-10"]
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 8), dpi=100)
     colors = ["limegreen", "turquoise", "red", "blue"]
-    colors = ["#7F58AF", "#64C5EB", "#E84D8A", "#FEB326"]
+    colors = ["#64C5EB", "#7F58AF", "#E84D8A", "#FEB326"]
     for i in range(len(DATA_NAMES)):
         for m in range(len(MEASURES)):
             if i==0:
