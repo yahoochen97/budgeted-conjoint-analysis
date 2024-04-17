@@ -1,4 +1,4 @@
-function [ll,g] = linear_utilites_ll(w, train_x, train_y)
+function [ll,g] = linear_utilities_ll(w, train_x, train_y)
 % log likelihood of linear utility model
     D = (size(train_x,2))/2;
     w = reshape(w, [],1);

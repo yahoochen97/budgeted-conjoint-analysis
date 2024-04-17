@@ -25,7 +25,7 @@ function [y, p, f, df, dy] = twoDplane(pair_x)
     f(x(:,1)==0) =  -1 + x(x(:,1)==0,6:7)*[1;1] + x(x(:,1)==0,8:9)*[2;2];
     f1 = f(1:n); f2 = f((n+1):end);
     f = [f1,f2];
-    p = normcdf((f1-f2)*5);
+    p = normcdf((f1-f2)*10);
     y = 2*arrayfun(@(x) binornd(1,x),p)-1; % y in {-1,1}
     
     df = zeros(2*n,size(x1,2)); % df/dx evaluated at x

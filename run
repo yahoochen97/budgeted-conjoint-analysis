@@ -24,3 +24,5 @@ then
     python utilities/plot_results.py -s $MAXSEED -t 0 -e pop
     python utilities/plot_results.py -s $MAXSEED -t 0 -e ind
 fi
+
+# scp chenyehu@ssh8.engr.wustl.edu:budgeted-conjoint-analysis/results/*pdf ./results/

@@ -10,7 +10,7 @@ NS = [50, 100, 150, 200, 250, 300] # [100, 200, 300, 400, 500, 600]
 MEASURES = ["RMSE","CORRELATION", "COVERAGE","LL"]
 
 def main(args):
-    MODELS = ["diffinmean", "lm", "gppoint", "gpGMM"]
+    MODELS = ["lm", "diffinmean",  "gppoint", "gpGMM"]
     MAXSEED = int(args["seed"])
     TA = int(args["TA"])
     effect_type = args["effect"]
@@ -52,7 +52,7 @@ def main(args):
                     results[2,i,j,k,SEED-1] = COVERAGE
                     results[3,i,j,k,SEED-1] = LL
     
-    MODELS = ["diff-in-mean", "lm-GMM", "gp-GMM-1", "gp_GMM-10"]
+    MODELS = ["lm-GMM", "diff-in-mean", "gp-GMM-1", "gp-GMM-10"]
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 8), dpi=100)
     colors = ["limegreen", "turquoise", "red", "blue"]
     colors = ["#7F58AF", "#64C5EB", "#E84D8A", "#FEB326"]
@@ -97,7 +97,7 @@ def main(args):
     if effect_type=="pop":
         plt.savefig("./results/simulation_plot" + "_TA" + str(TA) + ".pdf", format="pdf", dpi=100)
     else:
-        plt.savefig("./results/simulation_plot_" + "_TA" + str(TA) + "_ind.pdf", format="pdf", dpi=100)
+        plt.savefig("./results/simulation_plot" + "_TA" + str(TA) + "_ind.pdf", format="pdf", dpi=100)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='-s seed -t TA -e effect')
