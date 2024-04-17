@@ -154,6 +154,9 @@ results((2*D+1):(3*D),2) = num2cell(reshape(sigma_GMM_avg,[D,1]));
 results((2*D+1):(3*D),4) = {'gpGMM'};
 results((2*D+1):(3*D),3) = num2cell(reshape(dgp_effects,[D,1]));
 
+for i=1:(size(test_x,2)/2)
+    lm_dy_mu(:,i) = lm_dy_mu(:,i) * sign(corr(dgp_effects(:,i),lm_dy_mu(:,i)));
+end
 results((3*D+1):(4*D),1) = num2cell(reshape(lm_dy_mu,[D,1]));
 results((3*D+1):(4*D),2) = num2cell(reshape(lm_dy_std,[D,1]));
 results((3*D+1):(4*D),4) = {'lm'};
