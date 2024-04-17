@@ -46,12 +46,24 @@ D = (size(train_x,2))/2;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % linear utility model / logistic regression
 linear_utilities;
+ratio = std(dgp_dy(:,1:(size(test_x,2)/2))) ./ std(lm_dy_mu);
+lm_dy_mu = lm_dy_mu .* ratio;
+lm_dy_std = lm_dy_std .* ratio;
 [lm_mu,lm_std] = gp_AMCE(lm_dy_mu,lm_dy_std,data_name,train_x);
 
 % build a gp preference learning model for grad
 learn_HYP = 1;
 n_gauss_hermite = 10;
 gp_pref_grad;
+
+ratio = std(dgp_dy(:,1:(size(test_x,2)/2))) ./ std(dy_mu);
+dy_mu = dy_mu .* ratio;
+dy_std = dy_std .* ratio;
+
+ratio = std(dgp_dy(:,1:(size(test_x,2)/2))) ./ std(mu_GMM_avg);
+mu_GMM_avg = mu_GMM_avg .* ratio;
+sigma_GMM_avg = sigma_GMM_avg .* ratio;
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % dgp effects
@@ -129,24 +141,21 @@ results(1:D,3) = num2cell(reshape(dgp_effects,[D,1]));
 % fig = figure(1);
 % scatter(reshape(dgp_effects,[D,1]),reshape(dim_grad_mu,[D,1]));
 
-ratio =  std(dgp_dy(:,1:(size(test_x,2)/2))) ./ std(dy_mu);
-results((1*D+1):(2*D),1) = num2cell(reshape(dy_mu .* ratio,[D,1]));
-results((1*D+1):(2*D),2) = num2cell(reshape(dy_std .* ratio,[D,1]));
+results((1*D+1):(2*D),1) = num2cell(reshape(dy_mu,[D,1]));
+results((1*D+1):(2*D),2) = num2cell(reshape(dy_std,[D,1]));
 results((1*D+1):(2*D),4) = {'gppoint'};
 results((1*D+1):(2*D),3) = num2cell(reshape(dgp_effects,[D,1]));
 
 % fig = figure(2);
 % scatter(reshape(dgp_effects,[D,1]),reshape(dy_mu,[D,1]));
 
-ratio =  std(dgp_dy(:,1:(size(test_x,2)/2))) ./ std(mu_GMM_avg);
-results((2*D+1):(3*D),1) = num2cell(reshape(mu_GMM_avg .* ratio,[D,1]));
-results((2*D+1):(3*D),2) = num2cell(reshape(sigma_GMM_avg .* ratio,[D,1]));
+results((2*D+1):(3*D),1) = num2cell(reshape(mu_GMM_avg,[D,1]));
+results((2*D+1):(3*D),2) = num2cell(reshape(sigma_GMM_avg,[D,1]));
 results((2*D+1):(3*D),4) = {'gpGMM'};
 results((2*D+1):(3*D),3) = num2cell(reshape(dgp_effects,[D,1]));
 
-ratio =  std(dgp_dy(:,1:(size(test_x,2)/2))) ./ std(lm_dy_mu);
-results((3*D+1):(4*D),1) = num2cell(reshape(lm_dy_mu .* ratio,[D,1]));
-results((3*D+1):(4*D),2) = num2cell(reshape(lm_dy_std .* ratio,[D,1]));
+results((3*D+1):(4*D),1) = num2cell(reshape(lm_dy_mu,[D,1]));
+results((3*D+1):(4*D),2) = num2cell(reshape(lm_dy_std,[D,1]));
 results((3*D+1):(4*D),4) = {'lm'};
 results((3*D+1):(4*D),3) = num2cell(reshape(dgp_effects,[D,1]));
 
