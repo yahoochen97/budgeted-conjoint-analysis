@@ -6,11 +6,11 @@ import matplotlib.pyplot as plt
 sys.path.append("./utility")
 
 DATA_NAMES = ["twoDplane", "Friedman"]
-NS = [100, 200, 300, 400, 500, 600]
+NS = [50, 100, 150, 200, 250, 300] # [100, 200, 300, 400, 500, 600]
 MEASURES = ["RMSE","CORRELATION", "COVERAGE","LL"]
 
 def main(args):
-    MODELS = ["diffinmean", "gppoint", "gpGMM"] # "lm"
+    MODELS = ["diffinmean", "lm", "gppoint", "gpGMM"]
     MAXSEED = int(args["seed"])
     TA = int(args["TA"])
     
@@ -47,9 +47,10 @@ def main(args):
                     results[2,i,j,k,SEED-1] = COVERAGE
                     results[3,i,j,k,SEED-1] = LL
     
-    MODELS = ["diff-in-mean", "gp-GMM-1", "gp_GMM-10"]
+    MODELS = ["diff-in-mean", "lm-GMM", "gp-GMM-1", "gp_GMM-10"]
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 8), dpi=100)
-    colors = ["limegreen", "red", "blue"]
+    colors = ["limegreen", "turquoise", "red", "blue"]
+    colors = ["#7F58AF", "#64C5EB", "#E84D8A", "#FEB326"]
     for i in range(len(DATA_NAMES)):
         for m in range(len(MEASURES)):
             if i==0:

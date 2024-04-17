@@ -2,7 +2,7 @@ if ~exist('SEED','var')
     % simulation settings
     SEED = 1;
     data_name = "twoDplane";
-    N = 600;
+    N = 200;
     test_anchor = 0;
 end
 
@@ -77,6 +77,7 @@ gp_pref_grad;
 disp(mean((dgp_effects>=gp_GMM_mu-2*gp_GMM_std) & (dgp_effects<=gp_GMM_mu+2*gp_GMM_std)));
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% averaged effects
 D = numel(dgp_effects);
 results = array2table(zeros(4*D,3),'VariableNames',...
     {'mean','std','effect'});
@@ -103,42 +104,50 @@ results((3*D+1):(4*D),2) = num2cell(lm_std)';
 results((3*D+1):(4*D),4) = {'lm'};
 results((3*D+1):(4*D),3) = num2cell(dgp_effects)';
 
+HYP = data_name + "_N" + int2str(N) + "_TA" + int2str(test_anchor) + "_SEED" + int2str(SEED);
+
+writetable(results,"./results/"+HYP+".csv");
+
 % results.RMSE = abs(results.mean-results.effect);
 % upper = results.mean + 1.96*results.std;
 % lower = results.mean - 1.96*results.std;
 % results.coverage = (lower<=results.effect) & (results.effect<=upper);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% D = N*size(test_x,2)/2;
-% dgp_effects = dgp_dy(:,1:(size(test_x,2)/2));
-% results = array2table(zeros(3*D,3),'VariableNames',...
-%     {'mean','std','effect'});
-% results.model = cell(3*D,1);
-% 
-% results(1:D,1) = num2cell(reshape(dim_grad_mu,[D,1]));
-% results(1:D,2) = num2cell(reshape(dim_grad_std,[D,1]));
-% results(1:D,4) = {'diffinmean'};
-% results(1:D,3) = num2cell(reshape(dgp_effects,[D,1]));
-% 
+% individual effects
+D = N*size(test_x,2)/2;
+dgp_effects = dgp_dy(:,1:(size(test_x,2)/2));
+results = array2table(zeros(4*D,3),'VariableNames',...
+    {'mean','std','effect'});
+results.model = cell(4*D,1);
+
+results(1:D,1) = num2cell(reshape(repmat(dim_mu',N,1),[D,1]));
+results(1:D,2) = num2cell(reshape(repmat(dim_std',N,1),[D,1]));
+results(1:D,4) = {'diffinmean'};
+results(1:D,3) = num2cell(reshape(dgp_effects,[D,1]));
+
 % fig = figure(1);
 % scatter(reshape(dgp_effects,[D,1]),reshape(dim_grad_mu,[D,1]));
-% 
-% results((1*D+1):(2*D),1) = num2cell(reshape(dy_mu,[D,1]));
-% results((1*D+1):(2*D),2) = num2cell(reshape(dy_std,[D,1]));
-% results((1*D+1):(2*D),4) = {'gppoint'};
-% results((1*D+1):(2*D),3) = num2cell(reshape(dgp_effects,[D,1]));
-% 
+
+results((1*D+1):(2*D),1) = num2cell(reshape(dy_mu,[D,1]));
+results((1*D+1):(2*D),2) = num2cell(reshape(dy_std,[D,1]));
+results((1*D+1):(2*D),4) = {'gppoint'};
+results((1*D+1):(2*D),3) = num2cell(reshape(dgp_effects,[D,1]));
+
 % fig = figure(2);
 % scatter(reshape(dgp_effects,[D,1]),reshape(dy_mu,[D,1]));
-% 
-% results((2*D+1):(3*D),1) = num2cell(reshape(mu_GMM_avg,[D,1]));
-% results((2*D+1):(3*D),2) = num2cell(reshape(sigma_GMM_avg,[D,1]));
-% results((2*D+1):(3*D),4) = {'gpGMM'};
-% results((2*D+1):(3*D),3) = num2cell(reshape(dgp_effects,[D,1]));
-% 
+
+results((2*D+1):(3*D),1) = num2cell(reshape(mu_GMM_avg,[D,1]));
+results((2*D+1):(3*D),2) = num2cell(reshape(sigma_GMM_avg,[D,1]));
+results((2*D+1):(3*D),4) = {'gpGMM'};
+results((2*D+1):(3*D),3) = num2cell(reshape(dgp_effects,[D,1]));
+
+results((3*D+1):(4*D),1) = num2cell(reshape(lm_dy_mu,[D,1]));
+results((3*D+1):(4*D),2) = num2cell(reshape(lm_dy_std,[D,1]));
+results((3*D+1):(4*D),4) = {'lm'};
+results((3*D+1):(4*D),3) = num2cell(reshape(dgp_effects,[D,1]));
+
 % fig = figure(3);
 % scatter(reshape(dgp_effects,[D,1]),reshape(mu_GMM_avg,[D,1]));
 
-HYP = data_name + "_N" + int2str(N) + "_TA" + int2str(test_anchor) + "_SEED" + int2str(SEED);
-
-writetable(results,"./results/"+HYP+".csv");
+writetable(results,"./results/ind_"+HYP+".csv");
