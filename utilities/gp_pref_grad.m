@@ -14,7 +14,9 @@ end
 
 % output scale
 if strcmp(data_name,"Friedman")
-    prior.cov{D+1} = {@priorTransform,@exp,@exp,@log,{@priorInvGauss,3,1}};
+%     prior.cov{D+1} = {@priorTransform,@exp,@exp,@log,{@priorGauss,0,1}};
+    prior.cov{D+1} = {@priorDelta};
+    hyp.cov(end) = log(1);
     inffunc = {@infPrior, @infEP, prior};
 end
 

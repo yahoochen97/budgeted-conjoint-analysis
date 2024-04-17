@@ -17,4 +17,4 @@ w = minimize_v2(w, @linear_utilities_ll, p, train_x, train_y);
 lm_f = (train_x(:,1:D)-train_x(:,(D+1):end))*w;
 lm_dy_mu = (train_x(:,1:D)-train_x(:,(D+1):end)).*normpdf(lm_f);
 inv_V = inv((train_x(:,1:D)-train_x(:,(D+1):end))'*(train_x(:,1:D)-train_x(:,(D+1):end)));
-lm_dy_std = normpdf(lm_f)*diag(inv_V)'*(N/50);
+lm_dy_std = normpdf(lm_f)*diag(inv_V)'*sqrt(N);

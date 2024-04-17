@@ -129,21 +129,24 @@ results(1:D,3) = num2cell(reshape(dgp_effects,[D,1]));
 % fig = figure(1);
 % scatter(reshape(dgp_effects,[D,1]),reshape(dim_grad_mu,[D,1]));
 
-results((1*D+1):(2*D),1) = num2cell(reshape(dy_mu,[D,1]));
-results((1*D+1):(2*D),2) = num2cell(reshape(dy_std,[D,1]));
+ratio =  std(dgp_dy(:,1:(size(test_x,2)/2))) ./ std(dy_mu);
+results((1*D+1):(2*D),1) = num2cell(reshape(dy_mu .* ratio,[D,1]));
+results((1*D+1):(2*D),2) = num2cell(reshape(dy_std .* ratio,[D,1]));
 results((1*D+1):(2*D),4) = {'gppoint'};
 results((1*D+1):(2*D),3) = num2cell(reshape(dgp_effects,[D,1]));
 
 % fig = figure(2);
 % scatter(reshape(dgp_effects,[D,1]),reshape(dy_mu,[D,1]));
 
-results((2*D+1):(3*D),1) = num2cell(reshape(mu_GMM_avg,[D,1]));
-results((2*D+1):(3*D),2) = num2cell(reshape(sigma_GMM_avg,[D,1]));
+ratio =  std(dgp_dy(:,1:(size(test_x,2)/2))) ./ std(mu_GMM_avg);
+results((2*D+1):(3*D),1) = num2cell(reshape(mu_GMM_avg .* ratio,[D,1]));
+results((2*D+1):(3*D),2) = num2cell(reshape(sigma_GMM_avg .* ratio,[D,1]));
 results((2*D+1):(3*D),4) = {'gpGMM'};
 results((2*D+1):(3*D),3) = num2cell(reshape(dgp_effects,[D,1]));
 
-results((3*D+1):(4*D),1) = num2cell(reshape(lm_dy_mu,[D,1]));
-results((3*D+1):(4*D),2) = num2cell(reshape(lm_dy_std,[D,1]));
+ratio =  std(dgp_dy(:,1:(size(test_x,2)/2))) ./ std(lm_dy_mu);
+results((3*D+1):(4*D),1) = num2cell(reshape(lm_dy_mu .* ratio,[D,1]));
+results((3*D+1):(4*D),2) = num2cell(reshape(lm_dy_std .* ratio,[D,1]));
 results((3*D+1):(4*D),4) = {'lm'};
 results((3*D+1):(4*D),3) = num2cell(reshape(dgp_effects,[D,1]));
 
