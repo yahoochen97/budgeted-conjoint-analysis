@@ -142,7 +142,7 @@ results(1:D,3) = num2cell(reshape(dgp_effects,[D,1]));
 % scatter(reshape(dgp_effects,[D,1]),reshape(dim_grad_mu,[D,1]));
 
 results((1*D+1):(2*D),1) = num2cell(reshape(dy_mu,[D,1]));
-results((1*D+1):(2*D),2) = num2cell(reshape(dy_std,[D,1]));
+results((1*D+1):(2*D),2) = num2cell(reshape(dy_std + 1e-3,[D,1]));
 results((1*D+1):(2*D),4) = {'gppoint'};
 results((1*D+1):(2*D),3) = num2cell(reshape(dgp_effects,[D,1]));
 
