@@ -28,7 +28,7 @@ def main(args):
                         + "_TA" + str(TA) + "_SEED" + str(SEED) + ".csv"
                 data = pd.read_csv(result_filename)
                 for k in range(len(MODELS)):
-                    print("summarizing " + MODELS[k] + " SEED " + str(SEED) + " N " + str(NS[j]) + " ...")
+                    # print("summarizing " + MODELS[k] + " SEED " + str(SEED) + " N " + str(NS[j]) + " ...")
                     tmp = data[data.model==MODELS[k]]
                     est_mu = tmp["mean"].to_numpy()
                     est_std = tmp["std"].to_numpy()
