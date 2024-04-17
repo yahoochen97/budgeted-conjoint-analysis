@@ -18,7 +18,7 @@ function [y, p, f, df, dy] = Friedman(pair_x)
     x1 = pair_x(:,1:end/2); x2 = pair_x(:,1+end/2:end);
     x = [x1;x2]; % turn horizontal (x1,x2) pairs to vertical [x1;x2] 
     n = size(x1,1);
-    f = sin(pi*x(:,1).*x(:,2)) + 2*(x(:,3)+0.5-0.5).^2;
+    f = sin(pi*x(:,1).*x(:,2)) + 2*(x(:,3)-0.5).^2;
     f1 = f(1:n); f2 = f((n+1):end);
     f = [f1,f2];
     p = normcdf((f1-f2)*10);
@@ -27,7 +27,7 @@ function [y, p, f, df, dy] = Friedman(pair_x)
     df = zeros(2*n,size(x1,2)); % df/dx evaluated at x
     df(:,1) = cos(pi*x(:,1).*x(:,2)).*x(:,2)*pi;
     df(:,2) = cos(pi*x(:,1).*x(:,2)).*x(:,1)*pi;
-    df(:,3) = 4*(x(:,3)+0.5-0.5);
+    df(:,3) = 4*(x(:,3)-0.5);
     df1 = df(1:n,:); df2 = df((n+1):end,:);
     df = [df1,df2];
     

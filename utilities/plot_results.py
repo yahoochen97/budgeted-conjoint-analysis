@@ -16,7 +16,8 @@ def main(args):
     effect_type = args["effect"]
     
     results = np.zeros((len(MEASURES), len(DATA_NAMES),len(NS),len(MODELS),MAXSEED))
-    for i in range(len(DATA_NAMES)):                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+    for i in range(len(DATA_NAMES)):   
+        print("summarize "+DATA_NAMES[i]+"...\n")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
         for SEED in range(1,MAXSEED+1):
             for j in range(len(NS)):
                 if effect_type=="pop":
