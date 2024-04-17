@@ -1,8 +1,8 @@
 if ~exist('SEED','var')
     % simulation settings
-    SEED = 1;
-    data_name = "twoDplane";
-    N = 200;
+    SEED = 4;
+    data_name = "Friedman";
+    N = 50;
     test_anchor = 0;
 end
 
@@ -32,7 +32,7 @@ simulate_data;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % difference-in-mean estimator with complete independent assumption
-BIN=11;
+BIN=2;
 diff_in_mean;
 D = (size(train_x,2))/2;
 % dim_mu = repmat(dim_mu',N,1)';

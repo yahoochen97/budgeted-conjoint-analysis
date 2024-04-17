@@ -1,10 +1,10 @@
 if ~exist('SEED','var')
     % simulation settings
-    SEED = 1;
-    data_name = "twoDplane";
+    SEED = 15;
+    data_name = "Friedman";
     policy_name = "GRADBALD";
     N = 1000;
-    TOTAL_SIZE=250;
+    TOTAL_SIZE=350;
     test_anchor = 0;
 end
 

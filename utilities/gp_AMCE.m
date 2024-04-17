@@ -6,12 +6,9 @@ function [gp_mu,gp_std]=gp_AMCE(dy_mu,dy_std, data_name, train_x)
     N = size(dy_mu,1);
     gp_mu = [];
     gp_std = [];
-    BIN = 10;
     for j=1:d
-        if strcmp(data_name,"twoDplane")
-            gp_mu = [gp_mu, mean(dy_mu(:,j))];
-            gp_std = [gp_std, sqrt(mean(dy_std(:,j).^2)/N + var(dy_mu(:,j))/N)];
-        else
+        if strcmp(data_name,"Friedman")
+            BIN = 1;
             for k=1:BIN
                 lb = (k-1)/BIN; mb = (k-0)/BIN; % ub = (k+1)/BIN;
                 tmp1 = train_x(:,j)>=lb & train_x(:,j)<mb;
@@ -22,6 +19,9 @@ function [gp_mu,gp_std]=gp_AMCE(dy_mu,dy_std, data_name, train_x)
 %                 var2 = mean(dy_std(tmp2,j).^2)/sum(tmp2);
                 gp_std = [gp_std, sqrt(var1)];
             end
+        else
+            gp_mu = [gp_mu, mean(dy_mu(:,j))];
+            gp_std = [gp_std, sqrt(mean(dy_std(:,j).^2)/N + var(dy_mu(:,j))/N)];
         end
     end
 end

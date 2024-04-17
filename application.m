@@ -17,9 +17,13 @@ file_name = "./data/" + data_name + ".csv";
 opts = detectImportOptions(file_name);
 data = readtable(file_name, opts);
 
-train_x = data{:,1:(end-1)};
+raw_x = data{:,1:(end-1)};
+d = size(raw_x,2)/2;
+train_x = transformdummy(raw_x);
 train_y = 2*data{:,end}-1;
 test_x = train_x;
+
+diff_in_mean;
 
 % build a gp preference learning model for grad
 learn_HYP = 1;
@@ -28,16 +32,20 @@ gp_pref_grad;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % gp preference learning GMM effect
-[gp_GMM_mu,gp_GMM_std]=gp_point_est(BIN,raw_x,mu_GMM_avg,sigma_GMM_avg);
+[gp_GMM_mu,gp_GMM_std]=gp_AMCE(mu_GMM_avg,sigma_GMM_avg, data_name, train_x);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 D = size(train_x,2)/2;
-results = array2table(zeros(D,2),'VariableNames',...
+results = array2table(zeros(2*D,2),'VariableNames',...
     {'mean','std'});
-results.model = cell(D,1);
+results.model = cell(2*D,1);
 
-results((0*D+1):(1*D),1) = num2cell(gp_GMM_mu)';
-results((0*D+1):(1*D),2) = num2cell(gp_GMM_std)';
-results((0*D+1):(1*D),3) = {'gpGMM'};
+results(1:D,1) = num2cell(dim_mu)';
+results(1:D,2) = num2cell(dim_std)';
+results(1:D,3) = {'diffinmean'};
+
+results((1*D+1):(2*D),1) = num2cell(gp_GMM_mu)';
+results((1*D+1):(2*D),2) = num2cell(gp_GMM_std)';
+results((1*D+1):(2*D),3) = {'gpGMM'};
 
 writetable(results,"./results_application/"+data_name+".csv");
