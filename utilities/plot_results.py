@@ -13,13 +13,18 @@ def main(args):
     MODELS = ["diffinmean", "lm", "gppoint", "gpGMM"]
     MAXSEED = int(args["seed"])
     TA = int(args["TA"])
+    effect_type = args["effect"]
     
     results = np.zeros((len(MEASURES), len(DATA_NAMES),len(NS),len(MODELS),MAXSEED))
     for i in range(len(DATA_NAMES)):                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
         for SEED in range(1,MAXSEED+1):
             for j in range(len(NS)):
-                result_filename = "./results/"+ DATA_NAMES[i] + "_N" + str(NS[j]) \
-                    + "_TA" + str(TA) + "_SEED" + str(SEED) + ".csv"
+                if effect_type=="pop":
+                    result_filename = "./results/"+ DATA_NAMES[i] + "_N" + str(NS[j]) \
+                        + "_TA" + str(TA) + "_SEED" + str(SEED) + ".csv"
+                else:
+                    result_filename = "./results/ind_"+ DATA_NAMES[i] + "_N" + str(NS[j]) \
+                        + "_TA" + str(TA) + "_SEED" + str(SEED) + ".csv"
                 data = pd.read_csv(result_filename)
                 for k in range(len(MODELS)):
                     tmp = data[data.model==MODELS[k]]
@@ -89,11 +94,15 @@ def main(args):
     }
     plt.rcParams.update(params)
     fig.subplots_adjust(left=0.05, bottom=0.035, right=0.99, top=0.96, wspace=0.12)
-    plt.savefig("./results/simulation_plot" + "_TA" + str(TA) + ".pdf", format="pdf", dpi=100)
+    if effect_type=="pop":
+        plt.savefig("./results/simulation_plot" + "_TA" + str(TA) + ".pdf", format="pdf", dpi=100)
+    else:
+        plt.savefig("./results/simulation_plot_" + "_TA" + str(TA) + "_ind.pdf", format="pdf", dpi=100)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='-s seed')
+    parser = argparse.ArgumentParser(description='-s seed -t TA -e effect')
     parser.add_argument('-s','--seed', help='random seed', required=True)
     parser.add_argument('-t','--TA', help='test anchor', required=True)
+    parser.add_argument('-e','--effect', help='pop/ind effects', required=True)
     args = vars(parser.parse_args())
     main(args)

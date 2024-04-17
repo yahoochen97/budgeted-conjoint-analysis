@@ -21,5 +21,6 @@ then
     done
 elif [ $1 = "summary" ]
 then
-    python utilities/plot_results.py -s $MAXSEED -t 0
+    python utilities/plot_results.py -s $MAXSEED -t 0 -e pop
+    python utilities/plot_results.py -s $MAXSEED -t 0 -e ind
 fi
