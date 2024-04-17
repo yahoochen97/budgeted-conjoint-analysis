@@ -30,9 +30,9 @@ def main(args):
                 for k in range(len(MODELS)):
                     # print("summarizing " + MODELS[k] + " SEED " + str(SEED) + " N " + str(NS[j]) + " ...")
                     tmp = data[data.model==MODELS[k]]
-                    est_mu = tmp["mean"].to_numpy()
-                    est_std = tmp["std"].to_numpy()
-                    true_effect = tmp["effect"].to_numpy()
+                    est_mu = tmp["mean"].to_numpy().reshape((-1,))
+                    est_std = tmp["std"].to_numpy().reshape((-1,))
+                    true_effect = tmp["effect"].to_numpy().reshape((-1,))
                     flag = ~np.isnan(true_effect) & ~np.isnan(est_mu) & ~np.isnan(est_std) & np.array(est_std!=0)
                     est_mu = est_mu[flag]
                     est_std = est_std[flag] 
