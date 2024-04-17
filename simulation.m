@@ -1,7 +1,7 @@
 if ~exist('SEED','var')
     % simulation settings
-    SEED = 4;
-    data_name = "Friedman";
+    SEED = 25;
+    data_name =  "Friedman"; %"twoDplane";
     N = 50;
     test_anchor = 0;
 end
