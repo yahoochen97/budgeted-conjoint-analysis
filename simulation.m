@@ -46,7 +46,7 @@ D = (size(train_x,2))/2;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % linear utility model / logistic regression
 linear_utilities;
-ratio = std(dgp_dy(:,1:(size(test_x,2)/2))) ./ std(lm_dy_mu);
+% ratio = std(dgp_dy(:,1:(size(test_x,2)/2))) ./ std(lm_dy_mu);
 % lm_dy_mu = lm_dy_mu .* ratio;
 % lm_dy_std = lm_dy_std .* ratio;
 [lm_mu,lm_std] = gp_AMCE(lm_dy_mu,lm_dy_std,data_name,train_x);
