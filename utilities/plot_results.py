@@ -69,10 +69,10 @@ def main(args):
             for k in range(len(MODELS)):
                 tmp = results[m,i,:,k,:]
                 # 1+np.arange(len(NS))
-                bplot, = ax[i,m].plot(NS, np.mean(tmp,axis=1), color=colors[k])
-                ax[i,m].errorbar(NS, np.mean(tmp,axis=1),\
+                bplot, = ax[i,m].plot(4+4*np.arange(len(NS)), np.mean(tmp,axis=1), color=colors[k])
+                ax[i,m].errorbar(4+4*np.arange(len(NS)), np.mean(tmp,axis=1),\
                                 yerr=np.std(tmp,axis=1)/np.sqrt(MAXSEED), marker='o', mfc=colors[k],mec=colors[k], 
-                                ms=1, mew=2, capsize=4, elinewidth=1) 
+                                ms=1, mew=2, capsize=8, elinewidth=1) 
                 # tmp = [(tmp[j,:]-np.mean(tmp[j,:]))/5+np.mean(tmp[j,:]) for j in range(len(NS))]
                 # tmp = [tmp[j,:] for j in range(len(NS))]
                 # bplot = ax[i,m].boxplot(tmp, positions=4+4*np.arange(len(NS))+(k-1)*0.75, showfliers=False,\
