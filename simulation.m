@@ -132,8 +132,9 @@ results = array2table(zeros(4*D,3),'VariableNames',...
     {'mean','std','effect'});
 results.model = cell(4*D,1);
 
-results(1:D,1) = num2cell(reshape(repmat(dim_mu',N,1),[D,1]));
-results(1:D,2) = num2cell(reshape(repmat(dim_std',N,1),[D,1]));
+ratio = 1./std(dgp_effects)';
+results(1:D,1) = num2cell(reshape(repmat(dim_mu'.*ratio,N,1),[D,1]));
+results(1:D,2) = num2cell(reshape(repmat(dim_std'.*ratio,N,1),[D,1]));
 results(1:D,4) = {'diffinmean'};
 results(1:D,3) = num2cell(reshape(dgp_effects,[D,1]));
 
