@@ -86,8 +86,9 @@ def main(args):
             ax[i,m].tick_params(left=False, bottom=False)
             ax[i,m].grid(axis='y', color='gray', linestyle='dashed', linewidth=1)
             if i==0 and m==0:
-                print([bplots[j] for j in range(len(MODELS))])
-                ax[i,m].legend([bplots[j]["boxes"][0] for j in range(len(MODELS))],MODELS)
+                # ax[i,m].legend([bplots[j]["boxes"][0] for j in range(len(MODELS))],MODELS)
+                ax[i,m].legend(bplots, MODELS)
+    
     params = {
         'axes.labelsize': 8,
         'font.size': 8,
