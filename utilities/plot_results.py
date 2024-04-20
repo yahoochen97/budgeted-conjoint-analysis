@@ -6,11 +6,11 @@ import matplotlib.pyplot as plt
 sys.path.append("./utility")
 
 DATA_NAMES = ["twoDplane", "Friedman"]
-NS = [50, 100, 150, 200, 250, 300] # [100, 200, 300, 400, 500, 600]
+NS = [100, 150, 200, 250, 300] # [100, 200, 300, 400, 500, 600]
 MEASURES = ["RMSE","CORRELATION", "COVERAGE","LL"]
 
 def main(args):
-    MODELS = ["lm", "diffinmean",  "gppoint", "gpGMM"]
+    MODELS = ["diffinmean", "lm",  "gppoint", "gpGMM"]
     MAXSEED = int(args["seed"])
     TA = int(args["TA"])
     effect_type = args["effect"]
@@ -55,7 +55,7 @@ def main(args):
                     results[2,i,j,k,SEED-1] = COVERAGE
                     results[3,i,j,k,SEED-1] = LL
     
-    MODELS = ["lm-GMM", "diff-in-mean", "gp-GMM-1", "gp-GMM-10"]
+    MODELS = ["diff-in-mean", "lm-GMM", "gp-GMM-1", "gp-GMM-10"]
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 8), dpi=100)
     colors = ["limegreen", "turquoise", "red", "blue"]
     colors = ["#64C5EB", "#7F58AF", "#E84D8A", "#FEB326"]

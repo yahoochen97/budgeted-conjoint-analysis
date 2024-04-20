@@ -56,13 +56,13 @@ learn_HYP = 1;
 n_gauss_hermite = 10;
 gp_pref_grad;
 
-ratio = std(dgp_dy(:,1:(size(test_x,2)/2))) ./ std(dy_mu);
-dy_mu = dy_mu .* ratio;
-dy_std = dy_std .* ratio;
-
-ratio = std(dgp_dy(:,1:(size(test_x,2)/2))) ./ std(mu_GMM_avg);
-mu_GMM_avg = mu_GMM_avg .* ratio;
-sigma_GMM_avg = sigma_GMM_avg .* ratio;
+% ratio = std(dgp_dy(:,1:(size(test_x,2)/2))) ./ std(dy_mu);
+% dy_mu = dy_mu .* ratio;
+% dy_std = dy_std .* ratio;
+% 
+% ratio = std(dgp_dy(:,1:(size(test_x,2)/2))) ./ std(mu_GMM_avg);
+% mu_GMM_avg = mu_GMM_avg .* ratio;
+% sigma_GMM_avg = sigma_GMM_avg .* ratio;
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
