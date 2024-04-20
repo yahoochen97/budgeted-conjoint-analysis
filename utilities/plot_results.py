@@ -68,9 +68,10 @@ def main(args):
             bplots = []
             for k in range(len(MODELS)):
                 tmp = results[m,i,:,k,:]
-                bplot = ax[i,m].plot(1+np.arange(len(NS)), np.mean(tmp,axis=1), color=colors[k])
-                ax[i,m].errorbar(1+np.arange(len(NS)), np.mean(tmp,axis=1),\
-                                yerr=np.std(tmp,axis=1), marker='o', mfc=colors[k],mec=colors[k], 
+                # 1+np.arange(len(NS))
+                bplot, = ax[i,m].plot(NS, np.mean(tmp,axis=1), color=colors[k])
+                ax[i,m].errorbar(NS, np.mean(tmp,axis=1),\
+                                yerr=np.std(tmp,axis=1)/np.sqrt(MAXSEED), marker='o', mfc=colors[k],mec=colors[k], 
                                 ms=1, mew=2, capsize=4, elinewidth=1) 
                 # tmp = [(tmp[j,:]-np.mean(tmp[j,:]))/5+np.mean(tmp[j,:]) for j in range(len(NS))]
                 # tmp = [tmp[j,:] for j in range(len(NS))]
