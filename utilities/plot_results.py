@@ -69,16 +69,17 @@ def main(args):
             for k in range(len(MODELS)):
                 tmp = results[m,i,:,k,:]
                 # 1+np.arange(len(NS))
-                bplot, = ax[i,m].plot(4+4*np.arange(len(NS)), np.mean(tmp,axis=1), color=colors[k])
-                ax[i,m].errorbar(4+4*np.arange(len(NS)), np.mean(tmp,axis=1),\
-                                yerr=np.std(tmp,axis=1)/np.sqrt(MAXSEED), marker='o', mfc=colors[k],mec=colors[k], 
-                                ms=1, mew=2, capsize=8, elinewidth=1) 
-                # tmp = [(tmp[j,:]-np.mean(tmp[j,:]))/5+np.mean(tmp[j,:]) for j in range(len(NS))]
+                # bplot, = ax[i,m].plot(4+4*np.arange(len(NS)), np.mean(tmp,axis=1), \
+                #                       color=colors[k], linestyle="dot")
+                # ax[i,m].errorbar(4+4*np.arange(len(NS)), np.mean(tmp,axis=1),\
+                #                 yerr=np.std(tmp,axis=1)/np.sqrt(MAXSEED), marker='o', mfc=colors[k],mec=colors[k], 
+                #                 ms=4, mew=2, capsize=4, elinewidth=1) 
+                tmp = [(tmp[j,:]-np.mean(tmp[j,:]))/np.sqrt(MAXSEED)+np.mean(tmp[j,:]) for j in range(len(NS))]
                 # tmp = [tmp[j,:] for j in range(len(NS))]
-                # bplot = ax[i,m].boxplot(tmp, positions=4+4*np.arange(len(NS))+(k-1)*0.75, showfliers=False,\
-                #                     patch_artist=True, widths=0.45)
-                # for patch in bplot['boxes']:
-                #     patch.set_facecolor(colors[k])
+                bplot = ax[i,m].boxplot(tmp, positions=4+4*np.arange(len(NS))+(k-1)*0.75, showfliers=False,\
+                                    patch_artist=True, widths=0.45)
+                for patch in bplot['boxes']:
+                    patch.set_facecolor(colors[k])
                 bplots.append(bplot)
             ax[i,m].set_xticks(4+4*np.arange(len(NS)))
             ax[i,m].set_xticklabels(NS)
@@ -87,8 +88,8 @@ def main(args):
             ax[i,m].tick_params(left=False, bottom=False)
             ax[i,m].grid(axis='y', color='gray', linestyle='dashed', linewidth=1)
             if i==0 and m==0:
-                # ax[i,m].legend([bplots[j]["boxes"][0] for j in range(len(MODELS))],MODELS)
-                ax[i,m].legend(bplots, MODELS)
+                ax[i,m].legend([bplots[j]["boxes"][0] for j in range(len(MODELS))],MODELS)
+                # ax[i,m].legend(bplots, MODELS)
     
     params = {
         'axes.labelsize': 8,
