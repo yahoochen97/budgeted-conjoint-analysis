@@ -110,7 +110,6 @@ results((2*D+1):(3*D),2) = num2cell(gp_GMM_std)';
 results((2*D+1):(3*D),4) = {'gpGMM'};
 results((2*D+1):(3*D),3) = num2cell(dgp_effects)';
 
-
 results((3*D+1):(4*D),1) = num2cell(lm_mu)';
 results((3*D+1):(4*D),2) = num2cell(lm_std)';
 results((3*D+1):(4*D),4) = {'lm'};

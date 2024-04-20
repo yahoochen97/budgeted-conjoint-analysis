@@ -15,7 +15,7 @@ function [gp_mu,gp_std]=gp_AMCE(dy_mu,dy_std, data_name, train_x)
 %                 tmp2 = train_x(:,j)>=mb & train_x(:,j)<ub;
 %                 gp_mu = [gp_mu, (mean(dy_mu(tmp1,j))+mean(dy_mu(tmp2,j)))/2];
                 gp_mu = [gp_mu, mean(dy_mu(tmp1,j))];
-                var1 = mean(dy_std(tmp1,j).^2)/sum(tmp1) + var(dy_mu(tmp1,j));
+                var1 = mean(dy_std(tmp1,j).^2)/sum(tmp1) + var(dy_mu(tmp1,j))/sum(tmp1);
 %                 var2 = mean(dy_std(tmp2,j).^2)/sum(tmp2);
                 gp_std = [gp_std, sqrt(var1)];
             end
