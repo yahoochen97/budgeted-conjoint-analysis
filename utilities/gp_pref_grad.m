@@ -1,34 +1,37 @@
 % build a gp preference learning model for grad
 % initialize gp model
 D = size(train_x,2)/2;
-meanfunc = {@meanZero};   
-covfunc = {@covPref, {@covSEard}};             
+meanfunc = {@meanZero};  
+covfunc = {@covPref, {@covSum,{@covSEard, @covLINiso}}};   % SEard + LINiso           
 likfunc = {@likErf};
 hyp.mean = [];
-hyp.cov = [zeros(D,1);log(4)];
+hyp.cov = [zeros(D,1);log(4); log(1)];
 
 % assign prior for length scales
 for i=1:D
     prior.cov{i} = {@priorTransform,@exp,@exp,@log,{@priorInvGauss,1,2}};
 end
 
+% slope variance: fix to 1
+prior.cov{D+2} = {@priorDelta};
+
 % output scale
 if strcmp(data_name,"Friedman")
 %     prior.cov{D+1} = {@priorTransform,@exp,@exp,@log,{@priorInvGauss,3,1}};
     prior.cov{D+1} = {@priorDelta};
-    hyp.cov(end) = log(1);
+    hyp.cov(D+1) = log(1);
     inffunc = {@infPrior, @infEP, prior};
 end
 
 if strcmp(data_name,"twoDplane")
     prior.cov{D+1} = {@priorDelta};
-    hyp.cov(end) = log(4);
+    hyp.cov(D+1) = log(4);
     inffunc = {@infPrior, @infLaplace, prior};
 end
 
 if strcmp(data_name,"hainmueller_candidate") || strcmp(data_name,"hainmueller_immigrant")
     prior.cov{D+1} = {@priorDelta};
-    hyp.cov(end) = log(4);
+    hyp.cov(D+1) = log(4);
     inffunc = {@infPrior, @infLaplace, prior};
 end
 

@@ -25,11 +25,14 @@ function d2K = d2covPref(cov, hyp, x, z, varargin)
     z1 = z(:,1:end/2);
     n = size(x1,1); D=size(x1,2);
     
+    % cov1: SEard, cov2: LINiso
+    cov = {cov{2}{1}};
+    
     % d2k_0(x1,z1)/dx1/dz1 at x1=z1
     K = feval(cov{:},hyp.cov,x1,z1,varargin{:});
     d2K = zeros(n,D,D);
     for d=1:D
-        d2K(:,d,d) = diag(K)./exp(2*hyp.cov(d));
+        d2K(:,d,d) = diag(K)./exp(2*hyp.cov(d)) + 1./exp(2*hyp.cov(D+2));
     end
 
 end
