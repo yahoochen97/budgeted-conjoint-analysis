@@ -7,6 +7,10 @@ function [mu_GMM_avg,sigma_GMM_avg, mu_GMM,sigma_GMM, dy_mu, dy_std, df_mu, df_K
     D = size(train_x,2)/2;
    [~,~,fmu,fs2, ~, post] = gp(hyp, inffunc, meanfunc, ...
         covfunc, likfunc, train_x, train_y, test_x);
+    
+    % clip to range of -3 to 3
+%     fmu(fmu<=-3) = -3;
+%     fmu(fmu>=3) = 3;
 
     % compute marginal effects of infinitesimal 
     % change at leftside comparison                                              
@@ -36,6 +40,9 @@ function [mu_GMM_avg,sigma_GMM_avg, mu_GMM,sigma_GMM, dy_mu, dy_std, df_mu, df_K
     for j=1:D
         dy_std(:,j) = sqrt(df_K(:,j,j)).*normpdf(fmu);
     end
+    
+    % clip to at least 0.01 for numerical stability
+    dy_std(dy_std<=0.01) = 0.01;
 
     % GMM for dy
     [ks,ws] = root_GH(n_gauss_hermite);
