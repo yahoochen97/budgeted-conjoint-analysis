@@ -74,8 +74,8 @@ def main(args):
                 # ax[i,m].errorbar(4+4*np.arange(len(NS)), np.mean(tmp,axis=1),\
                 #                 yerr=np.std(tmp,axis=1)/np.sqrt(MAXSEED), marker='o', mfc=colors[k],mec=colors[k], 
                 #                 ms=4, mew=2, capsize=4, elinewidth=1) 
-                tmp = [(tmp[j,:]-np.mean(tmp[j,:]))/np.sqrt(MAXSEED)+np.mean(tmp[j,:]) for j in range(len(NS))]
-                # tmp = [tmp[j,:] for j in range(len(NS))]
+                # tmp = [(tmp[j,:]-np.mean(tmp[j,:]))/np.sqrt(MAXSEED)+np.mean(tmp[j,:]) for j in range(len(NS))]
+                tmp = [tmp[j,:] for j in range(len(NS))]
                 bplot = ax[i,m].boxplot(tmp, positions=4+4*np.arange(len(NS))+(k-1)*0.75, showfliers=False,\
                                     patch_artist=True, widths=0.45)
                 for patch in bplot['boxes']:
