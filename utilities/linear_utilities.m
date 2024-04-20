@@ -14,7 +14,9 @@ p.method = 'LBFGS';
 p.length = 100;
 w = minimize_v2(w, @linear_utilities_ll, p, train_x, train_y);
 
+% p(y=1) = Phi(x1w-x2w)
+% dy/dx = phi(x1w-x2w)*w;
 lm_f = (train_x(:,1:D)-train_x(:,(D+1):end))*w;
-lm_dy_mu = (train_x(:,1:D)-train_x(:,(D+1):end)).*normpdf(lm_f);
+lm_dy_mu = normpdf(lm_f)*w';
 inv_V = inv((train_x(:,1:D)-train_x(:,(D+1):end))'*(train_x(:,1:D)-train_x(:,(D+1):end)));
 lm_dy_std = normpdf(lm_f)*diag(inv_V)'*sqrt(N);
