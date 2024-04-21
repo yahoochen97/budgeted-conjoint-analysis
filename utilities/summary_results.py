@@ -17,7 +17,6 @@ def main(args):
     
     results = np.zeros((len(MEASURES), len(DATA_NAMES), len(MODELS),MAXSEED))
     for i in range(len(DATA_NAMES)):   
-        print("summarize "+DATA_NAMES[i]+"...\n")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
         for SEED in range(1,MAXSEED+1):
             if effect_type=="pop":
                 result_filename = "./results/"+ DATA_NAMES[i] + "_N" + str(N) \
@@ -56,21 +55,22 @@ def main(args):
     
     MODELS = ["diff-in-mean", "lm-GMM", "gp-point", "gp-GMM"]
     for i in range(len(DATA_NAMES)):
+        print("summarize "+DATA_NAMES[i]+"...\n")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
         mu = np.mean(results[:,i,:,:], axis=2).T
         noise = np.std(results[:,i,:,:], axis=2).T / np.sqrt(MAXSEED)
         df = pd.DataFrame(data=mu, index=pd.Index(MODELS), columns=MEASURES)
         print(df)
         if effect_type=="pop":
-            df.to_csv("./results/summary_mu" + "_TA" + str(TA) + "_N" + str(N) + ".csv", header=True)
+            df.to_csv("./results/summary_mu" + DATA_NAMES[i] + "_TA" + str(TA) + "_N" + str(N) + ".csv", header=True)
         else:
-            df.to_csv("./results/summary_mu" + "_TA" + str(TA) + "_N" + str(N) + "_ind.csv", header=True)
+            df.to_csv("./results/summary_mu" + DATA_NAMES[i] + "_TA" + str(TA) + "_N" + str(N) + "_ind.csv", header=True)
         
         df = pd.DataFrame(data=noise, index=pd.Index(MODELS), columns=MEASURES)
         # print(df)
         if effect_type=="pop":
-            df.to_csv("./results/summary_noise" + "_TA" + str(TA) + "_N" + str(N) + ".csv", header=True)
+            df.to_csv("./results/summary_noise" + DATA_NAMES[i] + "_TA" + str(TA) + "_N" + str(N) + ".csv", header=True)
         else:
-            df.to_csv("./results/summary_noise" + "_TA" + str(TA) + "_N" + str(N) + "_ind.csv", header=True)
+            df.to_csv("./results/summary_noise" + DATA_NAMES[i] + "_TA" + str(TA) + "_N" + str(N) + "_ind.csv", header=True)
         
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='-s seed -t TA -e effect')
