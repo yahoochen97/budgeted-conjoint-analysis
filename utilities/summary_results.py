@@ -54,7 +54,7 @@ def main(args):
                 results[2,i,k,SEED-1] = COVERAGE
                 results[3,i,k,SEED-1] = LL
     
-    MODELS = ["diff-in-mean", "lm-GMM", "gp-GMM-1", "gp-GMM-10"]
+    MODELS = ["diff-in-mean", "lm-GMM", "gp-point", "gp-GMM"]
     for i in range(len(DATA_NAMES)):
         mu = np.mean(results[:,i,:,:], axis=2).T
         noise = np.std(results[:,i,:,:], axis=2).T / np.sqrt(MAXSEED)
