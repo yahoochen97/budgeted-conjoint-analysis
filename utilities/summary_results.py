@@ -66,7 +66,7 @@ def main(args):
             df.to_csv("./results/summary_mu" + "_TA" + str(TA) + "_N" + str(N) + "_ind.csv", header=True)
         
         df = pd.DataFrame(data=noise, index=pd.Index(MODELS), columns=MEASURES)
-        print(df)
+        # print(df)
         if effect_type=="pop":
             df.to_csv("./results/summary_noise" + "_TA" + str(TA) + "_N" + str(N) + ".csv", header=True)
         else:
