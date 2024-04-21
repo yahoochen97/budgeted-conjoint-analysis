@@ -56,21 +56,21 @@ def main(args):
     
     MODELS = ["diff-in-mean", "lm-GMM", "gp-GMM-1", "gp-GMM-10"]
     for i in range(len(DATA_NAMES)):
-        mu = np.mean(results[:,i,:,:], axis=2)
-        noise = np.std(results[:,i,:,:], axis=2) / np.sqrt(MAXSEED)
+        mu = np.mean(results[:,i,:,:], axis=2).T
+        noise = np.std(results[:,i,:,:], axis=2).T / np.sqrt(MAXSEED)
         df = pd.DataFrame(data=mu, index=pd.Index(MODELS), columns=MEASURES)
         print(df)
         if effect_type=="pop":
-            df.to_csv("./results/summary_mu" + "_TA" + str(TA) + "_N" + str(N) + ".pdf", format="pdf", dpi=100)
+            df.to_csv("./results/summary_mu" + "_TA" + str(TA) + "_N" + str(N) + ".pdf", header=True)
         else:
-            df.to_csv("./results/summary_mu" + "_TA" + str(TA) + "_N" + str(N) + "_ind.pdf", format="pdf", dpi=100)
+            df.to_csv("./results/summary_mu" + "_TA" + str(TA) + "_N" + str(N) + "_ind.pdf", header=True)
         
         df = pd.DataFrame(data=noise, index=pd.Index(MODELS), columns=MEASURES)
         print(df)
         if effect_type=="pop":
-            df.to_csv("./results/summary_noise" + "_TA" + str(TA) + "_N" + str(N) + ".pdf", format="pdf", dpi=100)
+            df.to_csv("./results/summary_noise" + "_TA" + str(TA) + "_N" + str(N) + ".pdf", header=True)
         else:
-            df.to_csv("./results/summary_noise" + "_TA" + str(TA) + "_N" + str(N) + "_ind.pdf", format="pdf", dpi=100)
+            df.to_csv("./results/summary_noise" + "_TA" + str(TA) + "_N" + str(N) + "_ind.pdf", header=True)
         
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='-s seed -t TA -e effect')
