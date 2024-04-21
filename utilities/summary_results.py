@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 sys.path.append("./utility")
 
 DATA_NAMES = ["twoDplane", "Friedman"]
-N = 1000
+N = 300
 MEASURES = ["RMSE","CORRELATION", "COVERAGE","LL"]
 
 def main(args):
@@ -61,16 +61,16 @@ def main(args):
         df = pd.DataFrame(data=mu, index=pd.Index(MODELS), columns=MEASURES)
         print(df)
         if effect_type=="pop":
-            df.to_csv("./results/summary_mu" + "_TA" + str(TA) + "_N" + str(N) + ".pdf", header=True)
+            df.to_csv("./results/summary_mu" + "_TA" + str(TA) + "_N" + str(N) + ".csv", header=True)
         else:
-            df.to_csv("./results/summary_mu" + "_TA" + str(TA) + "_N" + str(N) + "_ind.pdf", header=True)
+            df.to_csv("./results/summary_mu" + "_TA" + str(TA) + "_N" + str(N) + "_ind.csv", header=True)
         
         df = pd.DataFrame(data=noise, index=pd.Index(MODELS), columns=MEASURES)
         print(df)
         if effect_type=="pop":
-            df.to_csv("./results/summary_noise" + "_TA" + str(TA) + "_N" + str(N) + ".pdf", header=True)
+            df.to_csv("./results/summary_noise" + "_TA" + str(TA) + "_N" + str(N) + ".csv", header=True)
         else:
-            df.to_csv("./results/summary_noise" + "_TA" + str(TA) + "_N" + str(N) + "_ind.pdf", header=True)
+            df.to_csv("./results/summary_noise" + "_TA" + str(TA) + "_N" + str(N) + "_ind.csv", header=True)
         
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='-s seed -t TA -e effect')
