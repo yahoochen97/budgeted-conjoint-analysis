@@ -3,8 +3,8 @@ if ~exist('SEED','var')
     SEED = 15;
     data_name = "Friedman";
     policy_name = "GRADBALD";
-    N = 1000;
-    TOTAL_SIZE=350;
+    N = 1300;
+    TOTAL_SIZE=300;
     test_anchor = 0;
 end
 
@@ -27,9 +27,24 @@ x_pop = train_x;
 y_pop = train_y;
 
 % true dgp effect with whole population
-BIN=10; D = size(train_x,2)/2;
+D = size(train_x,2)/2;
 % [dgp_effects,~]=gp_point_est(BIN,raw_x,dgp_dy,dgp_dy.*0);
-[dgp_effects,~]=gp_AMCE(dgp_dy,dgp_dy*0,data_name, train_x);
+% [dgp_effects,~]=gp_AMCE(dgp_dy,dgp_dy*0,data_name, train_x);
+dgp_effects = dgp_dy(:,1:(size(test_x,2)/2));
+
+% build model with initial batch
+INIT_SIZE = 300;
+idx_selected = (N+1-INIT_SIZE:N);
+train_x = x_pop(idx_selected,:);
+train_y = y_pop(idx_selected,:);
+idx_other = setdiff(1:N, idx_selected);
+test_x = x_pop(idx_other,:);
+learn_HYP = 1;
+n_gauss_hermite = 10;
+gp_pref_grad;
+N = N - INIT_SIZE;
+x_pop = train_x;
+y_pop = train_y;
 
 % initial batch is complete randomization
 INIT_SIZE = 50;
@@ -43,7 +58,6 @@ test_x = x_pop(idx_other,:);
 
 % adaptively acquire new data as batches
 ITERATIONS = (TOTAL_SIZE-INIT_SIZE)/BATCH_SIZE;
-n_gauss_hermite = 10;
 epsilon = 0.1;
 
 for iter=1:ITERATIONS
@@ -51,8 +65,8 @@ for iter=1:ITERATIONS
    % policy for data acquisition
    disp("search iter " + iter);
    
-   % current gp model
-   learn_HYP = 1;
+   % current gp model but fix hyp
+   learn_HYP = 0;
    gp_pref_grad;
    if strcmp(policy_name, "UNIFORM")
        % randomization policy
@@ -135,18 +149,19 @@ for iter=1:ITERATIONS
    if mod(numel(idx_selected),50)==0
        HYP = data_name + "_N" + int2str(N) + "_S" + int2str(numel(idx_selected)) + "_" + policy_name + "_SEED" + int2str(SEED);
        results = save_results(HYP, n_gauss_hermite,...
-           train_x, train_y, x_pop, raw_x, BIN, dgp_effects,...
-           data_name, policy_name, dgp_f);
+           train_x, train_y, x_pop, dgp_effects,...
+           data_name, policy_name, dgp_dy);
    end
 end
 
 function results = save_results(HYP, n_gauss_hermite,...
-    train_x, train_y, x_pop, raw_x, BIN, dgp_effects,...
-    data_name, policy_name, dgp_f)
+    train_x, train_y, x_pop, dgp_effects,...
+    data_name, policy_name, dgp_dy)
 % estimate marginal effects with selected data
 % build a gp preference learning model for grad
-    learn_HYP = 1;
-    test_x = x_pop;
+    learn_HYP = 0;
+    % test_x = x_pop;
+    test_x = train_x;
     gp_pref_grad;
 
     % gp preference learning GMM effect
@@ -162,6 +177,7 @@ function results = save_results(HYP, n_gauss_hermite,...
     % shift = mean(dgp_effects) - mean(gp_GMM_mu);
     % scatter(dgp_effects,gp_GMM_mu*ratio + shift);
 
+    % report individualized effect estimation
     D = numel(dgp_effects);
     results = array2table(zeros(D,3),'VariableNames',...
         {'mean','std','effect'});
@@ -173,6 +189,32 @@ function results = save_results(HYP, n_gauss_hermite,...
     
     disp(HYP);
     writetable(results,"./results2/"+HYP+".csv");
+    
+    % report individualized effect estimation
+    D = size(test_x,1)*size(test_x,2)/2;
+    results = array2table(zeros(D,3),'VariableNames',...
+        {'mean','std','effect'});
+    results.policy = repmat(string(policy_name),[D 1]);
+
+    results(:,1) = num2cell(reshape(mu_GMM_avg,[D,1]));
+    results(:,2) = num2cell(reshape(sigma_GMM_avg,[D,1]));
+    results(:,3) = num2cell(reshape(dgp_effects,[D,1]));
+    
+    disp(HYP);
+    writetable(results,"./results2/ind_"+HYP+".csv");
+    
+    % report avg effect estimation
+    [dgp_effects,~]=gp_AMCE(dgp_dy, dgp_dy*0, data_name, train_x);
+    D = numel(dgp_effects);
+    results = array2table(zeros(D,3),'VariableNames',...
+        {'mean','std','effect'});
+    results.policy = repmat(string(policy_name),[D 1]);
+
+    results(:,1) = num2cell(gp_GMM_mu)';
+    results(:,2) = num2cell(gp_GMM_std)';
+    results(:,3) = num2cell(dgp_effects)';
+    
+    writetable(results,"./results2/ind_"+HYP+".csv");
 end
 
 function idx_cur = softmax(IG, BATCH_SIZE)
