@@ -223,7 +223,7 @@ function results = save_results(HYP, n_gauss_hermite,...
     results(:,2) = num2cell(gp_GMM_std)';
     results(:,3) = num2cell(dgp_effects)';
     
-    writetable(results,"./results2/ind_"+HYP+".csv");
+    writetable(results,"./results2/"+HYP+".csv");
 end
 
 function idx_cur = softmax(IG, BATCH_SIZE)
