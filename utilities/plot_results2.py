@@ -13,7 +13,7 @@ MEASURES = ["RMSE","CORRELATION", "COVERAGE","LL"]
 
 def main(args):
     MAXSEED = int(args["seed"])
-    MODELS = ["UNIFORM", "US", "GRADUS", "BALD", "GRADBALD"]
+    MODELS = ["UNIFORM", "US", "GRADUS", "BALD"] # "GRADBALD"
     effect_type = args["effect"]
     
     results = np.zeros((len(MEASURES), len(DATA_NAMES),len(TOTAL_SIZES),len(MODELS),MAXSEED))
