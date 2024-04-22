@@ -38,3 +38,5 @@ then
         done
     done
 fi
+
+# scp chenyehu@ssh8.engr.wustl.edu:budgeted-conjoint-analysis/results2/*pdf ./results2/

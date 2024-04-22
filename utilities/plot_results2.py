@@ -14,14 +14,19 @@ MEASURES = ["RMSE","CORRELATION", "COVERAGE","LL"]
 def main(args):
     MAXSEED = int(args["seed"])
     MODELS = ["UNIFORM", "US", "GRADUS", "BALD", "GRADBALD"]
+    effect_type = args["effect"]
     
     results = np.zeros((len(MEASURES), len(DATA_NAMES),len(TOTAL_SIZES),len(MODELS),MAXSEED))
     for i in range(len(DATA_NAMES)):                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
         for SEED in range(1,MAXSEED+1):
             for j in range(len(TOTAL_SIZES)):
                 for k in range(len(MODELS)):
-                    result_filename = "./results2/"+ DATA_NAMES[i] + "_N" + str(N) \
-                        + "_S" + str(TOTAL_SIZES[j]) + "_" + MODELS[k] + "_SEED" + str(SEED) + ".csv"
+                    if effect_type=="pop":
+                        result_filename = "./results2/"+ DATA_NAMES[i] + "_N" + str(N) \
+                            + "_S" + str(TOTAL_SIZES[j]) + "_" + MODELS[k] + "_SEED" + str(SEED) + ".csv"
+                    else:
+                        result_filename = "./results2/ind_"+ DATA_NAMES[i] + "_N" + str(N) \
+                            + "_S" + str(TOTAL_SIZES[j]) + "_" + MODELS[k] + "_SEED" + str(SEED) + ".csv"
                     data = pd.read_csv(result_filename)
                     tmp = data[data.policy==MODELS[k]]
                     est_mu = tmp["mean"].to_numpy()
@@ -84,10 +89,14 @@ def main(args):
     }
     plt.rcParams.update(params)
     fig.subplots_adjust(left=0.05, bottom=0.035, right=0.99, top=0.96, wspace=0.12)
-    plt.savefig("./results2/simulation2_plot.pdf", format="pdf", dpi=100)
+    if effect_type=="pop":
+        plt.savefig("./results2/simulation2_plot.pdf", format="pdf", dpi=100)
+    else:
+        plt.savefig("./results2/simulation2_plot_ind.pdf", format="pdf", dpi=100)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='-s seed')
     parser.add_argument('-s','--seed', help='random seed', required=True)
+    parser.add_argument('-e','--effect', help='pop/ind effects', required=True)
     args = vars(parser.parse_args())
     main(args)
