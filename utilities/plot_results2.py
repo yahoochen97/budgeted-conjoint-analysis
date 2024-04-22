@@ -49,7 +49,7 @@ def main(args):
                     COVERAGE = np.mean(np.logical_and((est_mu-1.96*est_std)<=true_effect,\
                                                         true_effect<=(est_mu+1.96*est_std)))
                     LL = -np.log(2*np.pi) -np.mean(np.log(est_std**2)/2)-np.mean((est_mu-true_effect)**2/2/est_std**2)
-                    ENTROPY = 0.5 + np.log(est_std*np.sqrt(2*np.pi))
+                    ENTROPY = 0.5 + np.mean(np.log(est_std*np.sqrt(2*np.pi)))
                     results[0,i,j,k,SEED-1] = RMSE
                     results[1,i,j,k,SEED-1] = CORRELATION
                     results[2,i,j,k,SEED-1] = COVERAGE
