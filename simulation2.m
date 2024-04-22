@@ -4,7 +4,7 @@ if ~exist('SEED','var')
     data_name = "Friedman";
     policy_name = "GRADBALD";
     N = 1300;
-    TOTAL_SIZE = 300;
+    TOTAL_SIZE = 200;
     test_anchor = 0;
 end
 
@@ -18,6 +18,7 @@ startup;
 addpath("utilities");
 FONTSIZE=16;
 BATCH_SIZE = 1; % acquire 1 new data per iteration
+SAVE_BATCH = 25; % save results every 25 iterations
 
 rng(SEED+12345);
 
@@ -49,10 +50,10 @@ pair_y = pair_y(idx_other,:);
 transformed_x = transformed_x(idx_other,:);
 
 % initial batch is complete randomization
-INIT_SIZE = 50 - 1;
+INIT_SIZE = 50;
 idx_selected = [];
-idx_init = policy_uniform(1:N, INIT_SIZE);
-idx_selected = [idx_selected, idx_init];
+idx_cur = policy_uniform(1:N, INIT_SIZE);
+idx_selected = [idx_selected, idx_cur];
 train_x = x_pop(idx_selected,:);
 train_y = y_pop(idx_selected,:);
 idx_other = setdiff(1:N, idx_selected);
@@ -153,23 +154,21 @@ for iter=1:ITERATIONS
    test_x = x_pop(idx_other,:);
    test_t = y_pop(idx_other,:);
    
-   % save results every 50 samples   
-   if mod(numel(idx_selected),50)==0
+   % save results every 25 samples   
+   if mod(numel(idx_selected), SAVE_BATCH)==0
        HYP = data_name + "_N" + int2str(N) + "_S" + int2str(numel(idx_selected)) + "_" + policy_name + "_SEED" + int2str(SEED);
        results = save_results(HYP, n_gauss_hermite,...
-           train_x, train_y, x_pop, dgp_effects, ...
+           train_x, train_y, x_pop(idx_selected,:), dgp_effects, ...
            data_name, policy_name, dgp_dy(idx_selected,:));
    end
 end
 
 function results = save_results(HYP, n_gauss_hermite,...
-    train_x, train_y, x_pop, dgp_effects, ...
+    train_x, train_y, test_x, dgp_effects, ...
     data_name, policy_name, dgp_dy)
 % estimate marginal effects with selected data
 % build a gp preference learning model for grad
     learn_HYP = 0;
-    % test_x = x_pop;
-    test_x = train_x;
     gp_pref_grad;
 
     % gp preference learning GMM effect
