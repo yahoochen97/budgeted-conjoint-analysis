@@ -162,9 +162,6 @@ for iter=1:ITERATIONS
    % save results every 25 samples   
    if mod(numel(idx_selected), SAVE_BATCH)==0
        HYP = data_name + "_N" + int2str(N) + "_S" + int2str(numel(idx_selected)) + "_" + policy_name + "_SEED" + int2str(SEED);
-%        results = save_results(HYP, n_gauss_hermite,...
-%            train_x, train_y, x_pop(1:N,:), dgp_effects, ...
-%            data_name, policy_name, dgp_dy(1:N,:));
        
        % get current estimation
        [mu_GMM_avg,sigma_GMM_avg, mu_GMM,sigma_GMM,...
@@ -200,71 +197,9 @@ for iter=1:ITERATIONS
 
         disp(HYP);
         writetable(results,"./results2/ind_"+HYP+".csv");
-        
    end
 end
 
-function results = save_results(HYP, n_gauss_hermite,...
-    train_x, train_y, test_x, dgp_effects, ...
-    data_name, policy_name, dgp_dy)
-% estimate marginal effects with selected data
-% build a gp preference learning model for grad
-    learn_HYP = 0;
-    gp_pref_grad;
-
-    % gp preference learning GMM effect
-%     [gp_GMM_mu,gp_GMM_std]=gp_point_est(BIN,raw_x,mu_GMM_avg,sigma_GMM_avg);
-    
-    [gp_GMM_mu,gp_GMM_std]=gp_AMCE(mu_GMM_avg,sigma_GMM_avg,data_name, train_x);
-    % D = size(train_x,2)/2; N = size(test_x,1);
-    % gp_GMM_mu = reshape(mu_GMM_avg, [N*D 1]);
-    % gp_GMM_std = reshape(sigma_GMM_avg, [N*D 1]);
-
-    % scatter(reshape(dgp_effects,[D,1]),reshape(gp_GMM_mu,[D,1]));
-    % ratio = std(dgp_effects)/std(gp_GMM_mu);
-    % shift = mean(dgp_effects) - mean(gp_GMM_mu);
-    % scatter(dgp_effects,gp_GMM_mu*ratio + shift);
-
-    % report individualized effect estimation
-%     D = numel(dgp_effects);
-%     results = array2table(zeros(D,3),'VariableNames',...
-%         {'mean','std','effect'});
-%     results.policy = repmat(string(policy_name),[D 1]);
-% 
-%     results(:,1) = num2cell(gp_GMM_mu)';
-%     results(:,2) = num2cell(gp_GMM_std)';
-%     results(:,3) = num2cell(dgp_effects)';
-%     
-%     disp(HYP);
-%     writetable(results,"./results2/"+HYP+".csv");
-    
-    % report individualized effect estimation
-    D = size(test_x,1)*size(test_x,2)/2;
-    ind_effects = dgp_dy(:,1:(size(test_x,2)/2));
-    results = array2table(zeros(D,3),'VariableNames',...
-        {'mean','std','effect'});
-    results.policy = repmat(string(policy_name),[D 1]);
-
-    results(:,1) = num2cell(reshape(mu_GMM_avg,[D,1]));
-    results(:,2) = num2cell(reshape(sigma_GMM_avg,[D,1]));
-    results(:,3) = num2cell(reshape(ind_effects,[D,1]));
-    
-    disp(HYP);
-    writetable(results,"./results2/ind_"+HYP+".csv");
-    
-    % report avg effect estimation
-    % [dgp_effects,~]=gp_AMCE(dgp_dy, dgp_dy*0, data_name, train_x);
-    D = numel(dgp_effects);
-    results = array2table(zeros(D,3),'VariableNames',...
-        {'mean','std','effect'});
-    results.policy = repmat(string(policy_name),[D 1]);
-
-    results(:,1) = num2cell(gp_GMM_mu)';
-    results(:,2) = num2cell(gp_GMM_std)';
-    results(:,3) = num2cell(dgp_effects)';
-    
-    writetable(results,"./results2/"+HYP+".csv");
-end
 
 function idx_cur = softmax(IG, BATCH_SIZE)
     p = exp(IG)./sum(exp(IG));

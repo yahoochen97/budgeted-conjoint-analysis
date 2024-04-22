@@ -9,7 +9,7 @@ sys.path.append("./utility")
 DATA_NAMES = ["twoDplane", "Friedman"]
 N = 700
 TOTAL_SIZES = [25*i+50 for i in range(5)]
-MEASURES = ["RMSE","CORRELATION", "COVERAGE","LL"]
+MEASURES = ["RMSE","CORRELATION", "COVERAGE","LL", "ENTROPY"]
 
 def main(args):
     MAXSEED = int(args["seed"])
@@ -38,9 +38,10 @@ def main(args):
                     true_effect = true_effect[flag]
                     if est_mu.shape[0]==0:
                         results[0,i,j,k,SEED-1] = RMSE
-                        # results[1,i,j,k,SEED-1] = CORRELATION
-                        results[1,i,j,k,SEED-1] = COVERAGE
-                        results[2,i,j,k,SEED-1] = LL
+                        results[1,i,j,k,SEED-1] = CORRELATION
+                        results[2,i,j,k,SEED-1] = COVERAGE
+                        results[3,i,j,k,SEED-1] = LL
+                        results[4,i,j,k,SEED-1] = ENTROPY
                         continue
                     
                     RMSE = np.sqrt(np.mean((est_mu-true_effect)**2))
@@ -48,10 +49,12 @@ def main(args):
                     COVERAGE = np.mean(np.logical_and((est_mu-1.96*est_std)<=true_effect,\
                                                         true_effect<=(est_mu+1.96*est_std)))
                     LL = -np.log(2*np.pi) -np.mean(np.log(est_std**2)/2)-np.mean((est_mu-true_effect)**2/2/est_std**2)
+                    ENTROPY = 0.5 + np.log(est_std*np.sqrt(2*np.pi))
                     results[0,i,j,k,SEED-1] = RMSE
                     results[1,i,j,k,SEED-1] = CORRELATION
                     results[2,i,j,k,SEED-1] = COVERAGE
                     results[3,i,j,k,SEED-1] = LL
+                    results[4,i,j,k,SEED-1] = ENTROPY
     
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 8), dpi=100)
     colors = ["forestgreen", "limegreen", "darkseagreen",  "blue","steelblue"]
