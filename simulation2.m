@@ -49,8 +49,13 @@ raw_x = raw_x(idx_other,:);
 pair_y = pair_y(idx_other,:);
 transformed_x = transformed_x(idx_other,:);
 
+% true dgp effect with whole population
+D = size(train_x,2)/2;
+% [dgp_effects,~]=gp_point_est(BIN,raw_x,dgp_dy,dgp_dy.*0);
+[dgp_effects,~]=gp_AMCE(dgp_dy,dgp_dy*0,data_name, train_x);
+
 % initial batch is complete randomization
-INIT_SIZE = 25 + 24;
+INIT_SIZE = 25;
 idx_selected = [];
 idx_cur = policy_uniform(1:N, INIT_SIZE);
 idx_selected = [idx_selected, idx_cur];
@@ -60,10 +65,6 @@ idx_other = setdiff(1:N, idx_selected);
 test_x = x_pop(idx_other,:);
 test_y = y_pop(idx_other,:);
 
-% true dgp effect with whole population
-D = size(train_x,2)/2;
-% [dgp_effects,~]=gp_point_est(BIN,raw_x,dgp_dy,dgp_dy.*0);
-[dgp_effects,~]=gp_AMCE(dgp_dy,dgp_dy*0,data_name, train_x);
 
 % adaptively acquire new data as batches
 ITERATIONS = (TOTAL_SIZE-INIT_SIZE)/BATCH_SIZE;
@@ -169,7 +170,7 @@ for iter=1:ITERATIONS
            hyp,inffunc,meanfunc,covfunc, likfunc, train_x, train_y, x_pop(1:N,:));
        
        % report individualized effect estimation
-        [gp_GMM_mu,gp_GMM_std]=gp_AMCE(mu_GMM_avg,sigma_GMM_avg,data_name, train_x);
+        [gp_GMM_mu,gp_GMM_std]=gp_AMCE(mu_GMM_avg,sigma_GMM_avg,data_name, x_pop(1:N,:));
         D = numel(dgp_effects);
         results = array2table(zeros(D,3),'VariableNames',...
             {'mean','std','effect'});
