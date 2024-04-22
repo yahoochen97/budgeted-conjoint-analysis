@@ -22,7 +22,8 @@ then
     done
 elif [ $1 = "summary" ]
 then
-    python utilities/plot_results2.py -s $MAXSEED
+    python utilities/plot_results2.py -s $MAXSEED -e pop
+    python utilities/plot_results2.py -s $MAXSEED -e ind
 elif [ $1 = "check" ]
 then
     for SEED in $(seq 1 1 $MAXSEED); do
