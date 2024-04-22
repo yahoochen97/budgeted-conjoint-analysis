@@ -3,8 +3,8 @@ if ~exist('SEED','var')
     SEED = 15;
     data_name = "Friedman";
     policy_name = "GRADBALD";
-    N = 1300;
-    TOTAL_SIZE = 200;
+    N = 1000;
+    TOTAL_SIZE = 150;
     test_anchor = 0;
 end
 
@@ -50,7 +50,7 @@ pair_y = pair_y(idx_other,:);
 transformed_x = transformed_x(idx_other,:);
 
 % initial batch is complete randomization
-INIT_SIZE = 50;
+INIT_SIZE = 25;
 idx_selected = [];
 idx_cur = policy_uniform(1:N, INIT_SIZE);
 idx_selected = [idx_selected, idx_cur];
@@ -158,8 +158,8 @@ for iter=1:ITERATIONS
    if mod(numel(idx_selected), SAVE_BATCH)==0
        HYP = data_name + "_N" + int2str(N) + "_S" + int2str(numel(idx_selected)) + "_" + policy_name + "_SEED" + int2str(SEED);
        results = save_results(HYP, n_gauss_hermite,...
-           train_x, train_y, x_pop(idx_selected,:), dgp_effects, ...
-           data_name, policy_name, dgp_dy(idx_selected,:));
+           train_x, train_y, x_pop(1:N,:), dgp_effects, ...
+           data_name, policy_name, dgp_dy(1:N,:));
    end
 end
 
