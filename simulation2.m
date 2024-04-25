@@ -4,7 +4,7 @@ if ~exist('SEED','var')
     data_name = "Friedman";
     policy_name = "GRADBALD";
     N = 1000;
-    TOTAL_SIZE = 150;
+    TOTAL_SIZE = 250;
     test_anchor = 0;
 end
 
@@ -36,7 +36,7 @@ idx_other = setdiff(1:N, idx_selected);
 test_x = x_pop(idx_other,:);
 test_y = y_pop(idx_other,:);
 learn_HYP = 1;
-n_gauss_hermite = 10;
+n_gauss_hermite = 5;
 gp_pref_grad;
 N = N - INIT_SIZE;
 x_pop = test_x;
@@ -55,7 +55,7 @@ D = size(train_x,2)/2;
 [dgp_effects,~]=gp_AMCE(dgp_dy,dgp_dy*0,data_name, train_x);
 
 % initial batch is complete randomization
-INIT_SIZE = 25;
+INIT_SIZE = 100;
 idx_selected = [];
 idx_cur = policy_uniform(1:N, INIT_SIZE);
 idx_selected = [idx_selected, idx_cur];
@@ -101,6 +101,12 @@ for iter=1:ITERATIONS
        % idx_cur = softmax(U_f, BATCH_SIZE);
        % [~,idx_cur]=maxk(U_f,BATCH_SIZE);
        idx_cur = epsilon_greedy(U_f, BATCH_SIZE, epsilon);
+       idx_cur = idx_other(idx_cur);
+   elseif strcmp(policy_name, "DE")
+       % maximize diffential entropy for latent utility
+       U_f = arrayfun(@(i)det(squeeze(df_K(i,:,:))),1:size(test_x,1));
+       DE_f = log(sqrt(U_f)); % ln(sigma) + ln(2 pi) / 2 + 0.5;
+       idx_cur = epsilon_greedy(DE_f, BATCH_SIZE, epsilon);
        idx_cur = idx_other(idx_cur);
    elseif strcmp(policy_name, "GRADUS")
        % maximize uncertainty for marginal effect

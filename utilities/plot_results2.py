@@ -13,7 +13,7 @@ MEASURES = ["RMSE","CORRELATION", "COVERAGE","LL", "ENTROPY"]
 
 def main(args):
     MAXSEED = int(args["seed"])
-    MODELS = ["UNIFORM", "US", "GRADUS", "BALD", "GRADBALD"] # 
+    MODELS = ["UNIFORM", "US", "DE", "GRADUS", "BALD", "GRADBALD"] # 
     effect_type = args["effect"]
     
     results = np.zeros((len(MEASURES), len(DATA_NAMES),len(TOTAL_SIZES),len(MODELS),MAXSEED))
@@ -57,7 +57,7 @@ def main(args):
                     results[4,i,j,k,SEED-1] = ENTROPY
     
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 8), dpi=100)
-    colors = ["forestgreen", "limegreen", "darkseagreen",  "blue","steelblue"]
+    colors = ["forestgreen", "limegreen", "gold", "darkseagreen",  "blue","steelblue"]
     for i in range(len(DATA_NAMES)):
         for m in range(len(MEASURES)):
             if i==0:
