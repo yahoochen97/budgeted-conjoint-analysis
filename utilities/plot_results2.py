@@ -35,7 +35,7 @@ def main(args):
                     true_effect = tmp["effect"].to_numpy()
                     flag = ~np.isnan(true_effect) & ~np.isnan(est_mu) & ~np.isnan(est_std) & np.array(est_std!=0)
                     est_mu = est_mu[flag]
-                    est_std = est_std[flag]
+                    est_std = est_std[flag].clip(1e-3)
                     true_effect = true_effect[flag]
                     if est_mu.shape[0]==0:
                         results[0,i,j,k,SEED-1] = RMSE
