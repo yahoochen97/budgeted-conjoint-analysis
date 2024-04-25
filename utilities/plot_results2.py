@@ -14,7 +14,7 @@ MEASURES = ["RMSE", "LL", "ENTROPY"]
 
 def main(args):
     MAXSEED = int(args["seed"])
-    MODELS = ["UNIFORM", "DE", "GRADDE", "BALD", "GRADBALD"] # 
+    MODELS = ["UNIFORM", "DE", "GRADUS", "BALD", "GRADBALD"] # 
     effect_type = args["effect"]
     
     results = np.zeros((len(MEASURES), len(DATA_NAMES),len(TOTAL_SIZES),len(MODELS),MAXSEED))
