@@ -3,7 +3,7 @@ if ~exist('SEED','var')
     SEED = 15;
     data_name = "Friedman";
     policy_name = "GRADBALD";
-    N = 700;
+    N = 1000;
     TOTAL_SIZE = 250;
     test_anchor = 0;
 end
@@ -28,7 +28,7 @@ x_pop = train_x;
 y_pop = train_y;
 
 % build model with initial batch
-INIT_SIZE = 300;
+INIT_SIZE = 200;
 idx_selected = (N+1-INIT_SIZE:N);
 train_x = x_pop(idx_selected,:);
 train_y = y_pop(idx_selected,:);
@@ -49,21 +49,21 @@ raw_x = raw_x(idx_other,:);
 pair_y = pair_y(idx_other,:);
 transformed_x = transformed_x(idx_other,:);
 
-% true dgp effect with whole population
-D = size(train_x,2)/2;
-% [dgp_effects,~]=gp_point_est(BIN,raw_x,dgp_dy,dgp_dy.*0);
-[dgp_effects,~]=gp_AMCE(dgp_dy,dgp_dy*0,data_name, train_x);
-
 % initial batch is complete randomization
 INIT_SIZE = 100;
 idx_selected = [];
-idx_cur = policy_uniform(1:N, INIT_SIZE);
-idx_selected = [idx_selected, idx_cur];
+idx_init = policy_uniform(1:N, INIT_SIZE);
+idx_selected = [idx_selected, idx_init];
 train_x = x_pop(idx_selected,:);
 train_y = y_pop(idx_selected,:);
 idx_other = setdiff(1:N, idx_selected);
 test_x = x_pop(idx_other,:);
 test_y = y_pop(idx_other,:);
+
+% true dgp effect with whole population
+D = size(train_x,2)/2;
+% [dgp_effects,~]=gp_point_est(BIN,raw_x,dgp_dy,dgp_dy.*0);
+[dgp_effects,~]=gp_AMCE(dgp_dy(idx_other,:),dgp_dy(idx_other,:)*0,data_name, x_pop(idx_other,:));
 
 % adaptively acquire new data as batches
 ITERATIONS = (TOTAL_SIZE-INIT_SIZE)/BATCH_SIZE;
@@ -171,12 +171,13 @@ for iter=1:ITERATIONS
        HYP = data_name + "_N" + int2str(N) + "_S" + int2str(numel(idx_selected)) + "_" + policy_name + "_SEED" + int2str(SEED);
        
        % get current estimation
+       idx_test = setdiff(1:N, idx_init);
        [mu_GMM_avg,sigma_GMM_avg, mu_GMM,sigma_GMM,...
            dy_mu, dy_std, df_mu, df_K, ks, ws] = g_GMM(n_gauss_hermite, ...
-           hyp,inffunc,meanfunc,covfunc, likfunc, train_x, train_y, x_pop(1:N,:));
+           hyp,inffunc,meanfunc,covfunc, likfunc, train_x, train_y, x_pop(idx_test,:));
        
        % report individualized effect estimation
-        [gp_GMM_mu,gp_GMM_std]=gp_AMCE(mu_GMM_avg,sigma_GMM_avg,data_name, x_pop(1:N,:));
+        [gp_GMM_mu,gp_GMM_std]=gp_AMCE(mu_GMM_avg,sigma_GMM_avg,data_name, x_pop(idx_test,:));
         D = numel(dgp_effects);
         results = array2table(zeros(D,3),'VariableNames',...
             {'mean','std','effect'});
@@ -193,7 +194,7 @@ for iter=1:ITERATIONS
         mu_GMM_avg = mu_GMM_avg .* ratio;
         sigma_GMM_avg = sigma_GMM_avg .* ratio; 
         D = size(mu_GMM_avg,1)*size(train_x,2)/2;
-        ind_effects = dgp_dy(1:N,1:(size(train_x,2)/2));
+        ind_effects = dgp_dy(idx_test,1:(size(train_x,2)/2));
         results = array2table(zeros(D,3),'VariableNames',...
             {'mean','std','effect'});
         results.policy = repmat(string(policy_name),[D 1]);
