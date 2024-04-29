@@ -1,7 +1,7 @@
 if ~exist('SEED','var')
     % simulation settings
     SEED = 1;
-    data_name =  "Friedman"; %"twoDplane";
+    data_name =  "twoDplane"; % "Friedman"; %
     N = 300;
     test_anchor = 0;
 end
@@ -34,12 +34,13 @@ simulate_data;
 % difference-in-mean estimator with complete independent assumption
 BIN=2;
 diff_in_mean;
+D = (size(train_x,2))/2;
 ACC = cell2table(cell(3,2),'VariableNames',...
     {'acc', 'model'}); 
-ACC{1,1} = {mean(((train_x(:,1:3)-train_x(:,4:6))*dim_mu'>=0)==(train_y==1))};
+ACC{1,1} = {mean(((train_x(:,1:D)-train_x(:,D+1:2*D))*dim_mu'>=0)==(train_y==1))};
 ACC(1,2) = {'diffinmean'};
 
-D = (size(train_x,2))/2;
+
 % dim_mu = repmat(dim_mu',N,1)';
 % dim_std = repmat(dim_std',N,1)';
 
