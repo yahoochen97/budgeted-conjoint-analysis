@@ -72,7 +72,7 @@ def main(args):
                 if m==len(MEASURES)-1:
                     tmp = results[m,i,:,k,:]
                     # tmp = [tmp[j,:] for j in range(len(TOTAL_SIZES))]
-                    tmp = [(tmp[j,:]-np.mean(tmp[j,:]))/np.sqrt(4)+np.mean(tmp[j,:]) for j in range(len(TOTAL_SIZES))]  
+                    tmp = [(tmp[j,:]-np.mean(tmp[j,:]))/np.sqrt(MAXSEED)+np.mean(tmp[j,:]) for j in range(len(TOTAL_SIZES))]  
                 bplot = ax[i,m].boxplot(tmp, positions=4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, showfliers=False,\
                                     patch_artist=True, widths=0.45)
                 # plot connected line
@@ -126,7 +126,7 @@ def compare_ACC(args):
                 data = pd.read_csv(result_filename, header=None).to_numpy()
                 results[i, k, :, SEED-1] = data.reshape((-1,))
     
-    fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=1, figsize=(10, 8), dpi=100)
+    fig, ax = plt.subplots(nrows=1, ncols=len(DATA_NAMES), figsize=(12, 6), dpi=100)
     colors = ["limegreen", "gold", "darkseagreen",  "blue"]
     for i in range(len(DATA_NAMES)):
         ax[i].set_title(DATA_NAMES[i], fontsize=14)
@@ -135,7 +135,9 @@ def compare_ACC(args):
         bplots = []
         for k in range(len(MODELS)):
             tmp = results[i,k,:,:]
-            tmp = [tmp[j,:] for j in range(len(TOTAL_SIZES))]
+            # tmp = [tmp[j,:] for j in range(len(TOTAL_SIZES))]
+            tmp = [(tmp[j,:]-np.mean(tmp[j,:]))/np.sqrt(MAXSEED)+np.mean(tmp[j,:])\
+                    for j in range(len(TOTAL_SIZES))]  
             bplot = ax[i].boxplot(tmp, positions=4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, showfliers=False,\
                                 patch_artist=True, widths=0.45)
             # plot connected line
