@@ -34,6 +34,11 @@ simulate_data;
 % difference-in-mean estimator with complete independent assumption
 BIN=2;
 diff_in_mean;
+ACC = cell2table(cell(3,2),'VariableNames',...
+    {'acc', 'model'}); 
+ACC{1,1} = {mean(((train_x(:,1:3)-train_x(:,4:6))*dim_mu'>=0)==(train_y==1))};
+ACC(1,2) = {'diffinmean'};
+
 D = (size(train_x,2))/2;
 % dim_mu = repmat(dim_mu',N,1)';
 % dim_std = repmat(dim_std',N,1)';
@@ -50,6 +55,8 @@ linear_utilities;
 % lm_dy_mu = lm_dy_mu .* ratio;
 % lm_dy_std = lm_dy_std .* ratio;
 [lm_mu,lm_std] = gp_AMCE(lm_dy_mu,lm_dy_std,data_name,train_x);
+ACC{2,1} = {mean((lm_f>=0)==(train_y==1))};
+ACC(2,2) = {'lm'};
 
 % build a gp preference learning model for grad
 learn_HYP = 1;
@@ -87,6 +94,10 @@ gp_pref_grad;
 % gp_GMM_mu = mean(mu_GMM_avg);
 % gp_GMM_std = sqrt(mean(sigma_GMM_avg.^2));
 disp(mean((dgp_effects>=gp_GMM_mu-2*gp_GMM_std) & (dgp_effects<=gp_GMM_mu+2*gp_GMM_std)));
+ACC{3,1} = {mean((ymu>=0)==(train_y==1))};
+ACC(3,2) = {'gpGMM'};
+HYP = data_name + "_N" + int2str(N) + "_TA" + int2str(test_anchor) + "_SEED" + int2str(SEED);
+writetable(ACC,"./results/ACC_"+HYP+".csv");
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % averaged effects
