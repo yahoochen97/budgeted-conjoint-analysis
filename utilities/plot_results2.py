@@ -76,7 +76,7 @@ def main(args):
                     patch.set_facecolor(colors[k])
                 bplots.append(bplot)
             ax[i,m].set_xticks(4+4*np.arange(len(TOTAL_SIZES)))
-            ax[i,m].set_xticklabels(TOTAL_SIZES)
+            ax[i,m].set_xticklabels([x-100 for x in TOTAL_SIZES])
             ax[i,m].spines['top'].set_visible(False)
             ax[i,m].spines['right'].set_visible(False)
             ax[i,m].tick_params(left=False, bottom=False)
