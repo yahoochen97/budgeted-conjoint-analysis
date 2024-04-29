@@ -64,7 +64,7 @@ def main(args):
             if i==0:
                 ax[i,m].set_title(MEASURES[m], fontsize=14)
             if m==0:
-                ax[i,m].set_ylabel(DATA_NAMES[i])
+                ax[i,m].set_ylabel(DATA_NAMES[i], fontsize=14)
             bplots = []
             for k in range(len(MODELS)):
                 tmp = results[m,i,:,k,:]
@@ -126,12 +126,12 @@ def compare_ACC(args):
                 data = pd.read_csv(result_filename, header=None).to_numpy()
                 results[i, k, :, SEED-1] = data.reshape((-1,))
     
-    fig, ax = plt.subplots(nrows=1, ncols=len(DATA_NAMES), figsize=(12, 6), dpi=100)
+    fig, ax = plt.subplots(nrows=1, ncols=len(DATA_NAMES), figsize=(12, 4), dpi=100)
     colors = ["limegreen", "gold", "darkseagreen",  "blue"]
     for i in range(len(DATA_NAMES)):
         ax[i].set_title(DATA_NAMES[i], fontsize=14)
         if i==0:
-            ax[i].set_ylabel("ACC")
+            ax[i].set_ylabel("ACC", fontsize=14)
         bplots = []
         for k in range(len(MODELS)):
             tmp = results[i,k,:,:]
@@ -167,7 +167,7 @@ def compare_ACC(args):
         'figure.figsize': [10, 6]
     }
     plt.rcParams.update(params)
-    fig.subplots_adjust(left=0.05, bottom=0.035, right=0.99, top=0.96, wspace=0.12)
+    fig.subplots_adjust(left=0.05, bottom=0.015, right=0.99, top=0.98, wspace=0.12)
     plt.savefig("./results2/simulation2_ACC.pdf", format="pdf", dpi=100)
 
 if __name__ == "__main__":

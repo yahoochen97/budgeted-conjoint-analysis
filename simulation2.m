@@ -78,7 +78,7 @@ for iter=1:ITERATIONS
    learn_HYP = 0;
    [ymu,~,fmu,fs2, ~, post] = gp(hyp, inffunc, meanfunc, ...
                 covfunc, likfunc, train_x, train_y, test_x);
-   if mod(numel(idx_selected), SAVE_BATCH)==0
+   if (mod(numel(idx_selected), SAVE_BATCH)==0) && (numel(idx_selected)>INIT_SIZE)
       ACC = [ACC, mean((ymu>=0)==(test_y==1))];
    end
    [mu_GMM_avg,sigma_GMM_avg, mu_GMM,sigma_GMM,...
