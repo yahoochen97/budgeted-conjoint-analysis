@@ -50,7 +50,7 @@ pair_y = pair_y(idx_other,:);
 transformed_x = transformed_x(idx_other,:);
 
 % initial batch is complete randomization
-INIT_SIZE = 100;
+INIT_SIZE = 25;
 idx_selected = [];
 idx_init = policy_uniform(1:N, INIT_SIZE);
 idx_selected = [idx_selected, idx_init];
