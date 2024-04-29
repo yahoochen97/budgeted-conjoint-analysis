@@ -104,7 +104,7 @@ def main(args):
         'figure.figsize': [10, 6]
     }
     plt.rcParams.update(params)
-    fig.subplots_adjust(left=0.08, bottom=0.05, right=0.99, top=0.99, wspace=0.12)
+    # fig.subplots_adjust(left=0.08, bottom=0.05, right=0.99, top=0.99, wspace=0.12)
     if effect_type=="pop":
         plt.savefig("./results2/simulation2_plot.pdf", format="pdf", dpi=100)
     else:
