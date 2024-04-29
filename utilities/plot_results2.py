@@ -81,7 +81,7 @@ def main(args):
                                 color=colors[k], linestyle="dashed")
                 else:
                     ax[i,m].plot(4+4*np.arange(len(TOTAL_SIZES)), np.mean(tmp,axis=1), \
-                                color=colors[k], linestyle="dot")
+                                color=colors[k], linestyle="dotted")
                 for patch in bplot['boxes']:
                     patch.set_facecolor(colors[k])
                 bplots.append(bplot)
