@@ -71,7 +71,28 @@ def main(args):
             df.to_csv("./results/summary_noise" + DATA_NAMES[i] + "_TA" + str(TA) + "_N" + str(N) + ".csv", header=True)
         else:
             df.to_csv("./results/summary_noise" + DATA_NAMES[i] + "_TA" + str(TA) + "_N" + str(N) + "_ind.csv", header=True)
-        
+
+def compare_ACC(args):
+    MODELS = ["diffinmean", "lm",  "gpGMM"]
+    MAXSEED = int(args["seed"])
+    TA = int(args["TA"])
+    effect_type = args["effect"]
+    
+    results = np.zeros((len(DATA_NAMES), len(MODELS),MAXSEED))
+    for i in range(len(DATA_NAMES)):   
+        for SEED in range(1,MAXSEED+1):
+            result_filename = "./results2/ACC_"+ DATA_NAMES[i] + \
+                  "_N" + str(N) + "_TA" + str(TA) + "_SEED" + str(SEED) + ".csv"
+            data = pd.read_csv(result_filename).acc.to_numpy()
+            results[i, :, SEED-1] = data.reshape((-1,))
+            print("ACC "+DATA_NAMES[i]+"...\n")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+            mu = np.mean(results[i,:,:], axis=1).T
+            noise = np.std(results[i,:,:], axis=1).T / np.sqrt(MAXSEED)
+            df = pd.DataFrame(data=mu, index=pd.Index(MODELS), columns=1)
+            print(df)
+            df = pd.DataFrame(data=noise, index=pd.Index(MODELS), columns=MEASURES)
+            print(df)
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='-s seed -t TA -e effect')
     parser.add_argument('-s','--seed', help='random seed', required=True)
@@ -79,3 +100,4 @@ if __name__ == "__main__":
     parser.add_argument('-e','--effect', help='pop/ind effects', required=True)
     args = vars(parser.parse_args())
     main(args)
+    compare_ACC(args)
