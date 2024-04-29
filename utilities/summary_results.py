@@ -85,11 +85,12 @@ def compare_ACC(args):
                   "_N" + str(N) + "_TA" + str(TA) + "_SEED" + str(SEED) + ".csv"
             data = pd.read_csv(result_filename).acc.to_numpy()
             results[i, :, SEED-1] = data.reshape((-1,))
-            print("ACC "+DATA_NAMES[i]+"...\n")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-            mu = np.mean(results[i,:,:], axis=1).T
-            noise = np.std(results[i,:,:], axis=1).T / np.sqrt(MAXSEED)
-            print(mu)
-            print(noise)
+        
+        print("ACC "+DATA_NAMES[i]+"...\n")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+        mu = np.mean(results[i,:,:], axis=1).T
+        noise = np.std(results[i,:,:], axis=1).T / np.sqrt(MAXSEED)
+        print(mu)
+        print(noise)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='-s seed -t TA -e effect')
