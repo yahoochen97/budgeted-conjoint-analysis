@@ -124,7 +124,7 @@ def compare_ACC(args):
                 result_filename = "./results2/ACC_"+ DATA_NAMES[i] + "_N" + str(N) \
                             + "_" + MODELS[k] + "_SEED" + str(SEED) + ".csv"
                 data = pd.read_csv(result_filename, header=None).to_numpy()
-                results[i, k, :, SEED] = data.reshape((-1,))
+                results[i, k, :, SEED-1] = data.reshape((-1,))
     
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=1, figsize=(10, 8), dpi=100)
     colors = ["limegreen", "gold", "darkseagreen",  "blue"]
