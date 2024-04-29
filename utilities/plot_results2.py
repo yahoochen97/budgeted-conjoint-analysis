@@ -7,7 +7,7 @@ import os.path
 sys.path.append("./utility")
 
 DATA_NAMES = ["twoDplane", "Friedman"]
-N = 700
+N = 800
 TOTAL_SIZES = [25*i+125 for i in range(6)]
 MEASURES = ["RMSE","CORRELATION", "COVERAGE","LL", "ENTROPY"]
 MEASURES = ["RMSE", "LL", "ENTROPY"]
