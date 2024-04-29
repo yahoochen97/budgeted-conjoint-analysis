@@ -67,10 +67,11 @@ def main(args):
                 ax[i,m].set_ylabel(DATA_NAMES[i])
             bplots = []
             for k in range(len(MODELS)):
-                tmp = [tmp[j,:] for j in range(len(TOTAL_SIZES))]
+                tmp = results[m,i,:,k,:]
                 if effect_type=="pop":
-                    tmp = results[m,i,:,k,:]
                     tmp = [(tmp[j,:]-np.mean(tmp[j,:]))/np.sqrt(MAXSEED)+np.mean(tmp[j,:]) for j in range(len(TOTAL_SIZES))]  
+                else:
+                    tmp = [tmp[j,:] for j in range(len(TOTAL_SIZES))]
                 bplot = ax[i,m].boxplot(tmp, positions=4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, showfliers=False,\
                                     patch_artist=True, widths=0.45)
                 for patch in bplot['boxes']:
