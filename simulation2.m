@@ -68,6 +68,7 @@ D = size(train_x,2)/2;
 % adaptively acquire new data as batches
 ITERATIONS = (TOTAL_SIZE-INIT_SIZE)/BATCH_SIZE;
 epsilon = 0.05;
+ACC = [];
 
 for iter=1:ITERATIONS 
    % policy for data acquisition
@@ -77,6 +78,9 @@ for iter=1:ITERATIONS
    learn_HYP = 0;
    [ymu,~,fmu,fs2, ~, post] = gp(hyp, inffunc, meanfunc, ...
                 covfunc, likfunc, train_x, train_y, test_x);
+   if mod(numel(idx_selected), SAVE_BATCH)==0
+      ACC = [ACC, mean((ymu>=0)==(test_y==1))];
+   end
    [mu_GMM_avg,sigma_GMM_avg, mu_GMM,sigma_GMM,...
        dy_mu, dy_std, df_mu, df_K, ks, ws] = g_GMM(n_gauss_hermite, ...
        hyp,inffunc,meanfunc,covfunc, likfunc, train_x, train_y, test_x);
@@ -208,6 +212,8 @@ for iter=1:ITERATIONS
    end
 end
 
+HYP = data_name + "_N" + int2str(N) + "_" + policy_name + "_SEED" + int2str(SEED);
+csvwrite("./results2/ACC_"+HYP+".csv", ACC');
 
 function idx_cur = softmax(IG, BATCH_SIZE)
     p = exp(IG)./sum(exp(IG));
