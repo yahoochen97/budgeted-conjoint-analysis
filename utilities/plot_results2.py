@@ -39,8 +39,8 @@ def main(args):
                     true_effect = true_effect[flag]
                     if est_mu.shape[0]==0:
                         results[0,i,j,k,SEED-1] = RMSE
-                        # results[1,i,j,k,SEED-1] = CORRELATION
-                        results[1,i,j,k,SEED-1] = COVERAGE
+                        results[1,i,j,k,SEED-1] = CORRELATION
+                        # results[1,i,j,k,SEED-1] = COVERAGE
                         results[2,i,j,k,SEED-1] = LL
                         # results[2,i,j,k,SEED-1] = ENTROPY
                         continue
@@ -52,8 +52,8 @@ def main(args):
                     LL = -np.log(2*np.pi) -np.mean(np.log(est_std**2)/2)-np.mean((est_mu-true_effect)**2/2/est_std**2)
                     ENTROPY = 0.5 + np.mean(np.log(est_std*np.sqrt(2*np.pi)))
                     results[0,i,j,k,SEED-1] = RMSE
-                    # results[1,i,j,k,SEED-1] = CORRELATION
-                    results[1,i,j,k,SEED-1] = COVERAGE
+                    results[1,i,j,k,SEED-1] = CORRELATION
+                    # results[1,i,j,k,SEED-1] = COVERAGE
                     results[2,i,j,k,SEED-1] = LL
                     # results[2,i,j,k,SEED-1] = ENTROPY
     
