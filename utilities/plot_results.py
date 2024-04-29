@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 sys.path.append("./utility")
 
 DATA_NAMES = ["twoDplane", "Friedman"]
-NS = [100, 150, 200, 250, 300, 1000] # [100, 200, 300, 400, 500, 600]
+NS = [100, 150, 200, 250, 300] # [100, 200, 300, 400, 500, 600]
 MEASURES = ["RMSE","CORRELATION", "COVERAGE","LL"]
 
 def main(args):
