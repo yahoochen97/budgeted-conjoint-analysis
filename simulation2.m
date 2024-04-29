@@ -20,7 +20,7 @@ FONTSIZE=16;
 BATCH_SIZE = 1; % acquire 1 new data per iteration
 SAVE_BATCH = 25; % save results every 25 iterations
 
-rng(SEED+42+12345);
+rng(SEED+42);
 
 % generate data pool with complete randomization
 simulate_data;
