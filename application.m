@@ -1,5 +1,5 @@
 if ~exist('data_name','var')
-    data_name = "hainmueller_candidate"; % hainmueller_immigrant
+    data_name = "hainmueller_immigrant"; % "hainmueller_candidate";
 end
 
 maxNumCompThreads(1);
