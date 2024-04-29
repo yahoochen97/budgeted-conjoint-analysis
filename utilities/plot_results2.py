@@ -10,7 +10,7 @@ DATA_NAMES = ["twoDplane", "Friedman"]
 N = 800
 TOTAL_SIZES = [25*i+50 for i in range(5)]
 MEASURES = ["RMSE","CORRELATION", "COVERAGE","LL", "ENTROPY"]
-MEASURES = ["RMSE","CORRELATION", "COVERAGE", "LL"]
+MEASURES = ["RMSE","CORRELATION", "LL"]
 
 def main(args):
     MAXSEED = int(args["seed"])
@@ -68,9 +68,9 @@ def main(args):
             bplots = []
             for k in range(len(MODELS)):
                 tmp = results[m,i,:,k,:]
+                tmp = [(tmp[j,:]-np.mean(tmp[j,:]))/np.sqrt(MAXSEED)+np.mean(tmp[j,:]) for j in range(len(TOTAL_SIZES))]  
                 if effect_type=="pop":
-                    tmp = [(tmp[j,:]-np.mean(tmp[j,:]))/np.sqrt(MAXSEED)+np.mean(tmp[j,:]) for j in range(len(TOTAL_SIZES))]  
-                else:
+                    tmp = results[m,i,:,k,:]
                     tmp = [tmp[j,:] for j in range(len(TOTAL_SIZES))]
                 bplot = ax[i,m].boxplot(tmp, positions=4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, showfliers=False,\
                                     patch_artist=True, widths=0.45)
