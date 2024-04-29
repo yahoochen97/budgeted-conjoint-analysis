@@ -58,7 +58,7 @@ def main(args):
                     # results[2,i,j,k,SEED-1] = ENTROPY
     
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 8), dpi=100)
-    colors = ["forestgreen", "gold", "darkseagreen",  "blue"] #  "limegreen" , "steelblue"
+    colors = ["limegreen", "gold", "darkseagreen",  "blue"] # "forestgreen", , "steelblue"
     for i in range(len(DATA_NAMES)):
         for m in range(len(MEASURES)):
             if i==0:
