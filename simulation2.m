@@ -78,9 +78,6 @@ for iter=1:ITERATIONS
    learn_HYP = 0;
    [ymu,~,fmu,fs2, ~, post] = gp(hyp, inffunc, meanfunc, ...
                 covfunc, likfunc, train_x, train_y, test_x);
-   if (mod(numel(idx_selected), SAVE_BATCH)==0) && (numel(idx_selected)>INIT_SIZE)
-      ACC = [ACC, mean((ymu>=0)==(test_y==1))];
-   end
    [mu_GMM_avg,sigma_GMM_avg, mu_GMM,sigma_GMM,...
        dy_mu, dy_std, df_mu, df_K, ks, ws] = g_GMM(n_gauss_hermite, ...
        hyp,inffunc,meanfunc,covfunc, likfunc, train_x, train_y, test_x);
@@ -209,6 +206,10 @@ for iter=1:ITERATIONS
 
         disp(HYP);
         writetable(results,"./results2/ind_"+HYP+".csv");
+        
+        [ymu,~,fmu,fs2, ~, post] = gp(hyp, inffunc, meanfunc, ...
+                covfunc, likfunc, train_x, train_y, test_x);
+        ACC = [ACC, mean((ymu>=0)==(test_y==1))];
    end
 end
 
