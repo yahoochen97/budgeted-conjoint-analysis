@@ -110,9 +110,69 @@ def main(args):
     else:
         plt.savefig("./results2/simulation2_plot_ind.pdf", format="pdf", dpi=100)
 
+def compare_ACC(args):
+    MAXSEED = int(args["seed"])
+    MODELS = ["UNIFORM", "DE", "GRADDE", "BALD"] # "GRADBALD" 
+    effect_type = args["effect"]
+    if effect_type=="pop":
+        return
+
+    results = np.zeros((len(DATA_NAMES),len(MODELS),len(TOTAL_SIZES),MAXSEED))
+    for i in range(len(DATA_NAMES)):                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+        for SEED in range(1,MAXSEED+1):
+            for k in range(len(MODELS)):
+                result_filename = "./results2/ACC_"+ DATA_NAMES[i] + "_N" + str(N) \
+                            + "_" + MODELS[k] + "_SEED" + str(SEED) + ".csv"
+                data = pd.read_csv(result_filename, header=None).to_numpy()
+                results[i, k, :, SEED] = data
+    
+    fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=1, figsize=(10, 8), dpi=100)
+    colors = ["limegreen", "gold", "darkseagreen",  "blue"]
+    for i in range(len(DATA_NAMES)):
+        ax[i,0].set_title(DATA_NAMES[i], fontsize=14)
+        if i==0:
+            ax[i,0].set_ylabel("ACC")
+        bplots = []
+        for k in range(len(MODELS)):
+            tmp = results[i,k,:,:]
+            bplot = ax[i,0].boxplot(tmp, positions=4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, showfliers=False,\
+                                patch_artist=True, widths=0.45)
+            # plot connected line
+            if k==len(MODELS)-1:
+                ax[i,0].plot(4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, np.median(tmp,axis=1), \
+                            color=colors[k], linestyle="solid")
+            else:
+                ax[i,0].plot(4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, np.median(tmp,axis=1), \
+                            color=colors[k], linestyle="dotted")
+            for patch in bplot['boxes']:
+                patch.set_facecolor(colors[k])
+            bplots.append(bplot)
+        ax[i,0].set_xticks(4+4*np.arange(len(TOTAL_SIZES)))
+        ax[i,0].set_xticklabels(TOTAL_SIZES)
+        ax[i,0].spines['top'].set_visible(False)
+        ax[i,0].spines['right'].set_visible(False)
+        ax[i,0].tick_params(left=False, bottom=False)
+        # horizontal grid
+        # ax[i,m].grid(axis='y', color='gray', linestyle='dashed', linewidth=1)
+        if i==0:
+            ax[i,0].legend([bplots[j]["boxes"][0] for j in range(len(MODELS))],MODELS)
+    params = {
+        'axes.labelsize': 8,
+        'font.size': 8,
+        'legend.fontsize': 10,
+        'xtick.labelsize': 10,
+        'ytick.labelsize': 10,
+        'text.usetex': False,
+        'figure.figsize': [10, 6]
+    }
+    plt.rcParams.update(params)
+    fig.subplots_adjust(left=0.05, bottom=0.035, right=0.99, top=0.96, wspace=0.12)
+    plt.savefig("./results2/simulation2_ACC.pdf", format="pdf", dpi=100)
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='-s seed')
     parser.add_argument('-s','--seed', help='random seed', required=True)
     parser.add_argument('-e','--effect', help='pop/ind effects', required=True)
     args = vars(parser.parse_args())
     main(args)
+    compare_ACC(args)
