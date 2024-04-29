@@ -135,6 +135,7 @@ def compare_ACC(args):
         bplots = []
         for k in range(len(MODELS)):
             tmp = results[i,k,:,:]
+            tmp = [tmp[j,:] for j in range(len(TOTAL_SIZES))]
             bplot = ax[i].boxplot(tmp, positions=4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, showfliers=False,\
                                 patch_artist=True, widths=0.45)
             # plot connected line
