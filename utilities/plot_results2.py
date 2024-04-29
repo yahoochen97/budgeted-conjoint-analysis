@@ -77,10 +77,10 @@ def main(args):
                                     patch_artist=True, widths=0.45)
                 # plot connected line
                 if k==len(MODELS)-1:
-                    ax[i,m].plot(4+4*np.arange(len(TOTAL_SIZES)), np.mean(tmp,axis=1), \
-                                color=colors[k], linestyle="dashed")
+                    ax[i,m].plot(4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, np.mean(tmp,axis=1), \
+                                color=colors[k], linestyle="solid")
                 else:
-                    ax[i,m].plot(4+4*np.arange(len(TOTAL_SIZES)), np.mean(tmp,axis=1), \
+                    ax[i,m].plot(4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, np.mean(tmp,axis=1), \
                                 color=colors[k], linestyle="dotted")
                 for patch in bplot['boxes']:
                     patch.set_facecolor(colors[k])
