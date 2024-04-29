@@ -40,8 +40,8 @@ def main(args):
                     if est_mu.shape[0]==0:
                         results[0,i,j,k,SEED-1] = RMSE
                         results[1,i,j,k,SEED-1] = CORRELATION
-                        results[2,i,j,k,SEED-1] = COVERAGE
-                        results[3,i,j,k,SEED-1] = LL
+                        # results[2,i,j,k,SEED-1] = COVERAGE
+                        results[2,i,j,k,SEED-1] = LL
                         # results[2,i,j,k,SEED-1] = ENTROPY
                         continue
                     
@@ -53,8 +53,8 @@ def main(args):
                     ENTROPY = 0.5 + np.mean(np.log(est_std*np.sqrt(2*np.pi)))
                     results[0,i,j,k,SEED-1] = RMSE
                     results[1,i,j,k,SEED-1] = CORRELATION
-                    results[2,i,j,k,SEED-1] = COVERAGE
-                    results[3,i,j,k,SEED-1] = LL
+                    # results[2,i,j,k,SEED-1] = COVERAGE
+                    results[2,i,j,k,SEED-1] = LL
                     # results[2,i,j,k,SEED-1] = ENTROPY
     
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 8), dpi=100)
