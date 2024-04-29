@@ -167,7 +167,7 @@ def compare_ACC(args):
         'figure.figsize': [10, 6]
     }
     plt.rcParams.update(params)
-    fig.subplots_adjust(left=0.07, bottom=0.08, right=0.99, top=0.90, wspace=0.12)
+    fig.subplots_adjust(left=0.05, bottom=0.08, right=0.99, top=0.90, wspace=0.12)
     plt.savefig("./results2/simulation2_ACC.pdf", format="pdf", dpi=100)
 
 if __name__ == "__main__":
