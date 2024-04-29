@@ -81,7 +81,7 @@ def compare_ACC(args):
     results = np.zeros((len(DATA_NAMES), len(MODELS),MAXSEED))
     for i in range(len(DATA_NAMES)):   
         for SEED in range(1,MAXSEED+1):
-            result_filename = "./results2/ACC_"+ DATA_NAMES[i] + \
+            result_filename = "./results/ACC_"+ DATA_NAMES[i] + \
                   "_N" + str(N) + "_TA" + str(TA) + "_SEED" + str(SEED) + ".csv"
             data = pd.read_csv(result_filename).acc.to_numpy()
             results[i, :, SEED-1] = data.reshape((-1,))
