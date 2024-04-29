@@ -75,6 +75,13 @@ def main(args):
                     tmp = [(tmp[j,:]-np.mean(tmp[j,:]))/np.sqrt(4)+np.mean(tmp[j,:]) for j in range(len(TOTAL_SIZES))]  
                 bplot = ax[i,m].boxplot(tmp, positions=4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, showfliers=False,\
                                     patch_artist=True, widths=0.45)
+                # plot connected line
+                if k==len(MODELS)-1:
+                    ax[i,m].plot(4+4*np.arange(len(TOTAL_SIZES)), np.mean(tmp,axis=1), \
+                                color=colors[k], linestyle="dashed")
+                else:
+                    ax[i,m].plot(4+4*np.arange(len(TOTAL_SIZES)), np.mean(tmp,axis=1), \
+                                color=colors[k], linestyle="dot")
                 for patch in bplot['boxes']:
                     patch.set_facecolor(colors[k])
                 bplots.append(bplot)
@@ -83,7 +90,8 @@ def main(args):
             ax[i,m].spines['top'].set_visible(False)
             ax[i,m].spines['right'].set_visible(False)
             ax[i,m].tick_params(left=False, bottom=False)
-            ax[i,m].grid(axis='y', color='gray', linestyle='dashed', linewidth=1)
+            # horizontal grid
+            # ax[i,m].grid(axis='y', color='gray', linestyle='dashed', linewidth=1)
             if i==0 and m==0:
                 ax[i,m].legend([bplots[j]["boxes"][0] for j in range(len(MODELS))],MODELS)
     params = {
