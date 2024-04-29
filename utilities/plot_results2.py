@@ -129,33 +129,31 @@ def compare_ACC(args):
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=1, figsize=(10, 8), dpi=100)
     colors = ["limegreen", "gold", "darkseagreen",  "blue"]
     for i in range(len(DATA_NAMES)):
-        ax[i,0].set_title(DATA_NAMES[i], fontsize=14)
+        ax[i].set_title(DATA_NAMES[i], fontsize=14)
         if i==0:
-            ax[i,0].set_ylabel("ACC")
+            ax[i].set_ylabel("ACC")
         bplots = []
         for k in range(len(MODELS)):
             tmp = results[i,k,:,:]
-            bplot = ax[i,0].boxplot(tmp, positions=4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, showfliers=False,\
+            bplot = ax[i].boxplot(tmp, positions=4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, showfliers=False,\
                                 patch_artist=True, widths=0.45)
             # plot connected line
             if k==len(MODELS)-1:
-                ax[i,0].plot(4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, np.median(tmp,axis=1), \
+                ax[i].plot(4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, np.median(tmp,axis=1), \
                             color=colors[k], linestyle="solid")
             else:
-                ax[i,0].plot(4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, np.median(tmp,axis=1), \
+                ax[i].plot(4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, np.median(tmp,axis=1), \
                             color=colors[k], linestyle="dotted")
             for patch in bplot['boxes']:
                 patch.set_facecolor(colors[k])
             bplots.append(bplot)
-        ax[i,0].set_xticks(4+4*np.arange(len(TOTAL_SIZES)))
-        ax[i,0].set_xticklabels(TOTAL_SIZES)
-        ax[i,0].spines['top'].set_visible(False)
-        ax[i,0].spines['right'].set_visible(False)
-        ax[i,0].tick_params(left=False, bottom=False)
-        # horizontal grid
-        # ax[i,m].grid(axis='y', color='gray', linestyle='dashed', linewidth=1)
+        ax[i].set_xticks(4+4*np.arange(len(TOTAL_SIZES)))
+        ax[i].set_xticklabels(TOTAL_SIZES)
+        ax[i].spines['top'].set_visible(False)
+        ax[i].spines['right'].set_visible(False)
+        ax[i].tick_params(left=False, bottom=False)
         if i==0:
-            ax[i,0].legend([bplots[j]["boxes"][0] for j in range(len(MODELS))],MODELS)
+            ax[i].legend([bplots[j]["boxes"][0] for j in range(len(MODELS))],MODELS)
     params = {
         'axes.labelsize': 8,
         'font.size': 8,
