@@ -88,10 +88,8 @@ def compare_ACC(args):
             print("ACC "+DATA_NAMES[i]+"...\n")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
             mu = np.mean(results[i,:,:], axis=1).T
             noise = np.std(results[i,:,:], axis=1).T / np.sqrt(MAXSEED)
-            df = pd.DataFrame(data=mu, index=pd.Index(MODELS), columns=1)
-            print(df)
-            df = pd.DataFrame(data=noise, index=pd.Index(MODELS), columns=MEASURES)
-            print(df)
+            print(mu)
+            print(noise)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='-s seed -t TA -e effect')
