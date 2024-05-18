@@ -2,7 +2,7 @@ if ~exist('SEED','var')
     % simulation settings
     SEED = 15;
     data_name = "Friedman";
-    policy_name = "GRADBALD";
+    policy_name = "UCB";
     N = 1000;
     TOTAL_SIZE = 250;
     test_anchor = 0;
@@ -116,6 +116,11 @@ for iter=1:ITERATIONS
 %        U_g = sum(sigma_GMM_avg,2);
 %        idx_cur = epsilon_greedy(U_g, BATCH_SIZE, epsilon);
 %        idx_cur = idx_other(idx_cur);
+    elseif strcmp(policy_name, "UCB")
+       % maximize upper confidence bound
+       UCB = abs(fmu+1.96*sqrt(fs2)); 
+       idx_cur = epsilon_greedy(UCB, BATCH_SIZE, epsilon);
+       idx_cur = idx_other(idx_cur);
    elseif strcmp(policy_name, "GRADBALD")
        % information gain of marginal effects
        ps = normcdf(fmu./sqrt(1+fs2));
