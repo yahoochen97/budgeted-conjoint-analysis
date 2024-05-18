@@ -58,7 +58,7 @@ def main(args):
                     # results[2,i,j,k,SEED-1] = ENTROPY
     
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 8), dpi=100)
-    colors = ["limegreen", "forestgreen", "gold", "darkseagreen",  "blue"] #  "steelblue"
+    colors = ["forestgreen", "limegreen",  "gold", "darkseagreen",  "blue"] #  "steelblue"
     for i in range(len(DATA_NAMES)):
         for m in range(len(MEASURES)):
             if i==0:
@@ -112,7 +112,7 @@ def main(args):
 
 def compare_ACC(args):
     MAXSEED = int(args["seed"])
-    MODELS = ["UNIFORM", "DE", "GRADDE", "BALD"] # "GRADBALD" 
+    MODELS = ["UCB", "UNIFORM", "DE", "GRADDE", "BALD"] # "GRADBALD" 
     effect_type = args["effect"]
     if effect_type=="pop":
         return
@@ -127,7 +127,7 @@ def compare_ACC(args):
                 results[i, k, :, SEED-1] = data.reshape((-1,))
     
     fig, ax = plt.subplots(nrows=1, ncols=len(DATA_NAMES), figsize=(12, 4), dpi=100)
-    colors = ["limegreen", "gold", "darkseagreen",  "blue"]
+    colors = ["forestgreen",  "limegreen", "gold", "darkseagreen",  "blue"]
     for i in range(len(DATA_NAMES)):
         ax[i].set_title(DATA_NAMES[i], fontsize=14)
         if i==0:
