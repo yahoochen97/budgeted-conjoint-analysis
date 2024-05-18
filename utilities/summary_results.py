@@ -98,5 +98,5 @@ if __name__ == "__main__":
     parser.add_argument('-t','--TA', help='test anchor', required=True)
     parser.add_argument('-e','--effect', help='pop/ind effects', required=True)
     args = vars(parser.parse_args())
-    main(args)
-    # compare_ACC(args)
+    # main(args)
+    compare_ACC(args)
