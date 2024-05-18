@@ -57,7 +57,7 @@ def main(args):
                     results[2,i,j,k,SEED-1] = LL
                     # results[2,i,j,k,SEED-1] = ENTROPY
     
-    fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 8), dpi=100)
+    fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 6), dpi=100)
     colors = ["forestgreen", "limegreen",  "gold", "darkseagreen",  "blue"] #  "steelblue"
     for i in range(len(DATA_NAMES)):
         for m in range(len(MEASURES)):
@@ -126,7 +126,7 @@ def compare_ACC(args):
                 data = pd.read_csv(result_filename, header=None).to_numpy()
                 results[i, k, :, SEED-1] = data.reshape((-1,))
     
-    fig, ax = plt.subplots(nrows=1, ncols=len(DATA_NAMES), figsize=(12, 4), dpi=100)
+    fig, ax = plt.subplots(nrows=1, ncols=len(DATA_NAMES), figsize=(12, 3), dpi=100)
     colors = ["forestgreen",  "limegreen", "gold", "darkseagreen",  "blue"]
     for i in range(len(DATA_NAMES)):
         ax[i].set_title(DATA_NAMES[i], fontsize=14)
