@@ -131,7 +131,7 @@ def compare_ACC(args):
     for i in range(len(DATA_NAMES)):
         ax[i].set_title(DATA_NAMES[i], fontsize=14)
         if i==0:
-            ax[i].set_ylabel("Test ACC", fontsize=14)
+            ax[i].set_ylabel("Pred ACC", fontsize=14)
         bplots = []
         for k in range(len(MODELS)):
             tmp = results[i,k,:,:]
