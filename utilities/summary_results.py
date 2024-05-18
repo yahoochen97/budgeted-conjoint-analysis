@@ -99,4 +99,4 @@ if __name__ == "__main__":
     parser.add_argument('-e','--effect', help='pop/ind effects', required=True)
     args = vars(parser.parse_args())
     main(args)
-    compare_ACC(args)
+    # compare_ACC(args)
