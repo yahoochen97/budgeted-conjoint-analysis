@@ -104,7 +104,7 @@ def main(args):
         'figure.figsize': [10, 6]
     }
     plt.rcParams.update(params)
-    fig.subplots_adjust(left=0.05, bottom=0.03, right=0.99, top=0.97, wspace=0.12)
+    fig.subplots_adjust(left=0.05, bottom=0.02, right=0.99, top=0.98, wspace=0.12)
     if effect_type=="pop":
         plt.savefig("./results2/simulation2_plot.pdf", format="pdf", dpi=100)
     else:
@@ -167,7 +167,7 @@ def compare_ACC(args):
         'figure.figsize': [10, 6]
     }
     plt.rcParams.update(params)
-    fig.subplots_adjust(left=0.06, bottom=0.08, right=0.99, top=0.93, wspace=0.12)
+    fig.subplots_adjust(left=0.06, bottom=0.08, right=0.99, top=0.95, wspace=0.12)
     plt.savefig("./results2/simulation2_ACC.pdf", format="pdf", dpi=100)
 
 if __name__ == "__main__":
