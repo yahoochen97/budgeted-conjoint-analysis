@@ -10,7 +10,7 @@ DATA_NAMES = ["twoDplane", "Friedman"]
 N = 800
 TOTAL_SIZES = [25*i+50 for i in range(5)]
 MEASURES = ["RMSE","CORRELATION", "COVERAGE","LL", "ENTROPY"]
-MEASURES = ["RMSE","CORRELATION", "LL"]
+MEASURES = ["RMSE","COR", "LL"]
 
 def main(args):
     MAXSEED = int(args["seed"])
