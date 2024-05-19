@@ -73,14 +73,14 @@ def main(args):
                     tmp = results[m,i,:,k,:]
                     # tmp = [tmp[j,:] for j in range(len(TOTAL_SIZES))]
                     tmp = [(tmp[j,:]-np.mean(tmp[j,:]))/np.sqrt(MAXSEED)+np.mean(tmp[j,:]) for j in range(len(TOTAL_SIZES))]  
-                bplot = ax[i,m].boxplot(tmp, positions=4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, showfliers=False,\
+                bplot = ax[i,m].boxplot(tmp, positions=4+4*np.arange(len(TOTAL_SIZES))+(k-2)*0.75, showfliers=False,\
                                     patch_artist=True, widths=0.45)
                 # plot connected line
                 if k==len(MODELS)-1:
-                    ax[i,m].plot(4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, np.median(tmp,axis=1), \
+                    ax[i,m].plot(4+4*np.arange(len(TOTAL_SIZES))+(k-2)*0.75, np.median(tmp,axis=1), \
                                 color=colors[k], linestyle="solid")
                 else:
-                    ax[i,m].plot(4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, np.median(tmp,axis=1), \
+                    ax[i,m].plot(4+4*np.arange(len(TOTAL_SIZES))+(k-2)*0.75, np.median(tmp,axis=1), \
                                 color=colors[k], linestyle="dotted")
                 for patch in bplot['boxes']:
                     patch.set_facecolor(colors[k])
@@ -138,14 +138,14 @@ def compare_ACC(args):
             # tmp = [tmp[j,:] for j in range(len(TOTAL_SIZES))]
             tmp = [(tmp[j,:]-np.mean(tmp[j,:]))/np.sqrt(MAXSEED)+np.mean(tmp[j,:])\
                     for j in range(len(TOTAL_SIZES))]  
-            bplot = ax[i].boxplot(tmp, positions=4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, showfliers=False,\
+            bplot = ax[i].boxplot(tmp, positions=4+4*np.arange(len(TOTAL_SIZES))+(k-2)*0.75, showfliers=False,\
                                 patch_artist=True, widths=0.45)
             # plot connected line
             if k==len(MODELS)-1:
-                ax[i].plot(4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, np.median(tmp,axis=1), \
+                ax[i].plot(4+4*np.arange(len(TOTAL_SIZES))+(k-2)*0.75, np.median(tmp,axis=1), \
                             color=colors[k], linestyle="solid")
             else:
-                ax[i].plot(4+4*np.arange(len(TOTAL_SIZES))+(k-1)*0.75, np.median(tmp,axis=1), \
+                ax[i].plot(4+4*np.arange(len(TOTAL_SIZES))+(k-2)*0.75, np.median(tmp,axis=1), \
                             color=colors[k], linestyle="dotted")
             for patch in bplot['boxes']:
                 patch.set_facecolor(colors[k])
