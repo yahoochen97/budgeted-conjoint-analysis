@@ -17,7 +17,7 @@ startup;
 addpath("utilities");
 FONTSIZE=16;
 BATCH_SIZE = 1; % acquire 1 new data per iteration
-SAVE_BATCH = 25; % save results every 25 iterations
+SAVE_BATCH = 50; % save results every 25 iterations
 
 rng(SEED+42);
 
@@ -35,7 +35,7 @@ x_pop = train_x;
 y_pop = train_y;
 
 % build model with initial batch
-INIT_SIZE = 200;
+INIT_SIZE = floor(N/10);
 idx_selected = (N+1-INIT_SIZE:N);
 train_x = x_pop(idx_selected,:);
 train_y = y_pop(idx_selected,:);
