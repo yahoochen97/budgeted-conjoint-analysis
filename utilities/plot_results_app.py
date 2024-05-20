@@ -17,7 +17,7 @@ def compare_ACC(args):
     for i in range(len(DATA_NAMES)):                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
         for SEED in range(1,MAXSEED+1):
             for k in range(len(MODELS)):
-                result_filename = "./results2/ACC_"+ DATA_NAMES[i] \
+                result_filename = "./results_application/ACC_"+ DATA_NAMES[i] \
                             + "_" + MODELS[k] + "_SEED" + str(SEED) + ".csv"
                 data = pd.read_csv(result_filename, header=None).to_numpy()
                 results[i, k, :, SEED-1] = data.reshape((-1,))
