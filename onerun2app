@@ -7,4 +7,4 @@ data_name=$2
 TOTAL_SIZE=$3
 policy_name=$4
 
-matlab -nodisplay -nodesktop -r "settings; addpath('~/gpml-matlab-v3.6-2015-07-07'); SEED=${SEED}; data_name='${data_name}'; TOTAL_SIZE=${TOTAL_SIZE}; policy_name='${policy_name}'; test_anchor = 0; application_adaptive; exit;"
+matlab -nodisplay -nodesktop -r "settings; addpath('./utilities'); addpath('~/gpml-matlab-v3.6-2015-07-07'); SEED=${SEED}; data_name='${data_name}'; TOTAL_SIZE=${TOTAL_SIZE}; policy_name='${policy_name}'; test_anchor = 0; application_adaptive; exit;"
