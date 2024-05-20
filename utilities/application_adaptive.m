@@ -129,7 +129,7 @@ for iter=1:ITERATIONS
 end
 
 HYP = data_name + "_" + policy_name + "_SEED" + int2str(SEED);
-csvwrite("./results2/ACC_"+HYP+".csv", ACC');
+csvwrite("./results_application/ACC_"+HYP+".csv", ACC');
 
 function idx_cur = epsilon_greedy(IG, BATCH_SIZE, epsilon)
     r = rand;
