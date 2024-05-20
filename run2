@@ -25,6 +25,20 @@ elif [ $1 = "summary" ]
 then
     python utilities/plot_results2.py -s $MAXSEED -e pop
     python utilities/plot_results2.py -s $MAXSEED -e ind
+elif [ $1 = "application" ]
+    declare -a data_names=("hainmueller_immigrant" "hainmueller_candidate")
+    declare -a TOTAL_SIZES=(150)
+    declare -a policy_names=("UNIFORM" "UCB" "BALD" "GRADDE" "DE") 
+    for SEED in $(seq 1 1 $MAXSEED); do
+        for data_name in ${data_names[@]}; do
+            for TOTAL_SIZE in ${TOTAL_SIZES[@]}; do
+                for policy_name in ${policy_names[@]}; do
+                    bsub -G SEAS-Lab-Garnett -o /dev/null -J "${data_name}_${policy_name}_${SEED}" "./onerun2app $SEED $data_name $TOTAL_SIZE $policy_name"
+                done
+            done
+        done
+    done
+then
 elif [ $1 = "check" ]
 then
     for SEED in $(seq 1 1 $MAXSEED); do

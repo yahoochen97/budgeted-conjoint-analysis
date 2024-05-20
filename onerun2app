@@ -1,0 +1,10 @@
+#!/bin/bash
+#BSUB -n 1
+#BSUB -R "span[hosts=1]"
+
+SEED=$1
+data_name=$2
+TOTAL_SIZE=$4
+policy_name=$5
+
+matlab -nodisplay -nodesktop -r "settings; addpath('~/gpml-matlab-v3.6-2015-07-07'); SEED=${SEED}; data_name='${data_name}'; TOTAL_SIZE=${TOTAL_SIZE}; policy_name='${policy_name}'; test_anchor = 0; application_adaptive; exit;"
