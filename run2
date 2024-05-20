@@ -26,6 +26,7 @@ then
     python utilities/plot_results2.py -s $MAXSEED -e pop
     python utilities/plot_results2.py -s $MAXSEED -e ind
 elif [ $1 = "application" ]
+then
     declare -a data_names=("hainmueller_immigrant" "hainmueller_candidate")
     declare -a TOTAL_SIZES=(150)
     declare -a policy_names=("UNIFORM" "UCB" "BALD" "GRADDE" "DE") 
@@ -38,7 +39,6 @@ elif [ $1 = "application" ]
             done
         done
     done
-then
 elif [ $1 = "check" ]
 then
     for SEED in $(seq 1 1 $MAXSEED); do
