@@ -122,8 +122,30 @@ for iter=1:ITERATIONS
    
    % save results every 25 samples   
    if mod(numel(idx_selected), SAVE_BATCH)==0
+        HYP = data_name + "_S" + int2str(numel(idx_selected)) + "_" + policy_name + "_SEED" + int2str(SEED);
+       
+       % get current estimation
+       idx_test = setdiff(1:N, idx_init);
+       [mu_GMM_avg,sigma_GMM_avg, mu_GMM,sigma_GMM,...
+           dy_mu, dy_std, df_mu, df_K, ks, ws] = g_GMM(n_gauss_hermite, ...
+           hyp,inffunc,meanfunc,covfunc, likfunc, train_x, train_y, x_pop(idx_test,:));
+       
+       % report individualized effect estimation
+        [gp_GMM_mu,gp_GMM_std]=gp_AMCE(mu_GMM_avg,sigma_GMM_avg,data_name, x_pop(idx_test,:));
+        D = numel(dgp_effects);
+        results = array2table(zeros(D,3),'VariableNames',...
+            {'mean','std','effect'});
+        results.policy = repmat(string(policy_name),[D 1]);
+
+        results(:,1) = num2cell(gp_GMM_mu)';
+        results(:,2) = num2cell(gp_GMM_std)';
+        results(:,3) = num2cell(dgp_effects)';
+
+        writetable(results,"./results2/"+HYP+".csv");
+        
         [ymu,~,fmu,fs2, ~, post] = gp(hyp, inffunc, meanfunc, ...
                 covfunc, likfunc, train_x, train_y, test_x);
+            
         ACC = [ACC, mean((ymu>=0)==(test_y==1))];
    end
 end
