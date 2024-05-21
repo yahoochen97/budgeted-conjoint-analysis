@@ -7,7 +7,7 @@ import os.path
 sys.path.append("./utility")
 
 DATA_NAMES = ["hainmueller_immigrant", "hainmueller_candidate"]
-TOTAL_SIZES = [50*i+50 for i in range(6)]
+TOTAL_SIZES = [100*i+100 for i in range(8)]
 
 def compare_ACC(args):
     MAXSEED = int(args["seed"])
