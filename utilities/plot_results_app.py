@@ -9,6 +9,7 @@ sys.path.append("./utility")
 DATA_NAMES = ["hainmueller_immigrant", "hainmueller_candidate"]
 TOTAL_SIZES = [100*i+100 for i in range(8)]
 
+
 def compare_ACC(args):
     MAXSEED = int(args["seed"])
     MODELS = ["UCB", "UNIFORM", "DE", "GRADDE", "BALD"] # "GRADBALD" 
@@ -20,7 +21,7 @@ def compare_ACC(args):
                 result_filename = "./results_application/ACC_"+ DATA_NAMES[i] \
                             + "_" + MODELS[k] + "_SEED" + str(SEED) + ".csv"
                 data = pd.read_csv(result_filename, header=None).to_numpy()
-                results[i, k, :, SEED-1] = data.reshape((-1,))
+                results[i, k, :, SEED-1] = data.reshape((-1,))[0::2]
     
     fig, ax = plt.subplots(nrows=1, ncols=len(DATA_NAMES), figsize=(12, 3), dpi=100)
     colors = ["forestgreen",  "limegreen", "gold", "darkseagreen",  "blue"]
