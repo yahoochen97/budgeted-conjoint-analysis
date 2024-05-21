@@ -17,7 +17,7 @@ startup;
 addpath("utilities");
 FONTSIZE=16;
 BATCH_SIZE = 1; % acquire 1 new data per iteration
-SAVE_BATCH = 50; % save results every 25 iterations
+SAVE_BATCH = 50; % save results every 50 iterations
 
 rng(SEED+42);
 
@@ -50,7 +50,7 @@ x_pop = test_x;
 y_pop = test_y;
 
 % initial batch is complete randomization
-INIT_SIZE = 25;
+INIT_SIZE = 75;
 idx_selected = [];
 idx_init = policy_uniform(1:N, INIT_SIZE);
 idx_selected = [idx_selected, idx_init];
@@ -120,28 +120,28 @@ for iter=1:ITERATIONS
    test_x = x_pop(idx_other,:);
    test_y = y_pop(idx_other,:);
    
-   % save results every 25 samples   
+   % save results every SAVE_BATCH samples   
    if mod(numel(idx_selected), SAVE_BATCH)==0
-        HYP = data_name + "_S" + int2str(numel(idx_selected)) + "_" + policy_name + "_SEED" + int2str(SEED);
+        % HYP = data_name + "_S" + int2str(numel(idx_selected)) + "_" + policy_name + "_SEED" + int2str(SEED);
        
        % get current estimation
-       idx_test = setdiff(1:N, idx_init);
-       [mu_GMM_avg,sigma_GMM_avg, mu_GMM,sigma_GMM,...
-           dy_mu, dy_std, df_mu, df_K, ks, ws] = g_GMM(n_gauss_hermite, ...
-           hyp,inffunc,meanfunc,covfunc, likfunc, train_x, train_y, x_pop(idx_test,:));
-       
+%        idx_test = setdiff(1:N, idx_init);
+%        [mu_GMM_avg,sigma_GMM_avg, mu_GMM,sigma_GMM,...
+%            dy_mu, dy_std, df_mu, df_K, ks, ws] = g_GMM(n_gauss_hermite, ...
+%            hyp,inffunc,meanfunc,covfunc, likfunc, train_x, train_y, x_pop(idx_test,:));
+%        
        % report individualized effect estimation
-        [gp_GMM_mu,gp_GMM_std]=gp_AMCE(mu_GMM_avg,sigma_GMM_avg,data_name, x_pop(idx_test,:));
-        D = numel(dgp_effects);
-        results = array2table(zeros(D,3),'VariableNames',...
-            {'mean','std','effect'});
-        results.policy = repmat(string(policy_name),[D 1]);
-
-        results(:,1) = num2cell(gp_GMM_mu)';
-        results(:,2) = num2cell(gp_GMM_std)';
-        results(:,3) = num2cell(dgp_effects)';
-
-        writetable(results,"./results2/"+HYP+".csv");
+%         [gp_GMM_mu,gp_GMM_std]=gp_AMCE(mu_GMM_avg,sigma_GMM_avg,data_name, x_pop(idx_test,:));
+%         D = numel(dgp_effects);
+%         results = array2table(zeros(D,3),'VariableNames',...
+%             {'mean','std','effect'});
+%         results.policy = repmat(string(policy_name),[D 1]);
+% 
+%         results(:,1) = num2cell(gp_GMM_mu)';
+%         results(:,2) = num2cell(gp_GMM_std)';
+%         results(:,3) = num2cell(dgp_effects)';
+% 
+%         writetable(results,"./results2/"+HYP+".csv");
         
         [ymu,~,fmu,fs2, ~, post] = gp(hyp, inffunc, meanfunc, ...
                 covfunc, likfunc, train_x, train_y, test_x);
