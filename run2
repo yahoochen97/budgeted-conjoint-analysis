@@ -28,7 +28,7 @@ then
 elif [ $1 = "application" ]
 then
     declare -a data_names=("hainmueller_immigrant" "hainmueller_candidate")
-    declare -a TOTAL_SIZES=(300)
+    declare -a TOTAL_SIZES=(800)
     declare -a policy_names=("UNIFORM" "UCB" "BALD" "GRADDE" "DE") 
     for SEED in $(seq 1 1 $MAXSEED); do
         for data_name in ${data_names[@]}; do
