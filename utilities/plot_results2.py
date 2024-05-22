@@ -10,7 +10,7 @@ DATA_NAMES = ["twoDplane", "Friedman"]
 N = 800
 TOTAL_SIZES = [25*i+50 for i in range(5)]
 MEASURES = ["RMSE","CORRELATION", "COVERAGE","LL", "ENTROPY"]
-MEASURES = ["RMSE","COR", "LL"]
+MEASURES = ["RMSE","COR", "LL", "ENTROPY"]
 
 def main(args):
     MAXSEED = int(args["seed"])
@@ -42,7 +42,7 @@ def main(args):
                         results[1,i,j,k,SEED-1] = CORRELATION
                         # results[1,i,j,k,SEED-1] = COVERAGE
                         results[2,i,j,k,SEED-1] = LL
-                        # results[2,i,j,k,SEED-1] = ENTROPY
+                        results[3,i,j,k,SEED-1] = ENTROPY
                         continue
                     
                     RMSE = np.sqrt(np.mean((est_mu-true_effect)**2))
@@ -55,7 +55,7 @@ def main(args):
                     results[1,i,j,k,SEED-1] = CORRELATION
                     # results[1,i,j,k,SEED-1] = COVERAGE
                     results[2,i,j,k,SEED-1] = LL
-                    # results[2,i,j,k,SEED-1] = ENTROPY
+                    results[3,i,j,k,SEED-1] = ENTROPY
     
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 6), dpi=100)
     colors = ["forestgreen", "limegreen",  "gold", "darkseagreen",  "blue"] #  "steelblue"
@@ -176,4 +176,4 @@ if __name__ == "__main__":
     parser.add_argument('-e','--effect', help='pop/ind effects', required=True)
     args = vars(parser.parse_args())
     main(args)
-    compare_ACC(args)
+    # compare_ACC(args)
