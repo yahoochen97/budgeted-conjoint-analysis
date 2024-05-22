@@ -8,15 +8,13 @@ sys.path.append("./utility")
 
 DATA_NAMES = ["twoDplane", "Friedman"]
 N = 800
-TOTAL_SIZES = [25*i+125 for i in range(6)]
-
-
+TOTAL_SIZES = [25*i+25 for i in range(5)]
 MEASURES = ["RMSE","CORRELATION", "COVERAGE","LL", "ENTROPY"]
-MEASURES = ["RMSE","COR", "LL", "ENTROPY"]
+MEASURES = ["RMSE","COR", "LL"]
 
 def main(args):
     MAXSEED = int(args["seed"])
-    MODELS = ["UNIFORM", "DE", "GRADDE", "BALD", "GRADBALD"] # "UCB", "GRADBALD" 
+    MODELS = ["UCB", "UNIFORM", "DE", "GRADDE", "BALD"] # "UCB", "GRADBALD" 
     effect_type = args["effect"]
     
     results = np.zeros((len(MEASURES), len(DATA_NAMES),len(TOTAL_SIZES),len(MODELS),MAXSEED))
@@ -25,10 +23,10 @@ def main(args):
             for j in range(len(TOTAL_SIZES)):
                 for k in range(len(MODELS)):
                     if effect_type=="pop":
-                        result_filename = "./results2_Apr_28/"+ DATA_NAMES[i] + "_N" + str(N) \
+                        result_filename = "./results2/"+ DATA_NAMES[i] + "_N" + str(N) \
                             + "_S" + str(TOTAL_SIZES[j]) + "_" + MODELS[k] + "_SEED" + str(SEED) + ".csv"
                     else:
-                        result_filename = "./results2_Apr_28/ind_"+ DATA_NAMES[i] + "_N" + str(N) \
+                        result_filename = "./results2/ind_"+ DATA_NAMES[i] + "_N" + str(N) \
                             + "_S" + str(TOTAL_SIZES[j]) + "_" + MODELS[k] + "_SEED" + str(SEED) + ".csv"
                     data = pd.read_csv(result_filename)
                     tmp = data[data.policy==MODELS[k]]
@@ -44,7 +42,7 @@ def main(args):
                         results[1,i,j,k,SEED-1] = CORRELATION
                         # results[1,i,j,k,SEED-1] = COVERAGE
                         results[2,i,j,k,SEED-1] = LL
-                        results[3,i,j,k,SEED-1] = ENTROPY
+                        # results[3,i,j,k,SEED-1] = ENTROPY
                         continue
                     
                     RMSE = np.sqrt(np.mean((est_mu-true_effect)**2))
@@ -57,7 +55,7 @@ def main(args):
                     results[1,i,j,k,SEED-1] = CORRELATION
                     # results[1,i,j,k,SEED-1] = COVERAGE
                     results[2,i,j,k,SEED-1] = LL
-                    results[3,i,j,k,SEED-1] = ENTROPY
+                    # results[3,i,j,k,SEED-1] = ENTROPY
     
     fig, ax = plt.subplots(nrows=len(DATA_NAMES), ncols=len(MEASURES), figsize=(15, 6), dpi=100)
     colors = ["forestgreen", "limegreen",  "gold", "darkseagreen",  "blue"] #  "steelblue"
@@ -108,9 +106,9 @@ def main(args):
     plt.rcParams.update(params)
     fig.subplots_adjust(left=0.05, bottom=0.05, right=0.99, top=0.95, wspace=0.12)
     if effect_type=="pop":
-        plt.savefig("./results2_Apr_28/simulation2_plot.pdf", format="pdf", dpi=100)
+        plt.savefig("./results2/simulation2_plot.pdf", format="pdf", dpi=100)
     else:
-        plt.savefig("./results2_Apr_28/simulation2_plot_ind.pdf", format="pdf", dpi=100)
+        plt.savefig("./results2/simulation2_plot_ind.pdf", format="pdf", dpi=100)
 
 def compare_ACC(args):
     MAXSEED = int(args["seed"])
